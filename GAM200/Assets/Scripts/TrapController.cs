@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class TrapController : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] PlayerController player;
+
     public GameObject debug;
     public TileBase inactiveTile;
     public TileBase activeTile;
@@ -13,51 +15,27 @@ public class TrapController : MonoBehaviour
 
     private bool isActive = false;
 
-    void Start()
-    {
-        /*
-        debug.GetComponent<SpriteRenderer>().color = Color.red;
-        //isActive = !isActive;
-
-        BoundsInt bounds = targetTilemap.cellBounds;
-
-        foreach (Vector3Int pos in bounds.allPositionsWithin)
-        {
-            if (targetTilemap.HasTile(pos))
-            {
-                targetTilemap.SetTile(pos, activeTile);
-            }
-        }
-        */
-    }
-
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        
-    }
-
     public void ToggleTrap()
     {
         isActive = !isActive;
-        debug.GetComponent<SpriteRenderer>().color = isActive ? Color.green : Color.red;
+        debug.GetComponent<SpriteRenderer>().color = !isActive ? Color.white : Color.red;
         BoundsInt bounds = targetTilemap.cellBounds;
         foreach (Vector3Int pos in bounds.allPositionsWithin)
         {
             if (targetTilemap.HasTile(pos))
             {
+                
                 targetTilemap.SetTile(pos, isActive ? activeTile : inactiveTile);
             }
         }
     }
 
-
-
-
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        // This fires EVERY FRAME while the player is inside the trigger
+        if (other.CompareTag("Player") && isActive)
+        {
+            player.TakeDamage(1);
+        }
+    }
 }

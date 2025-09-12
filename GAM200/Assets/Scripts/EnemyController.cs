@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 /// <summary>
 /// Grid-style enemy that moves in a repeating Up/Right/Down/Left pattern,
@@ -9,6 +10,11 @@ using UnityEngine;
 /// </summary>
 public class EnemyController : MonoBehaviour
 {
+    [Header("Grid Alignment")]
+    [Tooltip("Tilemap to align movement with (should be same as player's tilemap)")]
+    [SerializeField] private Tilemap gridTilemap;
+    [SerializeField] private Vector2Int spawnGridCoords;
+
     [Header("Move Root")]
     [Tooltip("Which Transform actually moves (e.g., a child sprite). If empty, this object moves.")]
     [SerializeField] private Transform moveRoot;
@@ -48,8 +54,8 @@ public class EnemyController : MonoBehaviour
     [Min(0)] public int stepsUpEnd = 3;
 
     [Header("Target-only collision logging")]
-    [Tooltip("We only check if we would hit THIS object. Movement never stops; we just log.")]
-    [SerializeField] private Transform target;
+    [Tooltip("We only check if we would hit THIS object. Movement never stops;")]
+    [SerializeField] private GameObject target;
     [SerializeField, Tooltip("Approx radius for our sweep/overlap checks.")]
     private float castRadius = 0.3f;
 
@@ -90,6 +96,8 @@ public class EnemyController : MonoBehaviour
 
         // make sure our indices are valid
         ClampIndices();
+
+        SpawnAtGridPosition(spawnGridCoords);
     }
 
     private void OnValidate()
@@ -115,7 +123,7 @@ public class EnemyController : MonoBehaviour
     }
 
     // Allow setting the target at runtime
-    public void SetTarget(Transform newTarget)
+    public void SetTarget(GameObject newTarget)
     {
         target = newTarget;
         ResolveTargetCollider();
@@ -176,11 +184,25 @@ public class EnemyController : MonoBehaviour
         Vector2 dir = DirToVector(seg.d);
         Vector2 from = M.position;
         Vector2 to = from + dir * stepDistance;
-        if (snapToGrid) to = Snap(to, stepDistance);
+
+        // MODIFIED: Use tilemap grid instead of simple snapping
+        if (gridTilemap)
+        {
+            Vector3Int gridPos = gridTilemap.WorldToCell(to);
+            to = gridTilemap.GetCellCenterWorld(gridPos);
+        }
+        else if (snapToGrid)
+        {
+            to = Snap(to, stepDistance);
+        }
 
         // Check if our move would hit the target; DO NOT block, just log it.
         if (WillHitTarget(from, to))
-            Debug.Log("[EnemyController] Collision with target detected this step.");
+        {
+            target.GetComponent<PlayerController>().TakeDamage(1);
+            if (debugLogs)
+                Debug.Log("[EnemyController] Collision with target detected this step.");
+        }
 
         if (debugLogs)
             Debug.Log($"[EnemyController] Moving {seg.d} ({segStepTaken + 1}/{seg.count}) → {to}");
@@ -347,9 +369,19 @@ public class EnemyController : MonoBehaviour
                 cur = next;
             }
         }
+    }
 
-        // visualize cast radius at current position
-        Gizmos.color = new Color(1f, 0.6f, 0.2f, 0.35f);
-        Gizmos.DrawWireSphere((moveRoot ? moveRoot : transform).position, castRadius);
+    private void SpawnAtGridPosition(Vector2Int gridCoords)
+    {
+        Vector3Int gridPos3D = new Vector3Int(gridCoords.x, gridCoords.y, 0);
+        Vector3 worldPos = gridTilemap.GetCellCenterWorld(gridPos3D);
+
+        if (rb2d)
+            rb2d.MovePosition(worldPos);
+        else
+            M.position = worldPos;
+
+        if (debugLogs)
+            Debug.Log($"[EnemyController] Spawned at grid ({gridCoords.x}, {gridCoords.y}) → world {worldPos}");
     }
 }
