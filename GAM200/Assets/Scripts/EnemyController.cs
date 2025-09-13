@@ -75,6 +75,13 @@ public class EnemyController : MonoBehaviour
     [Tooltip("Tilemap used for tile-based collision logging (e.g., Walls).")]
     [SerializeField] private Tilemap collisionTilemap;
 
+    [Header("Player Damage")]
+    [Tooltip("Reference to the PlayerController for dealing damage.")]
+    [SerializeField] private PlayerController player;
+    [Tooltip("Amount of damage to deal to the player per contact.")]
+    [SerializeField] private int damageAmount = 1;
+    [Tooltip("If true, enemy can damage the player. If false, enemy is harmless.")]
+    [SerializeField] private bool canDamagePlayer = true;
 
     [Header("Debug")]
     [SerializeField] private bool debugLogs = false;
@@ -127,7 +134,14 @@ public class EnemyController : MonoBehaviour
         ClampIndices();
     }
 
-    
+    private void Update()
+    {
+        // Check for player collision every frame when damage is enabled
+        if (canDamagePlayer && player != null && gridTilemap != null)
+        {
+            CheckPlayerCollision();
+        }
+    }
 
     // Turn the five counts into a simple list we can loop over forever
     private void RebuildSegments()
@@ -188,6 +202,27 @@ public class EnemyController : MonoBehaviour
         if (debugLogs)
         {
             Debug.Log($"[EnemyController] Spawned at grid {gridCoords} → world {worldPos}");
+        }
+    }
+
+    /// <summary>
+    /// Checks if the player and enemy are on the same grid position and deals damage if so.
+    /// </summary>
+    private void CheckPlayerCollision()
+    {
+        // Get both player and enemy grid positions
+        Vector3Int playerGridPos = gridTilemap.WorldToCell(player.transform.position);
+        Vector3Int enemyGridPos = gridTilemap.WorldToCell(M.position);
+        
+        // If they're on the same grid cell and player isn't invulnerable, deal damage
+        if (playerGridPos == enemyGridPos && !player.IsInvulnerable())
+        {
+            player.TakeDamage(damageAmount);
+            
+            if (debugLogs)
+            {
+                Debug.Log($"[EnemyController] Player and enemy both at grid {playerGridPos}, dealt {damageAmount} damage");
+            }
         }
     }
 
@@ -254,7 +289,7 @@ public class EnemyController : MonoBehaviour
 
     private void LogPotentialCollisions(Vector2 from, Vector2 to)
     {
-        // Physics: OverlapBox at the DESTINATION position
+        // Physics: OverlapBox at the DESTINATION position (logging only, no damage)
         if (logPhysicsCollisions)
         {
             Vector2 size = useColliderSize && cachedBox != null ? cachedBox.size : boxCheckSize;
@@ -267,10 +302,6 @@ public class EnemyController : MonoBehaviour
                 if (!includeTriggers && h.isTrigger) continue;
                 if (h.transform == (moveRoot ? moveRoot : transform)) continue; // skip self
 
-                if (h.CompareTag("Player"))
-                {
-                    h.GetComponent<PlayerController>()?.TakeDamage(1);
-                }
                 Debug.Log($"[EnemyController] Would collide with '{h.name}' at {to}");
             }
         }

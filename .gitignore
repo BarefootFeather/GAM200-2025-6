@@ -38,6 +38,7 @@
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
 
+
 # Recordings can get excessive in size
 /[Rr]ecordings/
 
@@ -115,3 +116,6 @@ InitTestScene*.unity*
 
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
+**/obj/
+**/*.cache
+GAM200/obj/
