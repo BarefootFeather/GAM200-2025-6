@@ -155,6 +155,43 @@ public class EnemyController : MonoBehaviour
     }
 
     /// <summary>
+    /// Spawns the enemy at the specified grid coordinates.
+    /// Uses the gridTilemap to convert grid coordinates to world position.
+    /// </summary>
+    /// <param name="gridCoords">Grid coordinates to spawn at</param>
+    private void SpawnAtGridPosition(Vector2Int gridCoords)
+    {
+        Vector3 worldPos;
+        
+        if (gridTilemap != null)
+        {
+            // Convert grid coordinates to world position using the tilemap
+            Vector3Int cellPos = new Vector3Int(gridCoords.x, gridCoords.y, 0);
+            worldPos = gridTilemap.GetCellCenterWorld(cellPos);
+        }
+        else
+        {
+            // Fallback: use step distance as grid size
+            worldPos = new Vector3(gridCoords.x * stepDistance, gridCoords.y * stepDistance, 0);
+        }
+
+        // Position the move root (or this transform if no move root)
+        if (rb2d)
+        {
+            rb2d.MovePosition(worldPos);
+        }
+        else
+        {
+            M.position = worldPos;
+        }
+
+        if (debugLogs)
+        {
+            Debug.Log($"[EnemyController] Spawned at grid {gridCoords} → world {worldPos}");
+        }
+    }
+
+    /// <summary>
     /// Call this from your BPM system when an interval/beat happens.
     /// Example: hook to BPMController.Interval.onIntervalReached in the Inspector.
     /// </summary>
@@ -229,6 +266,11 @@ public class EnemyController : MonoBehaviour
                 if (!h) continue;
                 if (!includeTriggers && h.isTrigger) continue;
                 if (h.transform == (moveRoot ? moveRoot : transform)) continue; // skip self
+
+                if (h.CompareTag("Player"))
+                {
+                    h.GetComponent<PlayerController>()?.TakeDamage(1);
+                }
                 Debug.Log($"[EnemyController] Would collide with '{h.name}' at {to}");
             }
         }
@@ -332,25 +374,6 @@ public class EnemyController : MonoBehaviour
     // Visualize the planned path and our cast radius when selected in Scene view
     private void OnDrawGizmosSelected()
     {
-        if (!Application.isPlaying) RebuildSegments();
-        if (segments == null || segments.Length == 0) return;
-
-        Gizmos.color = new Color(0.2f, 1f, 0.7f, 0.6f);
-        Vector3 cur = (moveRoot ? moveRoot : transform).position;
-
-        foreach (var seg in segments)
-        {
-            Vector2 dir = DirToVector(seg.d);
-            for (int s = 0; s < seg.count; s++)
-            {
-                Vector3 next = cur + (Vector3)(dir * stepDistance);
-                Gizmos.DrawLine(cur, next);
-                Gizmos.DrawWireSphere(next, 0.05f);
-                cur = next;
-            }
-        }
-    }
-
         // draw current OverlapBox size preview at mover
         Vector2 size = useColliderSize && cachedBox != null ? cachedBox.size : boxCheckSize;
         var mr = moveRoot ? moveRoot : transform;

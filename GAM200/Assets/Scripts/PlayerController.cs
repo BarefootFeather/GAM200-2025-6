@@ -90,7 +90,7 @@ public class PlayerController : MonoBehaviour
     {
         if (isInvulnerable) return;
 
-        playerHealth -= damage;
+        
         if (playerHealth <= 0)
         {
             Debug.Log("Player has died.");
@@ -99,6 +99,8 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            playerHealth -= damage;
+
             // Start invulnerability
             isInvulnerable = true;
             invulnerabilityTimer = invulnerabilityDuration;

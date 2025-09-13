@@ -1,3 +1,21 @@
+# Unity build artifacts
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ibrary/
+[Tt]emp/
+[Ll]ogs/
+[Mm]emoryCaptures/
+
+# Unity User Settings (layout files, etc.)
+[Uu]serSettings/
+
+# Visual Studio cache files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
 # This .gitignore file should be placed at the root of your Unity project directory
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
