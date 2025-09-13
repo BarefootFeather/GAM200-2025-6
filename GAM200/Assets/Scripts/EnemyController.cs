@@ -53,11 +53,28 @@ public class EnemyController : MonoBehaviour
     [Tooltip("Finally go Up this many steps, then loop back to the start.")]
     [Min(0)] public int stepsUpEnd = 3;
 
-    [Header("Target-only collision logging")]
-    [Tooltip("We only check if we would hit THIS object. Movement never stops;")]
-    [SerializeField] private GameObject target;
-    [SerializeField, Tooltip("Approx radius for our sweep/overlap checks.")]
-    private float castRadius = 0.3f;
+    [Header("Collision LOGGING (does NOT block)")]
+    [Tooltip("Log colliders at the destination using Physics2D OverlapBox.")]
+    [SerializeField] private bool logPhysicsCollisions = true;
+
+    [Tooltip("If true, auto-use BoxCollider2D size on Move Root (if found).")]
+    [SerializeField] private bool useColliderSize = true;
+
+    [Tooltip("Fallback/override size used for OverlapBox if no BoxCollider2D or auto is off.")]
+    [SerializeField] private Vector2 boxCheckSize = new Vector2(0.8f, 0.8f);
+
+    [Tooltip("Include trigger colliders in logs.")]
+    [SerializeField] private bool includeTriggers = false;
+
+    [Tooltip("Layer mask for physics logging.")]
+    [SerializeField] private LayerMask physicsMask = ~0;
+
+    [Tooltip("Log if destination cell on this Tilemap has a tile (e.g., walls).")]
+    [SerializeField] private bool logTilemapCollisions = false;
+
+    [Tooltip("Tilemap used for tile-based collision logging (e.g., Walls).")]
+    [SerializeField] private Tilemap collisionTilemap;
+
 
     [Header("Debug")]
     [SerializeField] private bool debugLogs = false;
@@ -67,7 +84,8 @@ public class EnemyController : MonoBehaviour
     private int intervalCounter = -1;   // counts how many beats have passed
     private Coroutine moveCo;           // handle to the glide coroutine
     private Rigidbody2D rb2d;           // optional, if attached to moveRoot
-    private Collider2D targetCol;       // cached collider of the target
+    private BoxCollider2D cachedBox;    // optional, used to auto-size the OverlapBox
+
 
     // convenient accessor: which transform actually moves
     private Transform M => moveRoot != null ? moveRoot : transform;
@@ -82,23 +100,17 @@ public class EnemyController : MonoBehaviour
 
     private void Awake()
     {
-        // if not assigned, move this object directly
         if (moveRoot == null) moveRoot = transform;
 
-        // try to use Rigidbody2D if present (optional)
         rb2d = moveRoot.GetComponent<Rigidbody2D>();
+        cachedBox = moveRoot.GetComponent<BoxCollider2D>();
 
-        // cache the collider of the current target (if any)
-        ResolveTargetCollider();
-
-        // build the movement pattern from the counts above
         RebuildSegments();
-
-        // make sure our indices are valid
         ClampIndices();
 
         SpawnAtGridPosition(spawnGridCoords);
     }
+
 
     private void OnValidate()
     {
@@ -115,19 +127,7 @@ public class EnemyController : MonoBehaviour
         ClampIndices();
     }
 
-    // Find and store the target's Collider2D (if any)
-    private void ResolveTargetCollider()
-    {
-        targetCol = null;
-        if (target) targetCol = target.GetComponent<Collider2D>();
-    }
-
-    // Allow setting the target at runtime
-    public void SetTarget(GameObject newTarget)
-    {
-        target = newTarget;
-        ResolveTargetCollider();
-    }
+    
 
     // Turn the five counts into a simple list we can loop over forever
     private void RebuildSegments()
@@ -196,13 +196,9 @@ public class EnemyController : MonoBehaviour
             to = Snap(to, stepDistance);
         }
 
-        // Check if our move would hit the target; DO NOT block, just log it.
-        if (WillHitTarget(from, to))
-        {
-            target.GetComponent<PlayerController>().TakeDamage(1);
-            if (debugLogs)
-                Debug.Log("[EnemyController] Collision with target detected this step.");
-        }
+        // Log what we would collide with (colliders/tilemap), but NEVER block
+        LogPotentialCollisions(from, to);
+
 
         if (debugLogs)
             Debug.Log($"[EnemyController] Moving {seg.d} ({segStepTaken + 1}/{seg.count}) → {to}");
@@ -219,49 +215,33 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    // Returns true if our movement this step would touch the target's collider
-    private bool WillHitTarget(Vector2 from, Vector2 to)
+    private void LogPotentialCollisions(Vector2 from, Vector2 to)
     {
-        if (!targetCol) return false;
-
-        Vector2 dir = to - from;
-        float dist = dir.magnitude;
-        if (dist <= 1e-6f) return false;
-        dir /= dist;
-
-        // Preferred: sweep our Rigidbody2D shape forward if we have one
-        RaycastHit2D[] results = new RaycastHit2D[8];
-        int hits = 0;
-
-        if (rb2d != null) // note: rb2d.simulated can also be checked if needed
+        // Physics: OverlapBox at the DESTINATION position
+        if (logPhysicsCollisions)
         {
-            var filter = new ContactFilter2D
+            Vector2 size = useColliderSize && cachedBox != null ? cachedBox.size : boxCheckSize;
+            float angle = moveRoot ? moveRoot.eulerAngles.z : transform.eulerAngles.z;
+
+            var hits = Physics2D.OverlapBoxAll(to, size, angle, physicsMask);
+            foreach (var h in hits)
             {
-                useLayerMask = false, // we'll compare collider instances directly
-                useTriggers = true
-            };
-            hits = rb2d.Cast(dir, filter, results, dist);
+                if (!h) continue;
+                if (!includeTriggers && h.isTrigger) continue;
+                if (h.transform == (moveRoot ? moveRoot : transform)) continue; // skip self
+                Debug.Log($"[EnemyController] Would collide with '{h.name}' at {to}");
+            }
         }
-        else
+
+        // Tilemap: log if the destination cell has a tile
+        if (logTilemapCollisions && collisionTilemap != null)
         {
-            // Fallback: a simple circle cast if we don't have a Rigidbody2D
-            RaycastHit2D hit = Physics2D.CircleCast(from, castRadius, dir, dist, ~0);
-            if (hit.collider) { results[0] = hit; hits = 1; }
+            Vector3Int cell = collisionTilemap.WorldToCell(to);
+            if (collisionTilemap.HasTile(cell))
+                Debug.Log($"[EnemyController] Would collide with Tilemap at cell {cell} (world {to})");
         }
-
-        for (int i = 0; i < hits; i++)
-        {
-            var col = results[i].collider;
-            if (!col) continue;
-            if (col == targetCol) return true;
-        }
-
-        // Extra safety: also check if we end up overlapping at the destination
-        Collider2D overlap = Physics2D.OverlapCircle(to, castRadius, ~0);
-        if (overlap && overlap == targetCol) return true;
-
-        return false;
     }
+
 
     // Move to the next cell (teleport or smooth glide)
     private void MoveTo(Vector2 nextPos)
@@ -371,17 +351,15 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void SpawnAtGridPosition(Vector2Int gridCoords)
-    {
-        Vector3Int gridPos3D = new Vector3Int(gridCoords.x, gridCoords.y, 0);
-        Vector3 worldPos = gridTilemap.GetCellCenterWorld(gridPos3D);
+        // draw current OverlapBox size preview at mover
+        Vector2 size = useColliderSize && cachedBox != null ? cachedBox.size : boxCheckSize;
+        var mr = moveRoot ? moveRoot : transform;
 
-        if (rb2d)
-            rb2d.MovePosition(worldPos);
-        else
-            M.position = worldPos;
+        Gizmos.color = new Color(1f, 0.6f, 0.2f, 0.35f);
+        Matrix4x4 old = Gizmos.matrix;
+        Gizmos.matrix = Matrix4x4.TRS(mr.position, mr.rotation, Vector3.one);
+        Gizmos.DrawWireCube(Vector3.zero, new Vector3(size.x, size.y, 0.01f));
+        Gizmos.matrix = old;
 
-        if (debugLogs)
-            Debug.Log($"[EnemyController] Spawned at grid ({gridCoords.x}, {gridCoords.y}) → world {worldPos}");
     }
 }
