@@ -86,6 +86,7 @@ public class EnemyController : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private bool debugLogs = false;
 
+    
     // ---------------- Internals ----------------
 
     private int intervalCounter = -1;   // counts how many beats have passed
@@ -416,4 +417,7 @@ public class EnemyController : MonoBehaviour
         Gizmos.matrix = old;
 
     }
+
+   
+
 }

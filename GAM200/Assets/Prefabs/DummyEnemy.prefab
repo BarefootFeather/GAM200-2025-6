@@ -44,25 +44,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1943dc1efbcf96d418ec185bd2cec936, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridTilemap: {fileID: 0}
+  spawnGridCoords: {x: 0, y: 0}
+  moveRoot: {fileID: 0}
   moveEveryNIntervals: 1
-  attackEveryNIntervals: 4
   moveOffset: 0
-  attackOffset: 0
-  randomizePhase: 0
-  useBuiltInStepMovement: 0
-  target: {fileID: 0}
   stepDistance: 0.75
-  stopDistance: 1.2
-  attackRange: 1.5
-  animator: {fileID: 0}
-  moveTrigger: Step
-  attackTrigger: Attack
-  OnMoveTick:
-    m_PersistentCalls:
-      m_Calls: []
-  OnAttackTick:
-    m_PersistentCalls:
-      m_Calls: []
+  snapToGrid: 0
+  smoothStep: 0
+  moveLerpFractionOfInterval: 0.35
+  bpmForSmoothing: 120
+  intervalBeatsForSmoothing: 1
+  stepsUpStart: 3
+  stepsRight: 6
+  stepsDown: 6
+  stepsLeft: 6
+  stepsUpEnd: 3
+  logPhysicsCollisions: 1
+  useColliderSize: 1
+  boxCheckSize: {x: 0.8, y: 0.8}
+  includeTriggers: 0
+  physicsMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  logTilemapCollisions: 0
+  collisionTilemap: {fileID: 0}
+  player: {fileID: 0}
+  damageAmount: 1
+  canDamagePlayer: 1
+  debugLogs: 0
+  enemyHealth: 3
 --- !u!1 &4494381239648879008
 GameObject:
   m_ObjectHideFlags: 0
