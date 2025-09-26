@@ -1096,7 +1096,7 @@ Transform:
   m_GameObject: {fileID: 79554590}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.6142893, y: -1.51, z: -9}
+  m_LocalPosition: {x: -3.5, y: -1.51, z: -9}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1740,7 +1740,7 @@ Transform:
   m_GameObject: {fileID: 552317495}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.15, y: -1.51, z: -9}
+  m_LocalPosition: {x: -3.5, y: -1.51, z: -9}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1995,11 +1995,67 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 1034080429}
+          m_TargetAssemblyTypeName: BeatBus, Assembly-CSharp
+          m_MethodName: OnIntervalReached
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   musicStartOffset: -0.1
   BGM: {fileID: 8300000, guid: e9e62ed87a800a947a842259f001df02, type: 3}
   Metronome_SFX: {fileID: 8300000, guid: 72c6e868e4f66924a93220be6948ffe2, type: 3}
   BGM_Player: {fileID: 198334970}
   Metronome_SFX_Player: {fileID: 810906866}
+--- !u!1 &1034080428
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1034080430}
+  - component: {fileID: 1034080429}
+  m_Layer: 0
+  m_Name: BeatBus
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1034080429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034080428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da8ef854ab4441d4799277afb382e1a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1034080430
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034080428}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1296353522
 GameObject:
   m_ObjectHideFlags: 0
@@ -2029,6 +2085,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1943dc1efbcf96d418ec185bd2cec936, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridTilemap: {fileID: 0}
+  spawnGridCoords: {x: 0, y: 0}
+  moveRoot: {fileID: 0}
+  moveEveryNIntervals: 1
+  moveOffset: 0
+  stepDistance: 1
+  snapToGrid: 0
+  smoothStep: 0
+  moveLerpFractionOfInterval: 0.35
+  bpmForSmoothing: 120
+  intervalBeatsForSmoothing: 1
+  stepsUpStart: 3
+  stepsRight: 6
+  stepsDown: 6
+  stepsLeft: 6
+  stepsUpEnd: 3
+  logPhysicsCollisions: 1
+  useColliderSize: 1
+  boxCheckSize: {x: 0.8, y: 0.8}
+  includeTriggers: 0
+  physicsMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  logTilemapCollisions: 0
+  collisionTilemap: {fileID: 0}
+  player: {fileID: 0}
+  damageAmount: 1
+  canDamagePlayer: 1
+  debugLogs: 0
 --- !u!4 &1296353524
 Transform:
   m_ObjectHideFlags: 0
@@ -2164,3 +2249,5 @@ SceneRoots:
   - {fileID: 326640340}
   - {fileID: 552317498}
   - {fileID: 431618686}
+  - {fileID: 107265887}
+  - {fileID: 1034080430}
