@@ -14,10 +14,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Tilemap tilemap;
     [SerializeField] private float moveSpeed = 10f;
 
+    [Header("-------------- Player Animation Variables --------------")]
+    [SerializeField] private Animator animator;
+
     [Header("Invulnerability")]
     [SerializeField] private float invulnerabilityDuration = 1.5f;
     [SerializeField] private bool isInvulnerable = false;
 
+    [Header("-------------- Attack Variables --------------")]
+    [SerializeField] private Transform enemyParent; // Drag Enemy Parent GameObject here
 
     private float invulnerabilityTimer = 0f;
     private Vector3 targetPosition;
@@ -58,6 +63,10 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 direction = Vector3.zero;
 
+        // Will be true if shift is held down
+        // Used for attack action
+        bool isAttack = Input.GetKey(KeyCode.LeftShift);
+
         // Only allow movement in one direction at a time
         if (Input.GetKeyDown(KeyCode.W)) direction = Vector3.up;
         else if (Input.GetKeyDown(KeyCode.S)) direction = Vector3.down;
@@ -67,14 +76,77 @@ public class PlayerController : MonoBehaviour
         // If a direction was chosen, calculate target position
         if (direction != Vector3.zero)
         {
+
             Vector3Int currentGrid = tilemap.WorldToCell(transform.position);
             Vector3Int targetGrid = currentGrid + Vector3Int.RoundToInt(direction);
 
-            // Check tilemap bounds
-            if (IsValidPosition(targetGrid))
+            if (isAttack)
+            {
+                // Attack mode: don't move, just face direction and attack
+                // Handle facing direction
+                if (direction.x > 0) // Facing right
+                    transform.localScale = new Vector3(1, 1, 1);
+                else if (direction.x < 0) // Facing left
+                    transform.localScale = new Vector3(-1, 1, 1);
+
+                // Trigger attack animation
+                animator.SetTrigger("Attack");
+
+                // Check for enemies in attack direction
+                CheckAttackHit(targetGrid);
+            }
+            else if (IsValidPosition(targetGrid))  // Check tilemap bounds
             {
                 targetPosition = tilemap.GetCellCenterWorld(targetGrid);
                 isMoving = true;
+
+                // Handle facing direction
+                if (direction.x > 0) // Moving right
+                    transform.localScale = new Vector3(1, 1, 1);
+                else if (direction.x < 0) // Moving left
+                    transform.localScale = new Vector3(-1, 1, 1);
+
+                // Trigger movement animation
+                animator.SetTrigger("Dash");
+            }
+        }
+    }
+
+    void CheckAttackHit(Vector3Int attackGridPosition)
+    {
+        // Convert attack position to world position for comparison
+        Vector3 attackWorldPos = tilemap.GetCellCenterWorld(attackGridPosition);
+        Debug.Log($"Attack world position: {attackWorldPos}");
+
+        if (enemyParent == null)
+        {
+            Debug.LogError("Enemy parent is null! Make sure to assign it in the inspector.");
+            return;
+        }
+
+        // Check each enemy child
+        for (int i = 0; i < enemyParent.childCount; i++)
+        {
+            Transform enemy = enemyParent.GetChild(i);
+
+            // Convert enemy position to grid position
+            Vector3Int enemyGridPos = tilemap.WorldToCell(enemy.position);
+
+            // Check if enemy is at the attack position
+            if (enemyGridPos == attackGridPosition)
+            {
+                // Get the enemy component and damage it
+                var enemyScript = enemy.GetComponent<EnemyController>(); // Replace with your actual enemy script name
+                if (enemyScript != null)
+                {
+                    enemyScript.TakeDamage();
+                }
+                else
+                {
+                    Debug.LogError($"Enemy at {attackGridPosition} doesn't have EnemyController component!");
+                }
+
+                break;
             }
         }
     }

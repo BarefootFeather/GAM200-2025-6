@@ -86,7 +86,12 @@ public class EnemyController : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private bool debugLogs = false;
 
-    
+    [Header("-------------- Enemy Variables --------------")]
+    [SerializeField] private int enemyHealth;
+
+
+    private bool isDying = false; // Prevent multiple death calls
+
     // ---------------- Internals ----------------
 
     private int intervalCounter = -1;   // counts how many beats have passed
@@ -302,8 +307,8 @@ public class EnemyController : MonoBehaviour
                 if (!h) continue;
                 if (!includeTriggers && h.isTrigger) continue;
                 if (h.transform == (moveRoot ? moveRoot : transform)) continue; // skip self
-
-                Debug.Log($"[EnemyController] Would collide with '{h.name}' at {to}");
+                
+                //Debug.Log($"[EnemyController] Would collide with '{h.name}' at {to}");
             }
         }
 
@@ -311,8 +316,8 @@ public class EnemyController : MonoBehaviour
         if (logTilemapCollisions && collisionTilemap != null)
         {
             Vector3Int cell = collisionTilemap.WorldToCell(to);
-            if (collisionTilemap.HasTile(cell))
-                Debug.Log($"[EnemyController] Would collide with Tilemap at cell {cell} (world {to})");
+            //if (collisionTilemap.HasTile(cell))
+            //    Debug.Log($"[EnemyController] Would collide with Tilemap at cell {cell} (world {to})");
         }
     }
 
@@ -418,6 +423,24 @@ public class EnemyController : MonoBehaviour
 
     }
 
-   
+    public void TakeDamage()
+    {
+        if (isDying) return;
+
+        enemyHealth -= 1;
+
+        if (enemyHealth <= 0)
+        {
+            isDying = true;
+
+            this.gameObject.SetActive(false);
+
+            // Play death animation
+            //animator.SetTrigger("Death");
+
+            // Start coroutine to destroy after animation
+            //StartCoroutine(DeathSequence());
+        }
+    }
 
 }
