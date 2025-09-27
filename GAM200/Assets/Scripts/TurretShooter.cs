@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class TurretShooter : MonoBehaviour
@@ -58,6 +58,8 @@ public class TurretShooter : MonoBehaviour
         if (dir.sqrMagnitude < 0.0001f) dir = Vector2.right;
 
         var proj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
+        var pc = player ? player.GetComponent<PlayerController>() : null;
+
         proj.Initialize(new BeatProjectile.Config
         {
             direction = dir.normalized,
@@ -69,8 +71,10 @@ public class TurretShooter : MonoBehaviour
             intervalBeatsForSmoothing = intervalBeatsForSmoothing,
             gridTilemap = gridTilemap,
             maxSteps = projectileMaxSteps,
-            damage = projectileDamage
+            damage = projectileDamage,
+            player = pc   // <-- required for grid-cell damage
         });
+
 
         if (debugLogs) Debug.Log($"[TurretShooter] Fired projectile dir={dir} at {spawnPos}");
     }
