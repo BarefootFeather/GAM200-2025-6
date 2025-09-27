@@ -86,6 +86,7 @@ public class EnemyController : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private bool debugLogs = false;
 
+<<<<<<< HEAD
     [Header("-------------- Enemy Variables --------------")]
     [SerializeField] private int enemyHealth;
     [SerializeField] private Animator animator;
@@ -96,6 +97,11 @@ public class EnemyController : MonoBehaviour
 
     // ---------------- Internals ----------------
 
+=======
+    
+    // ---------------- Internals ----------------
+
+>>>>>>> parent of ac13670 (colliders, enemy routing and QOL)
     private int intervalCounter = -1;   // counts how many beats have passed
     private Coroutine moveCo;           // handle to the glide coroutine
     private Rigidbody2D rb2d;           // optional, if attached to moveRoot
@@ -314,8 +320,13 @@ public class EnemyController : MonoBehaviour
                 if (!h) continue;
                 if (!includeTriggers && h.isTrigger) continue;
                 if (h.transform == (moveRoot ? moveRoot : transform)) continue; // skip self
+<<<<<<< HEAD
                 
                 //Debug.Log($"[EnemyController] Would collide with '{h.name}' at {to}");
+=======
+
+                Debug.Log($"[EnemyController] Would collide with '{h.name}' at {to}");
+>>>>>>> parent of ac13670 (colliders, enemy routing and QOL)
             }
         }
 
@@ -428,6 +439,7 @@ public class EnemyController : MonoBehaviour
         Gizmos.DrawWireCube(Vector3.zero, new Vector3(size.x, size.y, 0.01f));
         Gizmos.matrix = old;
 
+<<<<<<< HEAD
     }
 
     public void TakeDamage()
@@ -475,5 +487,10 @@ public class EnemyController : MonoBehaviour
                 break;
                 // Up and Down don't change the flip state
         }
+=======
+>>>>>>> parent of ac13670 (colliders, enemy routing and QOL)
     }
+
+   
+
 }
