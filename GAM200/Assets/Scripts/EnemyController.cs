@@ -88,9 +88,11 @@ public class EnemyController : MonoBehaviour
 
     [Header("-------------- Enemy Variables --------------")]
     [SerializeField] private int enemyHealth;
-
+    [SerializeField] private Animator animator;
+    [SerializeField] private SpriteRenderer spriteRenderer;
 
     private bool isDying = false; // Prevent multiple death calls
+    private bool deathAnimationComplete = false;
 
     // ---------------- Internals ----------------
 
@@ -251,6 +253,8 @@ public class EnemyController : MonoBehaviour
     // This runs once per scheduled move (i.e., on the beat you chose)
     private void DoMoveTick()
     {
+        if (isDying) return;
+
         if (segments == null || segments.Length == 0) return;
 
         // If we somehow have an empty segment, skip forward safely
@@ -260,6 +264,9 @@ public class EnemyController : MonoBehaviour
 
         var seg = segments[segIndex];
         Vector2 dir = DirToVector(seg.d);
+
+        HandleSpriteFlipping(seg.d);
+
         Vector2 from = M.position;
         Vector2 to = from + dir * stepDistance;
 
@@ -433,14 +440,40 @@ public class EnemyController : MonoBehaviour
         {
             isDying = true;
 
-            this.gameObject.SetActive(false);
-
-            // Play death animation
-            //animator.SetTrigger("Death");
-
             // Start coroutine to destroy after animation
-            //StartCoroutine(DeathSequence());
+            StartCoroutine(DeathSequence());
         }
     }
 
+    public void OnDeathAnimationComplete()
+    {
+        deathAnimationComplete = true;
+    }
+
+    private IEnumerator DeathSequence()
+    {
+        // Start death animation
+        animator.SetTrigger("Death");
+
+        // Wait until animation is complete, Animator will call OnDeathAnimationComplete
+        yield return new WaitUntil(() => deathAnimationComplete);
+
+        // Disable player object
+        gameObject.SetActive(false);
+    }
+    private void HandleSpriteFlipping(Dir direction)
+    {
+        if (spriteRenderer == null) Debug.LogError("Sprite Renderer not assigned");
+
+        switch (direction)
+        {
+            case Dir.Left:
+                spriteRenderer.flipX = true;
+                break;
+            case Dir.Right:
+                spriteRenderer.flipX = false;
+                break;
+                // Up and Down don't change the flip state
+        }
+    }
 }

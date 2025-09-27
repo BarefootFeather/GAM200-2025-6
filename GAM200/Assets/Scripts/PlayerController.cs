@@ -27,7 +27,8 @@ public class PlayerController : MonoBehaviour
     private float invulnerabilityTimer = 0f;
     private Vector3 targetPosition;
     private bool isMoving = false;
-
+    private bool player_died = false;
+    private bool deathAnimationComplete = false;
     void Start()
     {
         // Snap to grid on start
@@ -161,19 +162,22 @@ public class PlayerController : MonoBehaviour
     // Method to apply damage to the player
     public void TakeDamage(int damage)
     {
-        if (isInvulnerable) return;
+        if (isInvulnerable || player_died) return;
 
-        
+        playerHealth -= damage;
+
         if (playerHealth <= 0)
         {
             Debug.Log("Player has died.");
-            // Handle player death (e.g., restart level, show game over screen)
-            gameObject.SetActive(false); // Simple way to "remove" player
+
+            // Handle player death
+            StartCoroutine(PlayDeathAnimation());
+
+            // Set player_died to true to prevent further actions
+            player_died = true;
         }
         else
         {
-            playerHealth -= damage;
-
             // Start invulnerability
             isInvulnerable = true;
             invulnerabilityTimer = invulnerabilityDuration;
@@ -205,5 +209,22 @@ public class PlayerController : MonoBehaviour
     public bool IsInvulnerable()
     {
         return isInvulnerable;
+    }
+
+    public void OnDeathAnimationComplete()
+    {
+        deathAnimationComplete = true;
+    }
+
+    private IEnumerator PlayDeathAnimation()
+    {
+        // Start death animation
+        animator.SetTrigger("Death");
+
+        // Wait until animation is complete, Animator will call OnDeathAnimationComplete
+        yield return new WaitUntil(() => deathAnimationComplete);
+
+        // Disable player object
+        gameObject.SetActive(false);                            
     }
 }
