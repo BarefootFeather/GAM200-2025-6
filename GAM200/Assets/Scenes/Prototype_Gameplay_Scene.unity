@@ -2334,11 +2334,19 @@ PrefabInstance:
     - target: {fileID: 5121412888715532779, guid: a06b5859a3fb0cf4a8e9212a24a80da0, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 326640340}
+      objectReference: {fileID: 326640338}
+    - target: {fileID: 5121412888715532779, guid: a06b5859a3fb0cf4a8e9212a24a80da0, type: 3}
+      propertyPath: debugLogs
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5121412888715532779, guid: a06b5859a3fb0cf4a8e9212a24a80da0, type: 3}
       propertyPath: gridTilemap
       value: 
       objectReference: {fileID: 1786258571}
+    - target: {fileID: 5121412888715532779, guid: a06b5859a3fb0cf4a8e9212a24a80da0, type: 3}
+      propertyPath: projectilePrefab
+      value: 
+      objectReference: {fileID: 5999652084965305816, guid: dea02966a05080f42baf8bda6864ede6, type: 3}
     - target: {fileID: 6291435148971592159, guid: a06b5859a3fb0cf4a8e9212a24a80da0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.515953
@@ -2469,6 +2477,38 @@ PrefabInstance:
       propertyPath: gridTilemap
       value: 
       objectReference: {fileID: 1786258571}
+    - target: {fileID: 4718930344161968144, guid: 2a379b1afad70c64e9dd776321c50a6e, type: 3}
+      propertyPath: path.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4718930344161968144, guid: 2a379b1afad70c64e9dd776321c50a6e, type: 3}
+      propertyPath: path.Array.data[0].count
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4718930344161968144, guid: 2a379b1afad70c64e9dd776321c50a6e, type: 3}
+      propertyPath: path.Array.data[1].count
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4718930344161968144, guid: 2a379b1afad70c64e9dd776321c50a6e, type: 3}
+      propertyPath: path.Array.data[2].count
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4718930344161968144, guid: 2a379b1afad70c64e9dd776321c50a6e, type: 3}
+      propertyPath: path.Array.data[3].count
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4718930344161968144, guid: 2a379b1afad70c64e9dd776321c50a6e, type: 3}
+      propertyPath: path.Array.data[0].direction
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4718930344161968144, guid: 2a379b1afad70c64e9dd776321c50a6e, type: 3}
+      propertyPath: path.Array.data[2].direction
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4718930344161968144, guid: 2a379b1afad70c64e9dd776321c50a6e, type: 3}
+      propertyPath: path.Array.data[3].direction
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 9201438757428347208, guid: 2a379b1afad70c64e9dd776321c50a6e, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
