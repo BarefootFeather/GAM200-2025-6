@@ -2245,40 +2245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1943dc1efbcf96d418ec185bd2cec936, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< HEAD
 --- !u!4 &1296353524 stripped
-=======
-  gridTilemap: {fileID: 0}
-  spawnGridCoords: {x: 0, y: 0}
-  moveRoot: {fileID: 0}
-  moveEveryNIntervals: 1
-  moveOffset: 0
-  stepDistance: 1
-  snapToGrid: 0
-  smoothStep: 0
-  moveLerpFractionOfInterval: 0.35
-  bpmForSmoothing: 120
-  intervalBeatsForSmoothing: 1
-  stepsUpStart: 3
-  stepsRight: 6
-  stepsDown: 6
-  stepsLeft: 6
-  stepsUpEnd: 3
-  logPhysicsCollisions: 1
-  useColliderSize: 1
-  boxCheckSize: {x: 0.8, y: 0.8}
-  includeTriggers: 0
-  physicsMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  logTilemapCollisions: 0
-  collisionTilemap: {fileID: 0}
-  player: {fileID: 0}
-  damageAmount: 1
-  canDamagePlayer: 1
-  debugLogs: 0
---- !u!4 &1296353524
->>>>>>> parent of ac13670 (colliders, enemy routing and QOL)
 Transform:
   m_CorrespondingSourceObject: {fileID: 9201438757428347208, guid: 2a379b1afad70c64e9dd776321c50a6e, type: 3}
   m_PrefabInstance: {fileID: 2600876118532012058}
@@ -2352,7 +2319,6 @@ Tilemap:
   m_CorrespondingSourceObject: {fileID: 3738521745156982953, guid: 04aef4a7dfaabc241898a0e14a9b890a, type: 3}
   m_PrefabInstance: {fileID: 55321489}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
 --- !u!1001 &1897184537
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2485,30 +2451,6 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: 3a47aea717d79f0428eddb0975250c90, type: 3}
 --- !u!1001 &2600876118532012058
 PrefabInstance:
-=======
-  m_GameObject: {fileID: 1628159345}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.4556441, y: -0.61053944, z: 0}
-  m_LocalScale: {x: 1.0548146, y: 1.0348127, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1296353524}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1618303025 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7262667729771872887, guid: 04aef4a7dfaabc241898a0e14a9b890a, type: 3}
-  m_PrefabInstance: {fileID: 55321489}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b68fe59c205bef4ea64005c7f728ff5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1 &1628159345
-GameObject:
->>>>>>> parent of ac13670 (colliders, enemy routing and QOL)
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
@@ -2592,7 +2534,4 @@ SceneRoots:
   - {fileID: 552317498}
   - {fileID: 107265887}
   - {fileID: 1034080430}
-<<<<<<< HEAD
   - {fileID: 1897184537}
-=======
->>>>>>> parent of ac13670 (colliders, enemy routing and QOL)
