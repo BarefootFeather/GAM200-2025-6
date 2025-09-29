@@ -76,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -20
   m_Sprite: {fileID: -4317575240271982671, guid: a2f36dde2b0808d4faa3aa6de563ec92, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -100,9 +100,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 429313c67bf239c4a87f812707d084f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TrapController: {fileID: 0}
-  targetTilemap: {fileID: 0}
-  inactiveTile: {fileID: 6216971889954247071, guid: a2f36dde2b0808d4faa3aa6de563ec92, type: 3}
-  activeTile: {fileID: -4317575240271982671, guid: a2f36dde2b0808d4faa3aa6de563ec92, type: 3}
-  damageAmount: 1
-  debugCollisions: 1

@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("-------------- Player Movement Variables --------------")]
     [SerializeField] private Tilemap tilemap;
+    [SerializeField] private ObstacleController obstacleController;
     [SerializeField] private float moveSpeed = 10f;
 
     [Header("-------------- Player Animation Variables --------------")]
@@ -156,7 +157,9 @@ public class PlayerController : MonoBehaviour
     {
         // Simple bounds check
         BoundsInt bounds = tilemap.cellBounds;
-        return bounds.Contains(gridPosition);
+
+        // Check for obstacles
+        return obstacleController.CanMoveTo(tilemap.GetCellCenterWorld(gridPosition)) && bounds.Contains(gridPosition);
     }
 
     // Method to apply damage to the player

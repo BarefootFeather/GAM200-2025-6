@@ -3,20 +3,16 @@ using UnityEngine.Tilemaps;
 
 public class TrapScript : MonoBehaviour
 {
-    [Header("Trap Controller Reference")]
-    [SerializeField] private GameObject TrapController;
+    private GameObject TrapController;
 
-    [Header("Tilemap Configuration")]
-    [SerializeField] private Tilemap targetTilemap;
-    [SerializeField] private Sprite inactiveTile;
-    [SerializeField] private Sprite activeTile;
+    private Tilemap targetTilemap;
+    private Sprite inactiveTile;
+    private Sprite activeTile;
 
-    [Header("Damage Settings")]
-    [Tooltip("Amount of damage to deal to the player.")]
-    [SerializeField] private int damageAmount = 1;
 
-    [Tooltip("Log collision events for debugging.")]
-    [SerializeField] private bool debugCollisions = false;
+    private int damageAmount;
+    
+    private bool debugCollisions;
 
     // Internal state
     private bool isActive = false;
@@ -26,30 +22,50 @@ public class TrapScript : MonoBehaviour
 
     private void Start()
     {
-        // Get Player reference from TrapController
-        TrapController temp = TrapController.GetComponent<TrapController>();
-        
-        grid = targetTilemap.layoutGrid;
 
+        // Get Player reference from TrapController
+        TrapController temp = GetComponentInParent<TrapController>();
+        if (!temp) // Check if TrapController component exists
+        {
+            Debug.LogError("TrapController Gameobject does not contain TrapController Component!");
+            return;
+        }
+
+        // ======== Get configurations from TrapController =========
+        // Grid
+        grid = temp.GetGrid();
         if (!grid)
         {
             Debug.LogError("No Grid component found on the Tilemap's parent GameObject!");
             return;
         }
 
-        if (!temp) // Check if TrapController component exists
-        {
-            Debug.LogError("TrapController Gameobject does not contain TrapController Component!");
-            return;
-        }
+        //Player
         player = temp.GetPlayer().GetComponent<PlayerController>();
-
         if (!player) // Check if player reference is valid
         {
             Debug.LogError("Player reference is null in TrapController!");
             return;
         }
 
+        // Tiles
+        inactiveTile = temp.GetInactiveTile();
+        activeTile = temp.GetActiveTile();
+        if (!inactiveTile || !activeTile) // Check if tile references are valid
+        {
+            Debug.LogError("Inactive or Active tile reference is null in TrapController!");
+            return;
+        }
+
+        // debugCollisions
+        debugCollisions = temp.GetDebugCollisions();
+
+        // Damage Amount
+        damageAmount = temp.GetDamageAmount();
+
+        // ========= End configurations =========
+
+        // Get Sprite Renderer component
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (!spriteRenderer) // Check if SpriteRenderer component exists
         {

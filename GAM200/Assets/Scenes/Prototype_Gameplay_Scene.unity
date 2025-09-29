@@ -969,10 +969,11 @@ PrefabInstance:
     - {fileID: 7383949297900324655, guid: 04aef4a7dfaabc241898a0e14a9b890a, type: 3}
     - {fileID: 8863066002118745645, guid: 04aef4a7dfaabc241898a0e14a9b890a, type: 3}
     - {fileID: 5090373666517911245, guid: 04aef4a7dfaabc241898a0e14a9b890a, type: 3}
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 9172540885319942326, guid: 04aef4a7dfaabc241898a0e14a9b890a, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 5617845211402816765, guid: 04aef4a7dfaabc241898a0e14a9b890a, type: 3}
-      insertIndex: 2
+      insertIndex: -1
       addedObject: {fileID: 1389604623}
     - targetCorrespondingSourceObject: {fileID: 5617845211402816765, guid: 04aef4a7dfaabc241898a0e14a9b890a, type: 3}
       insertIndex: -1
@@ -1125,7 +1126,7 @@ Transform:
   m_GameObject: {fileID: 79554590}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.5, y: -1.51, z: -9}
+  m_LocalPosition: {x: -3.5, y: -1.5100098, z: -10}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1495,6 +1496,7 @@ MonoBehaviour:
   playerHealth: 3
   playerSprite: {fileID: 326640339}
   tilemap: {fileID: 1786258571}
+  obstacleController: {fileID: 1332407993}
   moveSpeed: 5
   animator: {fileID: 326640343}
   invulnerabilityDuration: 4
@@ -1564,7 +1566,7 @@ Transform:
   m_GameObject: {fileID: 326640337}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.5, y: -1.5100098, z: 1}
+  m_LocalPosition: {x: -3.5, y: -1.5100098, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1799,7 +1801,7 @@ Transform:
   m_GameObject: {fileID: 552317495}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.5, y: -1.51, z: -9}
+  m_LocalPosition: {x: -3.5, y: -1.5100098, z: -10}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2012,8 +2014,8 @@ Transform:
   m_GameObject: {fileID: 904603053}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.5, y: 2.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 4.297, y: 2.4661, z: 0}
+  m_LocalScale: {x: 6.5941, y: 0.525888, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1332407992}
@@ -2268,6 +2270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetTilemap: {fileID: 1786258571}
+  boundInset: 0.1
 --- !u!1 &1389604622
 GameObject:
   m_ObjectHideFlags: 0
@@ -2314,6 +2317,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 326640337}
+  targetTilemap: {fileID: 1786258571}
+  inactiveTile: {fileID: 6216971889954247071, guid: a2f36dde2b0808d4faa3aa6de563ec92, type: 3}
+  activeTile: {fileID: -4317575240271982671, guid: a2f36dde2b0808d4faa3aa6de563ec92, type: 3}
+  damageAmount: 1
+  debugCollisions: 0
 --- !u!1839735485 &1786258571 stripped
 Tilemap:
   m_CorrespondingSourceObject: {fileID: 3738521745156982953, guid: 04aef4a7dfaabc241898a0e14a9b890a, type: 3}
@@ -2440,14 +2448,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8192512457008676313, guid: 3a47aea717d79f0428eddb0975250c90, type: 3}
-      propertyPath: targetTilemap
-      value: 
-      objectReference: {fileID: 1786258571}
-    - target: {fileID: 8192512457008676313, guid: 3a47aea717d79f0428eddb0975250c90, type: 3}
-      propertyPath: TrapController
-      value: 
-      objectReference: {fileID: 1389604622}
+    - target: {fileID: 6992778767410475047, guid: 3a47aea717d79f0428eddb0975250c90, type: 3}
+      propertyPath: m_SortingOrder
+      value: -19
+      objectReference: {fileID: 0}
     - target: {fileID: 9131925784182854807, guid: 3a47aea717d79f0428eddb0975250c90, type: 3}
       propertyPath: m_Name
       value: Trap
