@@ -16,27 +16,25 @@ public class BeatProjectile : MonoBehaviour
         public Tilemap gridTilemap;
         public int maxSteps;
         public int damage;
-        public PlayerController player; // NEW: pass player reference
+        public PlayerController player;
     }
 
-    [Header("Debug")]
     [SerializeField] private bool debugLogs = false;
 
-    private Vector2 _dir = Vector2.right;
-    private float _step = 1f;
-    private bool _snap;
-    private bool _smooth;
-    private float _lerpFrac = 0.35f;
-    private int _bpmForSmoothing = 120;
-    private float _intervalBeatsForSmoothing = 1f;
-    private Tilemap _tilemap;
-    private int _maxSteps = 16;
-    private int _damage = 1;
-    private PlayerController _player;
+    // movement / smoothing
+    Vector2 _dir = Vector2.right;
+    float _step = 1f, _lerpFrac = 0.35f, _intervalBeatsForSmoothing = 1f;
+    bool _snap, _smooth;
+    int _bpmForSmoothing = 120;
 
-    private int _stepsTaken = 0;
-    private int _lastProcessedBeat = int.MinValue;
-    private Coroutine _moveCo;
+    // refs & damage
+    Tilemap _tilemap;
+    PlayerController _player;
+    int _damageToPlayer = 1;
+
+    // state
+    int _maxSteps = 16, _stepsTaken = 0, _lastProcessedBeat = int.MinValue;
+    Coroutine _moveCo;
 
     public void Initialize(Config c)
     {
@@ -49,84 +47,62 @@ public class BeatProjectile : MonoBehaviour
         _intervalBeatsForSmoothing = Mathf.Max(0.0001f, c.intervalBeatsForSmoothing);
         _tilemap = c.gridTilemap;
         _maxSteps = Mathf.Max(1, c.maxSteps);
-        _damage = Mathf.Max(0, c.damage);
+        _damageToPlayer = Mathf.Max(0, c.damage);
         _player = c.player;
     }
 
-    private void OnEnable() { BeatBus.Beat += OnBeat; }
-    private void OnDisable() { BeatBus.Beat -= OnBeat; }
+    void OnEnable() => BeatBus.Beat += OnBeat;
+    void OnDisable() => BeatBus.Beat -= OnBeat;
 
-    private void OnBeat(int beatIndex)
+    void OnBeat(int beatIndex)
     {
         if (beatIndex == _lastProcessedBeat) return;
         _lastProcessedBeat = beatIndex;
-
         StepOnce();
     }
 
-    private void StepOnce()
+    void StepOnce()
     {
-        if (_stepsTaken >= _maxSteps)
-        {
-            Destroy(gameObject);
-            return;
-        }
+        if (_stepsTaken >= _maxSteps) { Destroy(gameObject); return; }
+        if (!_tilemap || !_player) return;
 
         Vector2 from = transform.position;
         Vector2 to = from + _dir * _step;
 
-        if (_tilemap)
+        // snap destination to grid center (or step snap fallback)
+        Vector3Int destCell = _tilemap.WorldToCell(to);
+        Vector2 snappedTo = _tilemap.GetCellCenterWorld(destCell);
+        if (_snap && !_tilemap) snappedTo = Snap(to, _step); // (kept for parity)
+
+        // same-grid-cell collision (checks current OR destination cell)
+        Vector3Int currCell = _tilemap.WorldToCell(transform.position);
+        Vector3Int playerCell = _tilemap.WorldToCell(_player.transform.position);
+
+        if ((currCell == playerCell || destCell == playerCell) && !_player.IsInvulnerable())
         {
-            Vector3Int cell = _tilemap.WorldToCell(to);
-            to = _tilemap.GetCellCenterWorld(cell);
-        }
-        else if (_snap)
-        {
-            to = Snap(to, _step);
-        }
-
-        // ✅ Grid-cell collision (same as EnemyController)
-        if (_tilemap && _player != null)
-        {
-            Vector3Int projCell = _tilemap.WorldToCell(to);
-            Vector3Int playerCell = _tilemap.WorldToCell(_player.transform.position);
-
-            if (projCell == playerCell && !_player.IsInvulnerable())
-            {
-                _player.TakeDamage(_damage);
-
-                if (debugLogs)
-                    Debug.Log($"[BeatProjectile] Hit Player at cell {projCell}, dealt {_damage} dmg");
-
-                Destroy(gameObject); // remove projectile on hit
-                return;
-            }
-        }
-
-        MoveTo(to);
-        _stepsTaken++;
-    }
-
-    private void MoveTo(Vector2 nextPos)
-    {
-        if (!_smooth)
-        {
-            transform.position = nextPos;
+            _player.TakeDamage(_damageToPlayer);
+            if (debugLogs) Debug.Log($"[BeatProjectile] Player and projectile both at grid {playerCell}, dealt {_damageToPlayer} damage");
+            Destroy(gameObject);
             return;
         }
 
+        MoveTo(snappedTo);
+        _stepsTaken++;
+    }
+
+    void MoveTo(Vector2 nextPos)
+    {
+        if (!_smooth) { transform.position = nextPos; return; }
         float intervalSec = (60f / _bpmForSmoothing) * _intervalBeatsForSmoothing;
         float dur = Mathf.Max(0.01f, intervalSec * _lerpFrac);
-
         if (_moveCo != null) StopCoroutine(_moveCo);
         _moveCo = StartCoroutine(LerpTo(nextPos, dur));
     }
 
-    private IEnumerator LerpTo(Vector2 target, float dur)
+    IEnumerator LerpTo(Vector2 target, float dur)
     {
         Vector2 start = transform.position;
         float t = 0f;
-
         while (t < 1f)
         {
             t += Time.deltaTime / dur;
@@ -135,11 +111,9 @@ public class BeatProjectile : MonoBehaviour
         }
     }
 
-    private static Vector2 Snap(Vector2 p, float cell)
+    static Vector2 Snap(Vector2 p, float cell)
     {
         if (cell <= 0f) return p;
-        float x = Mathf.Round(p.x / cell) * cell;
-        float y = Mathf.Round(p.y / cell) * cell;
-        return new Vector2(x, y);
+        return new Vector2(Mathf.Round(p.x / cell) * cell, Mathf.Round(p.y / cell) * cell);
     }
 }

@@ -3,64 +3,79 @@ using UnityEngine.Tilemaps;
 
 public class TurretShooter : MonoBehaviour
 {
-    // Keep the enum plain (no attributes here)
-    public enum AimMode { Cardinal, ForwardTransform, AtPlayer }
+    public enum AimMode { Cardinal, Vector2 }
 
     [Header("Beat Scheduling")]
-    [SerializeField] private int fireEveryN = 1;
-    [SerializeField] private int fireOffset = 0;
+    [SerializeField] int fireEveryN = 6;
+    [SerializeField] int fireOffset = 0;
 
     [Header("Projectile")]
-    [SerializeField] private BeatProjectile projectilePrefab;
-    [SerializeField] private Transform muzzle;
-    [SerializeField] private int projectileDamage = 1;
-    [SerializeField] private int projectileMaxSteps = 12;
-    [SerializeField] private float projectileStepDistance = 1f;
-    [SerializeField] private bool projectileSnapToGrid = true;
-    [SerializeField] private bool projectileSmoothStep = true;
-    [Range(0.05f, 0.9f)]
-    [SerializeField] private float projectileLerpFraction = 0.35f;
+    [SerializeField] GameObject projectilePrefab;     // BeatProjectile on root
+    [SerializeField] Transform muzzle;                // optional
+    [SerializeField] int projectileDamage = 1;
+    [SerializeField] int projectileMaxSteps = 12;
+    [SerializeField] float projectileStepDistance = 1f;
+    [SerializeField] bool projectileSnapToGrid = true;
+    [SerializeField] bool projectileSmoothStep = true;
+    [SerializeField, Range(0.05f, 0.9f)] float projectileLerpFraction = 0.35f;
 
     [Header("Smoothing (no BPM access)")]
-    [SerializeField] private int bpmForSmoothing = 120;
-    [SerializeField] private float intervalBeatsForSmoothing = 1f;
+    [SerializeField] int bpmForSmoothing = 120;
+    [SerializeField] float intervalBeatsForSmoothing = 1f;
 
     [Header("Direction")]
-    [SerializeField] private AimMode aimMode = AimMode.Cardinal;
-    [SerializeField] private Vector2 cardinalDir = Vector2.right;
-    [SerializeField] private Transform player;
+    [SerializeField] AimMode aimMode = AimMode.Cardinal;
+    [SerializeField] Vector2 cardinalDir = Vector2.right;  // (1,0),(0,1),(-1,0),(0,-1)
+    [SerializeField] Vector2 shootDir = Vector2.right;     // used if Vector2 mode
 
-    [Header("Tilemap (optional)")]
-    [SerializeField] private Tilemap gridTilemap;
+    [Header("Collisions")]
+    [SerializeField] PlayerController player;               // PlayerController, not Transform
+    [SerializeField] Tilemap gridTilemap;                   // same as Player’s
 
     [Header("Debug")]
-    [SerializeField] private bool debugLogs = false;
+    [SerializeField] bool debugLogs = false;
 
-    private int _localCounter = -1;
+    int _beatCount = -1;
 
-    private void OnEnable() { BeatBus.Beat += OnBeat; }
-    private void OnDisable() { BeatBus.Beat -= OnBeat; }
-
-    private void OnBeat(int idx)
+    void Awake()
     {
-        _localCounter++;
-        if (((_localCounter - fireOffset) % Mathf.Max(1, fireEveryN)) != 0) return;
-        Fire();
+        if (!player) player = FindOne<PlayerController>();
+        if (!gridTilemap) gridTilemap = FindOne<Tilemap>();
     }
 
-    private void Fire()
-    {
-        if (!projectilePrefab) return;
+    void OnEnable() => BeatBus.Beat += OnBeat;
+    void OnDisable() => BeatBus.Beat -= OnBeat;
 
-        Transform origin = muzzle ? muzzle : transform;
-        Vector3 spawnPos = origin.position;
-        Vector2 dir = ComputeDirection(origin);
+    void OnBeat(int beatIndex)
+    {
+        _beatCount = beatIndex;
+        if (IsScheduled(_beatCount, fireEveryN, fireOffset)) FireOnce();
+    }
+
+    static bool IsScheduled(int count, int everyN, int offset) =>
+        ((count - offset) % Mathf.Max(1, everyN)) == 0;
+
+    void FireOnce()
+    {
+        if (!projectilePrefab || !player || !gridTilemap)
+        {
+            if (debugLogs)
+                Debug.LogWarning($"[TurretShooter] Missing refs. prefab:{projectilePrefab}, player:{player}, tilemap:{gridTilemap}");
+            return;
+        }
+
+        Vector3 spawnPos = muzzle ? muzzle.position : transform.position;
+        var go = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
+
+        var proj = go.GetComponent<BeatProjectile>();
+        if (!proj) { Destroy(go); return; }
+
+        Vector2 dir = aimMode == AimMode.Cardinal ? CardinalToUnit(cardinalDir) : shootDir.normalized;
         if (dir.sqrMagnitude < 0.0001f) dir = Vector2.right;
 
-        var proj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
-        proj.Initialize(new BeatProjectile.Config
+        var cfg = new BeatProjectile.Config
         {
-            direction = dir.normalized,
+            direction = dir,
             stepDistance = projectileStepDistance,
             snapToGrid = projectileSnapToGrid,
             smoothStep = projectileSmoothStep,
@@ -69,20 +84,31 @@ public class TurretShooter : MonoBehaviour
             intervalBeatsForSmoothing = intervalBeatsForSmoothing,
             gridTilemap = gridTilemap,
             maxSteps = projectileMaxSteps,
-            damage = projectileDamage
-        });
+            damage = projectileDamage,
+            player = player
+        };
 
-        if (debugLogs) Debug.Log($"[TurretShooter] Fired projectile dir={dir} at {spawnPos}");
+        proj.Initialize(cfg);
+
+        if (debugLogs)
+            Debug.Log($"[TurretShooter] Fired beat={_beatCount} dir={dir}");
     }
 
-    private Vector2 ComputeDirection(Transform origin)
+    static Vector2 CardinalToUnit(Vector2 raw)
     {
-        switch (aimMode)
-        {
-            case AimMode.Cardinal: return (cardinalDir.sqrMagnitude > 0) ? cardinalDir.normalized : Vector2.right;
-            case AimMode.ForwardTransform: return origin.right; // 2D "forward"
-            case AimMode.AtPlayer: return player ? (player.position - origin.position).normalized : Vector2.right;
-            default: return Vector2.right;
-        }
+        // snap to nearest axis
+        return Mathf.Abs(raw.x) >= Mathf.Abs(raw.y)
+            ? new Vector2(raw.x == 0 ? 1f : Mathf.Sign(raw.x), 0f)
+            : new Vector2(0f, raw.y == 0 ? 1f : Mathf.Sign(raw.y));
+    }
+
+    // non-obsolete single finder with fallback
+    static T FindOne<T>() where T : Object
+    {
+#if UNITY_2023_1_OR_NEWER || UNITY_2022_3_OR_NEWER
+        return Object.FindFirstObjectByType<T>(FindObjectsInactive.Exclude);
+#else
+        return Object.FindObjectOfType<T>();
+#endif
     }
 }
