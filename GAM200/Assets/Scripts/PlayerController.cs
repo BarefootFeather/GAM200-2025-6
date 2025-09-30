@@ -25,6 +25,9 @@ public class PlayerController : MonoBehaviour
     [Header("-------------- Attack Variables --------------")]
     [SerializeField] private Transform enemyParent; // Drag Enemy Parent GameObject here
 
+    [Header("UI Controller")]
+    [SerializeField] private UIController uiController;
+
     private float invulnerabilityTimer = 0f;
     private Vector3 targetPosition;
     private bool isMoving = false;
@@ -169,6 +172,8 @@ public class PlayerController : MonoBehaviour
 
         playerHealth -= damage;
 
+        if(playerHealth >=0 ) uiController.UpdateHealthUI(playerHealth);
+
         if (playerHealth <= 0)
         {
             Debug.Log("Player has died.");
@@ -181,6 +186,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+
             // Start invulnerability
             isInvulnerable = true;
             invulnerabilityTimer = invulnerabilityDuration;
