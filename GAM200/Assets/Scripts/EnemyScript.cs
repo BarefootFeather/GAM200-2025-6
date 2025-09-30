@@ -278,6 +278,8 @@ public class EnemyScript : MonoBehaviour
         // Simple loop
         pathIndex = (pathIndex + 1) % path.Count;
         return;
+
+
     }
 
     // Reverse (ping-pong) mode:

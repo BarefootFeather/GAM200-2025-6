@@ -159,7 +159,9 @@ public class PlayerController : MonoBehaviour
         BoundsInt bounds = tilemap.cellBounds;
 
         // Check for obstacles
-        return obstacleController.CanMoveTo(tilemap.GetCellCenterWorld(gridPosition)) && bounds.Contains(gridPosition);
+        //return obstacleController.CanMoveTo(tilemap.GetCellCenterWorld(gridPosition)) && bounds.Contains(gridPosition);
+        return obstacleController.CanMoveTo(tilemap.GetCellCenterWorld(gridPosition));
+
     }
 
     // Method to apply damage to the player
