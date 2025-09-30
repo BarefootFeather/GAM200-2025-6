@@ -809,7 +809,35 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      LibraryOfAlexandria_sheet_0: 492175611202465594
+      LibraryOfAlexandria_sheet_1: 6787850725879470965
+      LibraryOfAlexandria_sheet_10: 4511129551978215895
+      LibraryOfAlexandria_sheet_11: -6569205238486454285
+      LibraryOfAlexandria_sheet_12: 4623319961849165139
+      LibraryOfAlexandria_sheet_13: -2259747717249071423
+      LibraryOfAlexandria_sheet_14: 648163047640327990
+      LibraryOfAlexandria_sheet_15: 9103598422213634407
+      LibraryOfAlexandria_sheet_16: 4476945904653086283
+      LibraryOfAlexandria_sheet_17: -5636833075992557743
+      LibraryOfAlexandria_sheet_18: 3576454494907549016
+      LibraryOfAlexandria_sheet_19: -3856312552398279380
+      LibraryOfAlexandria_sheet_2: 119099379351182156
+      LibraryOfAlexandria_sheet_20: -6026404862362679050
+      LibraryOfAlexandria_sheet_21: -8265069348298372341
+      LibraryOfAlexandria_sheet_22: 2517043220057517938
+      LibraryOfAlexandria_sheet_23: -1716060014783673329
+      LibraryOfAlexandria_sheet_24: -4265124764545770035
+      LibraryOfAlexandria_sheet_25: 8790222360721490018
+      LibraryOfAlexandria_sheet_26: 150906111923061186
+      LibraryOfAlexandria_sheet_27: -5249037129730916906
+      LibraryOfAlexandria_sheet_3: -395997832836477498
+      LibraryOfAlexandria_sheet_4: -3531082148490472739
+      LibraryOfAlexandria_sheet_5: -829036715310169532
+      LibraryOfAlexandria_sheet_6: -7502853557341889844
+      LibraryOfAlexandria_sheet_7: 3423762899872877006
+      LibraryOfAlexandria_sheet_8: 9161291369985977461
+      LibraryOfAlexandria_sheet_9: -5278704724113471680
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

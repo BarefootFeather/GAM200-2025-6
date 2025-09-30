@@ -184,7 +184,10 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Bibliotaphos_0: 2606682490208717554
+      Bibliotaphos_1: -7812665334734352589
+      Bibliotaphos_2: 9110361542743810287
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

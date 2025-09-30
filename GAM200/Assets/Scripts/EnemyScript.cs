@@ -7,7 +7,7 @@ using UnityEngine.Tilemaps;
 /// Grid-style enemy that steps along a configurable path (direction + step counts).
 /// Movement is synced to BPM intervals (hook OnIntervalReached from your beat system).
 /// </summary>
-public class EnemyController : MonoBehaviour
+public class EnemyScript : MonoBehaviour
 {
     [Header("Grid Alignment")]
     [Tooltip("Tilemap to align movement with (should be same as player's tilemap)")]
@@ -44,6 +44,11 @@ public class EnemyController : MonoBehaviour
     [Tooltip("Sequence of direction + step counts. Movement loops over this list forever.")]
     [SerializeField] private List<Step> path = new List<Step>();
 
+    [Header("Movement Options")]
+    [SerializeField] private bool reverseMovement = false;
+    
+
+
     [Header("Collision LOGGING (does NOT block)")]
     [Tooltip("Log colliders at the destination using Physics2D OverlapBox.")]
     [SerializeField] private bool logPhysicsCollisions = true;
@@ -79,6 +84,11 @@ public class EnemyController : MonoBehaviour
     private bool isDying = false;
     private bool deathAnimationComplete = false;
 
+    // Runtime state for walking the path
+    
+    
+    private bool movingForward = true; // only used when reverseMovement is true
+
     // ---------------- Internals ----------------
     private int intervalCounter = -1;
     private Coroutine moveCo;
@@ -110,10 +120,32 @@ public class EnemyController : MonoBehaviour
         cachedBox = moveRoot.GetComponent<BoxCollider2D>();
 
         // spawn
-        SpawnAtGridPosition(spawnGridCoords);
+        //SpawnAtGridPosition(spawnGridCoords);
+
+        // ========= Set the tile position to the center of the grid cell =========
+        // Convert world position to cell coordinates
+        Vector3Int cellPosition = gridTilemap.WorldToCell(transform.position);
+
+        // Convert cell coordinates back to centered world position
+        Vector3 centeredWorldPos = gridTilemap.GetCellCenterWorld(cellPosition);
+
+        // Move GameObject to center of cell
+        transform.position = centeredWorldPos;
 
         // sanitize path once at start
         SanitizePath();
+    }
+
+
+    private static Dir Opposite(Dir d)
+    {
+    switch (d)
+    {
+        case Dir.Up:    return Dir.Down;
+        case Dir.Right: return Dir.Left;
+        case Dir.Down:  return Dir.Up;
+        default:        return Dir.Right; // Left → Right
+    }
     }
 
     private void OnValidate()
@@ -166,7 +198,7 @@ public class EnemyController : MonoBehaviour
         else M.position = worldPos;
 
         if (debugLogs)
-            Debug.Log($"[EnemyController] Spawned at grid {gridCoords} → world {worldPos}");
+            Debug.Log($"[EnemyScript] Spawned at grid {gridCoords} → world {worldPos}");
     }
 
     private void CheckPlayerCollision()
@@ -178,7 +210,7 @@ public class EnemyController : MonoBehaviour
         {
             player.TakeDamage(damageAmount);
             if (debugLogs)
-                Debug.Log($"[EnemyController] Player and enemy both at grid {playerGridPos}, dealt {damageAmount} damage");
+                Debug.Log($"[EnemyScript] Player and enemy both at grid {playerGridPos}, dealt {damageAmount} damage");
         }
     }
 
@@ -203,7 +235,9 @@ public class EnemyController : MonoBehaviour
             AdvancePath();
 
         var current = path[pathIndex];
-        Vector2 dir = DirToVector(current.direction);
+        var effectiveDir = (reverseMovement && !movingForward) ? Opposite(current.direction) : current.direction;
+        Vector2 dir = DirToVector(effectiveDir);
+
 
         HandleSpriteFlipping(current.direction);
 
@@ -223,7 +257,7 @@ public class EnemyController : MonoBehaviour
         LogPotentialCollisions(from, to);
 
         if (debugLogs)
-            Debug.Log($"[EnemyController] Moving {current.direction} ({stepsTakenInCurrent + 1}/{current.count}) → {to}");
+            Debug.Log($"[EnemyScript] Moving {current.direction} ({stepsTakenInCurrent + 1}/{current.count}) → {to}");
 
         MoveTo(to);
 
@@ -237,9 +271,47 @@ public class EnemyController : MonoBehaviour
 
     private void AdvancePath()
     {
-        if (path == null || path.Count == 0) return;
+    if (path == null || path.Count == 0) return;
+
+    if (!reverseMovement)
+    {
+        // Simple loop
         pathIndex = (pathIndex + 1) % path.Count;
+        return;
     }
+
+    // Reverse (ping-pong) mode:
+    // At the ends, flip direction BUT stay on the same segment first,
+    // so we retrace that exact segment before moving to the next.
+    if (movingForward)
+    {
+        if (pathIndex >= path.Count - 1)
+        {
+            // Hit the last segment: flip, stay on it to retrace next
+            movingForward = false;
+            // keep pathIndex as-is
+        }
+        else
+        {
+            pathIndex++;
+        }
+    }
+    else
+    {
+        if (pathIndex <= 0)
+        {
+            // Hit the first segment: flip, stay on it to replay forward next
+            movingForward = true;
+            // keep pathIndex as-is
+        }
+        else
+        {
+            pathIndex--;
+        }
+    }
+    }
+
+
 
     private void LogPotentialCollisions(Vector2 toFrom, Vector2 to)
     {
@@ -254,7 +326,7 @@ public class EnemyController : MonoBehaviour
                 if (!h) continue;
                 if (!includeTriggers && h.isTrigger) continue;
                 if (h.transform == (moveRoot ? moveRoot : transform)) continue;
-                // Debug.Log($"[EnemyController] Would collide with '{h.name}' at {to}");
+                // Debug.Log($"[EnemyScript] Would collide with '{h.name}' at {to}");
             }
         }
 
@@ -262,7 +334,7 @@ public class EnemyController : MonoBehaviour
         {
             Vector3Int cell = collisionTilemap.WorldToCell(to);
             // if (collisionTilemap.HasTile(cell))
-            //     Debug.Log($"[EnemyController] Would collide with Tilemap at cell {cell} (world {to})");
+            //     Debug.Log($"[EnemyScript] Would collide with Tilemap at cell {cell} (world {to})");
         }
     }
 

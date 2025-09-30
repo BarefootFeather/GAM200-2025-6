@@ -384,7 +384,18 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      FallenEmpire_0: -6117587195709995798
+      FallenEmpire_1: -5322066416299412313
+      FallenEmpire_10: 8260426444616614723
+      FallenEmpire_2: 3205576291182219944
+      FallenEmpire_3: 1727234463421615480
+      FallenEmpire_4: -6597935486435246015
+      FallenEmpire_5: 5514114416997600760
+      FallenEmpire_6: -5761659632883301964
+      FallenEmpire_7: -5031986273249248027
+      FallenEmpire_8: 2042127002114699800
+      FallenEmpire_9: -7092005646326785056
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
