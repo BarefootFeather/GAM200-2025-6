@@ -44,6 +44,11 @@ public class EnemyScript : MonoBehaviour
     [Tooltip("Sequence of direction + step counts. Movement loops over this list forever.")]
     [SerializeField] private List<Step> path = new List<Step>();
 
+    [Header("Movement Options")]
+    [SerializeField] private bool reverseMovement = false;
+    
+
+
     [Header("Collision LOGGING (does NOT block)")]
     [Tooltip("Log colliders at the destination using Physics2D OverlapBox.")]
     [SerializeField] private bool logPhysicsCollisions = true;
@@ -78,6 +83,11 @@ public class EnemyScript : MonoBehaviour
 
     private bool isDying = false;
     private bool deathAnimationComplete = false;
+
+    // Runtime state for walking the path
+    
+    
+    private bool movingForward = true; // only used when reverseMovement is true
 
     // ---------------- Internals ----------------
     private int intervalCounter = -1;
@@ -124,6 +134,18 @@ public class EnemyScript : MonoBehaviour
 
         // sanitize path once at start
         SanitizePath();
+    }
+
+
+    private static Dir Opposite(Dir d)
+    {
+    switch (d)
+    {
+        case Dir.Up:    return Dir.Down;
+        case Dir.Right: return Dir.Left;
+        case Dir.Down:  return Dir.Up;
+        default:        return Dir.Right; // Left → Right
+    }
     }
 
     private void OnValidate()
@@ -213,7 +235,9 @@ public class EnemyScript : MonoBehaviour
             AdvancePath();
 
         var current = path[pathIndex];
-        Vector2 dir = DirToVector(current.direction);
+        var effectiveDir = (reverseMovement && !movingForward) ? Opposite(current.direction) : current.direction;
+        Vector2 dir = DirToVector(effectiveDir);
+
 
         HandleSpriteFlipping(current.direction);
 
@@ -247,9 +271,47 @@ public class EnemyScript : MonoBehaviour
 
     private void AdvancePath()
     {
-        if (path == null || path.Count == 0) return;
+    if (path == null || path.Count == 0) return;
+
+    if (!reverseMovement)
+    {
+        // Simple loop
         pathIndex = (pathIndex + 1) % path.Count;
+        return;
     }
+
+    // Reverse (ping-pong) mode:
+    // At the ends, flip direction BUT stay on the same segment first,
+    // so we retrace that exact segment before moving to the next.
+    if (movingForward)
+    {
+        if (pathIndex >= path.Count - 1)
+        {
+            // Hit the last segment: flip, stay on it to retrace next
+            movingForward = false;
+            // keep pathIndex as-is
+        }
+        else
+        {
+            pathIndex++;
+        }
+    }
+    else
+    {
+        if (pathIndex <= 0)
+        {
+            // Hit the first segment: flip, stay on it to replay forward next
+            movingForward = true;
+            // keep pathIndex as-is
+        }
+        else
+        {
+            pathIndex--;
+        }
+    }
+    }
+
+
 
     private void LogPotentialCollisions(Vector2 toFrom, Vector2 to)
     {
