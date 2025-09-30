@@ -6990,6 +6990,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 504035333}
+  - component: {fileID: 504035334}
   m_Layer: 0
   m_Name: EnemyController
   m_TagString: Untagged
@@ -7014,6 +7015,18 @@ Transform:
   - {fileID: 1425880129}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &504035334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 504035332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19c80444bd340334fa8777f96558fa1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &552317495
 GameObject:
   m_ObjectHideFlags: 0
@@ -7459,13 +7472,13 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 1296353523}
+        - m_Target: {fileID: 504035334}
           m_TargetAssemblyTypeName: EnemyController, Assembly-CSharp
-          m_MethodName: OnIntervalReached
-          m_Mode: 0
+          m_MethodName: CallOnInterval
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: 
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -7937,17 +7950,6 @@ Transform:
   - {fileID: 2069642592}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1296353523 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4718930344161968144, guid: 2a379b1afad70c64e9dd776321c50a6e, type: 3}
-  m_PrefabInstance: {fileID: 2600876118532012058}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1943dc1efbcf96d418ec185bd2cec936, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1296353524 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9201438757428347208, guid: 2a379b1afad70c64e9dd776321c50a6e, type: 3}
@@ -8181,11 +8183,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9201438757428347208, guid: 2a379b1afad70c64e9dd776321c50a6e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -1.2
       objectReference: {fileID: 0}
     - target: {fileID: 9201438757428347208, guid: 2a379b1afad70c64e9dd776321c50a6e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 3.19
       objectReference: {fileID: 0}
     - target: {fileID: 9201438757428347208, guid: 2a379b1afad70c64e9dd776321c50a6e, type: 3}
       propertyPath: m_LocalPosition.z
