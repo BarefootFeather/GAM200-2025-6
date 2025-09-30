@@ -1,13 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class PlayerController : MonoBehaviour
 {
     [Header("-------------- Player Variables --------------")]
-    [SerializeField] private int playerHealth;
+    [SerializeField] public int playerHealth;
     [SerializeField] private SpriteRenderer playerSprite;
 
     [Header("-------------- Player Movement Variables --------------")]
@@ -24,11 +26,16 @@ public class PlayerController : MonoBehaviour
     [Header("-------------- Attack Variables --------------")]
     [SerializeField] private Transform enemyParent; // Drag Enemy Parent GameObject here
 
+    public HealthDisplay health;
+
+
+    public int maxHealth = 3;
     private float invulnerabilityTimer = 0f;
     private Vector3 targetPosition;
     private bool isMoving = false;
     private bool player_died = false;
     private bool deathAnimationComplete = false;
+
     void Start()
     {
         // Snap to grid on start
@@ -66,7 +73,7 @@ public class PlayerController : MonoBehaviour
 
         // Will be true if shift is held down
         // Used for attack action
-        bool isAttack = Input.GetKey(KeyCode.LeftShift);
+        bool isAttack = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.Return);
 
         // Only allow movement in one direction at a time
         if (Input.GetKeyDown(KeyCode.W)) direction = Vector3.up;
@@ -226,5 +233,26 @@ public class PlayerController : MonoBehaviour
 
         // Disable player object
         gameObject.SetActive(false);                            
+    }
+
+    //public void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (gameObject.CompareTag("Projectile"))
+    //    {
+    //        TakeDamage(1);
+    //        Debug.Log("Projectile Debug");
+    //    }
+    //}
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Projectile"))
+        {
+            TakeDamage(1);
+            Destroy(collision.gameObject);
+
+            //When player takes damage, update HUD
+            health.UpdateHUD(playerHealth);
+        }
     }
 }

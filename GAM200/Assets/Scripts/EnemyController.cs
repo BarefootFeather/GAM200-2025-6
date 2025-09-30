@@ -94,6 +94,9 @@ public class EnemyController : MonoBehaviour
     private bool isDying = false; // Prevent multiple death calls
     private bool deathAnimationComplete = false;
 
+    [Header("-------------- HUD Reference --------------")]
+    public HealthDisplay hearts;
+
     // ---------------- Internals ----------------
 
     private int intervalCounter = -1;   // counts how many beats have passed
@@ -226,6 +229,9 @@ public class EnemyController : MonoBehaviour
         if (playerGridPos == enemyGridPos && !player.IsInvulnerable())
         {
             player.TakeDamage(damageAmount);
+
+            //Update hearts on HUD, passing the player's current health as a reference after taking damage.
+            hearts.UpdateHUD(player.playerHealth);
             
             if (debugLogs)
             {
