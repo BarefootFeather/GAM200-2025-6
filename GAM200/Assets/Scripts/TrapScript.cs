@@ -20,6 +20,21 @@ public class TrapScript : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Grid grid;
 
+
+    [Header("Beat Scheduling")]
+    [Tooltip("Length of the repeating cycle in beats (e.g. 4).")]
+    [SerializeField] private int toggleEveryNIntervals = 4;
+
+    [Tooltip("Offset for this trap�s phase in the cycle.")]
+    [SerializeField] private int toggleOffset = 0;
+
+
+    
+
+    private void OnEnable() => BeatBus.Beat += OnBeat;
+    private void OnDisable() => BeatBus.Beat -= OnBeat;
+
+
     private void Start()
     {
 
@@ -83,6 +98,32 @@ public class TrapScript : MonoBehaviour
         // Move GameObject to center of cell
         transform.position = centeredWorldPos;
     }
+
+    private void OnBeat(int beatIndex)
+    {
+        if (toggleEveryNIntervals <= 0) return;
+
+        // Work out this trap�s phase in the cycle
+        int phase = (beatIndex + toggleOffset) % toggleEveryNIntervals;
+
+        // Rule: first half of cycle = active, second half = inactive
+        bool shouldBeActive = phase < (toggleEveryNIntervals / 2);
+
+        SetTrapState(shouldBeActive);
+    }
+
+    private void SetTrapState(bool active)
+    {
+        isActive = active;
+        spriteRenderer.sprite = isActive ? activeTile : inactiveTile;
+
+        if (debugCollisions)
+            Debug.Log($"[TrapScript] {(isActive ? "Active" : "Inactive")} at {transform.position}");
+    }
+
+
+    private static bool IsScheduled(int count, int everyN, int offset) =>
+        ((count - offset) % Mathf.Max(1, everyN)) == 0;
 
     public void ToggleTrap()
     {
