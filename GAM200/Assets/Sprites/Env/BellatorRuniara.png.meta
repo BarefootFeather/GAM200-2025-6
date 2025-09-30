@@ -1,10 +1,22 @@
 fileFormatVersion: 2
-guid: 96fa5079090fc894b8daa8dccb933f47
+guid: 808ea5c509a44964cadb4d3e402d9f5e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -705465144167411356
-    second: EmptyHeart_0
+      213: -386121631145097861
+    second: BellatorRuniara_0
+  - first:
+      213: 740314647785105584
+    second: BellatorRuniara_1
+  - first:
+      213: 5679533776164280677
+    second: BellatorRuniara_2
+  - first:
+      213: 1458470217176957369
+    second: BellatorRuniara_3
+  - first:
+      213: 2321822477323186031
+    second: BellatorRuniara_4
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +112,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: EmptyHeart_0
+      name: BellatorRuniara_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 45
-        width: 484
-        height: 392
+        y: 2389
+        width: 160
+        height: 101
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +127,96 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4615b78603fa536f0800000000000000
-      internalID: -705465144167411356
+      spriteID: b7580871c6834aaf0800000000000000
+      internalID: -386121631145097861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BellatorRuniara_1
+      rect:
+        serializedVersion: 2
+        x: 197
+        y: 336
+        width: 2107
+        height: 3423
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b8ef33ff30264a00800000000000000
+      internalID: 740314647785105584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BellatorRuniara_2
+      rect:
+        serializedVersion: 2
+        x: 2829
+        y: 538
+        width: 3504
+        height: 3055
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 569da12c0e1c1de40800000000000000
+      internalID: 5679533776164280677
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BellatorRuniara_3
+      rect:
+        serializedVersion: 2
+        x: 2623
+        y: 517
+        width: 183
+        height: 294
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b1c15a6fe68d3410800000000000000
+      internalID: 1458470217176957369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BellatorRuniara_4
+      rect:
+        serializedVersion: 2
+        x: 4625
+        y: 325
+        width: 699
+        height: 381
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f6fad58dd35c83020800000000000000
+      internalID: 2321822477323186031
       vertices: []
       indices: 
       edges: []
@@ -134,8 +234,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      EmptyHeart_0: -705465144167411356
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

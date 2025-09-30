@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     [Header("Invulnerability")]
     [SerializeField] private float invulnerabilityDuration = 1.5f;
     [SerializeField] private bool isInvulnerable = false;
+    [SerializeField] private bool canBeInvulnerable = false;
 
     [Header("-------------- Attack Variables --------------")]
     [SerializeField] private Transform enemyParent; // Drag Enemy Parent GameObject here
@@ -77,6 +78,17 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.S)) direction = Vector3.down;
         else if (Input.GetKeyDown(KeyCode.A)) direction = Vector3.left;
         else if (Input.GetKeyDown(KeyCode.D)) direction = Vector3.right;
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            if(canBeInvulnerable)
+            {
+                if (!isInvulnerable)
+                {
+                    BecomeInvulnerable();
+                }
+            }
+        }
 
         // If a direction was chosen, calculate target position
         if (direction != Vector3.zero)
@@ -198,7 +210,18 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Player took damage, now invulnerable for " + invulnerabilityDuration + " seconds");
         }
     }
+    private void BecomeInvulnerable()
+    {
+        // Start invulnerability
+        isInvulnerable = true;
+        invulnerabilityTimer = invulnerabilityDuration;
 
+        // Change sprite color during invulnerability (When Added)
+        if (playerSprite != null)
+            playerSprite.color = new Color(1f, 1f, 1f, 0.5f);
+
+        Debug.Log("Player took damage, now invulnerable for " + invulnerabilityDuration + " seconds");
+    }
     public void TickInvulnerability()
     {
         if (isInvulnerable)

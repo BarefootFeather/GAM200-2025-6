@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: 96fa5079090fc894b8daa8dccb933f47
+guid: ac3d490acb20c8244a8be372843682ea
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -705465144167411356
-    second: EmptyHeart_0
+      213: 2606682490208717554
+    second: Bibliotaphos_0
+  - first:
+      213: -7812665334734352589
+    second: Bibliotaphos_1
+  - first:
+      213: 9110361542743810287
+    second: Bibliotaphos_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +106,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: EmptyHeart_0
+      name: Bibliotaphos_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 45
-        width: 484
-        height: 392
+        x: 369
+        y: 238
+        width: 1514
+        height: 3697
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +121,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4615b78603fa536f0800000000000000
-      internalID: -705465144167411356
+      spriteID: 2fa0f1ff9ebcc2420800000000000000
+      internalID: 2606682490208717554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bibliotaphos_1
+      rect:
+        serializedVersion: 2
+        x: 2028
+        y: 431
+        width: 1219
+        height: 2610
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33f86267546d39390800000000000000
+      internalID: -7812665334734352589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Bibliotaphos_2
+      rect:
+        serializedVersion: 2
+        x: 3424
+        y: 238
+        width: 1012
+        height: 3693
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe0ef9aed818e6e70800000000000000
+      internalID: 9110361542743810287
       vertices: []
       indices: 
       edges: []
@@ -134,8 +184,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      EmptyHeart_0: -705465144167411356
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
