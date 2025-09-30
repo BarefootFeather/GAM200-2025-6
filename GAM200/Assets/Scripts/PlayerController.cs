@@ -138,14 +138,14 @@ public class PlayerController : MonoBehaviour
             if (enemyGridPos == attackGridPosition)
             {
                 // Get the enemy component and damage it
-                var enemyScript = enemy.GetComponent<EnemyController>(); // Replace with your actual enemy script name
+                var enemyScript = enemy.GetComponent<EnemyScript>(); // Replace with your actual enemy script name
                 if (enemyScript != null)
                 {
                     enemyScript.TakeDamage();
                 }
                 else
                 {
-                    Debug.LogError($"Enemy at {attackGridPosition} doesn't have EnemyController component!");
+                    Debug.LogError($"Enemy at {attackGridPosition} doesn't have EnemyScript component!");
                 }
 
                 break;

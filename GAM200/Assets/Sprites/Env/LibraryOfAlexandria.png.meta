@@ -1,0 +1,549 @@
+fileFormatVersion: 2
+guid: 1f2f47576532be44caf985e9eae530cb
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8393139398476343878
+    second: LibraryOfAlexandria_0
+  - first:
+      213: -5621101184162664096
+    second: LibraryOfAlexandria_1
+  - first:
+      213: -8786823681341916965
+    second: LibraryOfAlexandria_2
+  - first:
+      213: 6876146759490731047
+    second: LibraryOfAlexandria_3
+  - first:
+      213: -1709477993682858566
+    second: LibraryOfAlexandria_4
+  - first:
+      213: 4261140961677290649
+    second: LibraryOfAlexandria_5
+  - first:
+      213: -2545021877500710263
+    second: LibraryOfAlexandria_6
+  - first:
+      213: 1169324244403592732
+    second: LibraryOfAlexandria_7
+  - first:
+      213: -373153726974333627
+    second: LibraryOfAlexandria_8
+  - first:
+      213: 2710909933664006471
+    second: LibraryOfAlexandria_9
+  - first:
+      213: 8184192244581411455
+    second: LibraryOfAlexandria_10
+  - first:
+      213: -1974485271976979957
+    second: LibraryOfAlexandria_11
+  - first:
+      213: 2186693188597208633
+    second: LibraryOfAlexandria_12
+  - first:
+      213: 6953213966357451229
+    second: LibraryOfAlexandria_13
+  - first:
+      213: -4677657096899180479
+    second: LibraryOfAlexandria_14
+  - first:
+      213: 7954218975919723516
+    second: LibraryOfAlexandria_15
+  - first:
+      213: -3162355045674772070
+    second: LibraryOfAlexandria_16
+  - first:
+      213: 6864009235509625760
+    second: LibraryOfAlexandria_17
+  - first:
+      213: 1312677359240358481
+    second: LibraryOfAlexandria_18
+  - first:
+      213: -1799458628188431184
+    second: LibraryOfAlexandria_19
+  - first:
+      213: -5095305392689393190
+    second: LibraryOfAlexandria_20
+  - first:
+      213: 8163676101954664876
+    second: LibraryOfAlexandria_21
+  - first:
+      213: 6985893595834763158
+    second: LibraryOfAlexandria_22
+  - first:
+      213: -16897036303726029
+    second: LibraryOfAlexandria_23
+  - first:
+      213: 7244975971464350845
+    second: LibraryOfAlexandria_24
+  - first:
+      213: -2197298105663773462
+    second: LibraryOfAlexandria_25
+  - first:
+      213: -3940413489650175975
+    second: LibraryOfAlexandria_26
+  - first:
+      213: -7476387886055993211
+    second: LibraryOfAlexandria_27
+  - first:
+      213: 5356155465428795753
+    second: LibraryOfAlexandria_28
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 200
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: LibraryOfAlexandria_0
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 8408
+        width: 757
+        height: 974
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64aa48c60db6a7470800000000000000
+      internalID: 8393139398476343878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LibraryOfAlexandria_1
+      rect:
+        serializedVersion: 2
+        x: 1063
+        y: 8408
+        width: 390
+        height: 951
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 061f47f3146ddf1b0800000000000000
+      internalID: -5621101184162664096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LibraryOfAlexandria_2
+      rect:
+        serializedVersion: 2
+        x: 2902
+        y: 9207
+        width: 108
+        height: 46
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd8ff999a6eee0680800000000000000
+      internalID: -8786823681341916965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LibraryOfAlexandria_3
+      rect:
+        serializedVersion: 2
+        x: 1725
+        y: 8782
+        width: 305
+        height: 226
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72cf5eedb0bfc6f50800000000000000
+      internalID: 6876146759490731047
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LibraryOfAlexandria_4
+      rect:
+        serializedVersion: 2
+        x: 2129
+        y: 8443
+        width: 463
+        height: 517
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: abd8f2b62d6b648e0800000000000000
+      internalID: -1709477993682858566
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LibraryOfAlexandria_5
+      rect:
+        serializedVersion: 2
+        x: 3109
+        y: 8503
+        width: 564
+        height: 333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 99c24aec02d922b30800000000000000
+      internalID: 4261140961677290649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LibraryOfAlexandria_6
+      rect:
+        serializedVersion: 2
+        x: 1778
+        y: 8399
+        width: 189
+        height: 309
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 982f8f526144eacd0800000000000000
+      internalID: -2545021877500710263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LibraryOfAlexandria_11
+      rect:
+        serializedVersion: 2
+        x: 1999
+        y: 8345
+        width: 96
+        height: 41
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b02529d3b183994e0800000000000000
+      internalID: -1974485271976979957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LibraryOfAlexandria_12
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 7388
+        width: 262
+        height: 950
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9365a139ed1b85e10800000000000000
+      internalID: 2186693188597208633
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LibraryOfAlexandria_13
+      rect:
+        serializedVersion: 2
+        x: 379
+        y: 7388
+        width: 262
+        height: 950
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dd155004347ce7060800000000000000
+      internalID: 6953213966357451229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LibraryOfAlexandria_14
+      rect:
+        serializedVersion: 2
+        x: 1023
+        y: 7847
+        width: 693
+        height: 378
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1484d3657af951fb0800000000000000
+      internalID: -4677657096899180479
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LibraryOfAlexandria_15
+      rect:
+        serializedVersion: 2
+        x: 1725
+        y: 7940
+        width: 923
+        height: 337
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cf3dd5de300136e60800000000000000
+      internalID: 7954218975919723516
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LibraryOfAlexandria_16
+      rect:
+        serializedVersion: 2
+        x: 2461
+        y: 7735
+        width: 208
+        height: 231
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a9914e047de0d14d0800000000000000
+      internalID: -3162355045674772070
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LibraryOfAlexandria_19
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 4213
+        width: 4632
+        height: 3156
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0bc11de59e90707e0800000000000000
+      internalID: -1799458628188431184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LibraryOfAlexandria_28
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 7282
+        height: 4097
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 96186a68403e45a40800000000000000
+      internalID: 5356155465428795753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: be3947bdcfb22204b8f02a6521253588
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      LibraryOfAlexandria_0: 8393139398476343878
+      LibraryOfAlexandria_1: -5621101184162664096
+      LibraryOfAlexandria_11: -1974485271976979957
+      LibraryOfAlexandria_12: 2186693188597208633
+      LibraryOfAlexandria_13: 6953213966357451229
+      LibraryOfAlexandria_14: -4677657096899180479
+      LibraryOfAlexandria_15: 7954218975919723516
+      LibraryOfAlexandria_16: -3162355045674772070
+      LibraryOfAlexandria_19: -1799458628188431184
+      LibraryOfAlexandria_2: -8786823681341916965
+      LibraryOfAlexandria_28: 5356155465428795753
+      LibraryOfAlexandria_3: 6876146759490731047
+      LibraryOfAlexandria_4: -1709477993682858566
+      LibraryOfAlexandria_5: 4261140961677290649
+      LibraryOfAlexandria_6: -2545021877500710263
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

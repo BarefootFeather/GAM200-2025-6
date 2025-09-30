@@ -7,7 +7,7 @@ using UnityEngine.Tilemaps;
 /// Grid-style enemy that steps along a configurable path (direction + step counts).
 /// Movement is synced to BPM intervals (hook OnIntervalReached from your beat system).
 /// </summary>
-public class EnemyController : MonoBehaviour
+public class EnemyScript : MonoBehaviour
 {
     [Header("Grid Alignment")]
     [Tooltip("Tilemap to align movement with (should be same as player's tilemap)")]
@@ -110,7 +110,17 @@ public class EnemyController : MonoBehaviour
         cachedBox = moveRoot.GetComponent<BoxCollider2D>();
 
         // spawn
-        SpawnAtGridPosition(spawnGridCoords);
+        //SpawnAtGridPosition(spawnGridCoords);
+
+        // ========= Set the tile position to the center of the grid cell =========
+        // Convert world position to cell coordinates
+        Vector3Int cellPosition = gridTilemap.WorldToCell(transform.position);
+
+        // Convert cell coordinates back to centered world position
+        Vector3 centeredWorldPos = gridTilemap.GetCellCenterWorld(cellPosition);
+
+        // Move GameObject to center of cell
+        transform.position = centeredWorldPos;
 
         // sanitize path once at start
         SanitizePath();
@@ -166,7 +176,7 @@ public class EnemyController : MonoBehaviour
         else M.position = worldPos;
 
         if (debugLogs)
-            Debug.Log($"[EnemyController] Spawned at grid {gridCoords} → world {worldPos}");
+            Debug.Log($"[EnemyScript] Spawned at grid {gridCoords} → world {worldPos}");
     }
 
     private void CheckPlayerCollision()
@@ -178,7 +188,7 @@ public class EnemyController : MonoBehaviour
         {
             player.TakeDamage(damageAmount);
             if (debugLogs)
-                Debug.Log($"[EnemyController] Player and enemy both at grid {playerGridPos}, dealt {damageAmount} damage");
+                Debug.Log($"[EnemyScript] Player and enemy both at grid {playerGridPos}, dealt {damageAmount} damage");
         }
     }
 
@@ -223,7 +233,7 @@ public class EnemyController : MonoBehaviour
         LogPotentialCollisions(from, to);
 
         if (debugLogs)
-            Debug.Log($"[EnemyController] Moving {current.direction} ({stepsTakenInCurrent + 1}/{current.count}) → {to}");
+            Debug.Log($"[EnemyScript] Moving {current.direction} ({stepsTakenInCurrent + 1}/{current.count}) → {to}");
 
         MoveTo(to);
 
@@ -254,7 +264,7 @@ public class EnemyController : MonoBehaviour
                 if (!h) continue;
                 if (!includeTriggers && h.isTrigger) continue;
                 if (h.transform == (moveRoot ? moveRoot : transform)) continue;
-                // Debug.Log($"[EnemyController] Would collide with '{h.name}' at {to}");
+                // Debug.Log($"[EnemyScript] Would collide with '{h.name}' at {to}");
             }
         }
 
@@ -262,7 +272,7 @@ public class EnemyController : MonoBehaviour
         {
             Vector3Int cell = collisionTilemap.WorldToCell(to);
             // if (collisionTilemap.HasTile(cell))
-            //     Debug.Log($"[EnemyController] Would collide with Tilemap at cell {cell} (world {to})");
+            //     Debug.Log($"[EnemyScript] Would collide with Tilemap at cell {cell} (world {to})");
         }
     }
 
