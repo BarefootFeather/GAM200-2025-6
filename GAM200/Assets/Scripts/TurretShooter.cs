@@ -70,10 +70,10 @@ public class TurretShooter : MonoBehaviour
         float zDeg = 0f;
         switch (prefabRotation)
         {
-            case CardinalDir.Right: zDeg = 0f; break;
-            case CardinalDir.Up: zDeg = 90f; break;
-            case CardinalDir.Left: zDeg = 180f; break;
-            case CardinalDir.Down: zDeg = -90f; break;
+            case CardinalDir.Up: zDeg = 0f; break;
+            case CardinalDir.Right: zDeg = 90f; break;
+            case CardinalDir.Down: zDeg = 180f; break;
+            case CardinalDir.Left: zDeg = -90f; break;
         }
 
         Vector3 spawnPos = muzzle ? muzzle.position : transform.position;
