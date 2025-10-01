@@ -184,7 +184,10 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      FallenEmpire_Building_Side 1_0: -2270639868372150282
+      FallenEmpire_Building_Side 1_1: 3937460903802091057
+      FallenEmpire_Building_Side 1_2: 1833637071618414171
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
