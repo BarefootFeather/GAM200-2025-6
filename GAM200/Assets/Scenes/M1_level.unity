@@ -7623,7 +7623,7 @@ MonoBehaviour:
   playerSprite: {fileID: 326640339}
   tilemap: {fileID: 1786258571}
   obstacleController: {fileID: 1332407993}
-  moveSpeed: 5
+  moveSpeed: 7
   animator: {fileID: 326640343}
   invulnerabilityDuration: 4
   isInvulnerable: 0
