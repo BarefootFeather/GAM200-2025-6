@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 399fd0065b0b5f840aa0596b43581aea
+guid: d54c1ce5f333cd649af308581c78e4d5
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 9127534499287268441
-    second: FallenEmpire_Building_Side_0
+      213: 4514981793614390399
+    second: spike_trap - Copy_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: FallenEmpire_Building_Side_0
+      name: spike_trap - Copy_0
       rect:
         serializedVersion: 2
-        x: 74
-        y: 229
-        width: 1278
-        height: 2009
+        x: 0
+        y: 0
+        width: 86
+        height: 121
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 95cf32174448bae70800000000000000
-      internalID: 9127534499287268441
+      spriteID: f74edb7150078ae30800000000000000
+      internalID: 4514981793614390399
       vertices: []
       indices: 
       edges: []
@@ -134,8 +134,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      FallenEmpire_Building_Side_0: 9127534499287268441
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
