@@ -3,34 +3,28 @@ using UnityEngine.Tilemaps;
 
 public class TurretShooter : MonoBehaviour
 {
-    public enum AimMode { Cardinal, Vector2 }
+    public enum CardinalDir { Right, Left, Up, Down }
 
     [Header("Beat Scheduling")]
     [SerializeField] int fireEveryN = 6;
     [SerializeField] int fireOffset = 0;
 
     [Header("Projectile")]
-    [SerializeField] GameObject projectilePrefab;     // BeatProjectile on root
-    [SerializeField] Transform muzzle;                // optional
+    [SerializeField] GameObject projectilePrefab;     // BeatProjectile prefab
+    [SerializeField] Transform muzzle;                // optional spawn point
     [SerializeField] int projectileDamage = 1;
     [SerializeField] int projectileMaxSteps = 12;
     [SerializeField] float projectileStepDistance = 1f;
-    [SerializeField] bool projectileSnapToGrid = true;
-    [SerializeField] bool projectileSmoothStep = true;
-    [SerializeField, Range(0.05f, 0.9f)] float projectileLerpFraction = 0.35f;
 
-    [Header("Smoothing (no BPM access)")]
-    [SerializeField] int bpmForSmoothing = 120;
-    [SerializeField] float intervalBeatsForSmoothing = 1f;
+    [Header("Direction (Movement)")]
+    [SerializeField] CardinalDir shootDirection = CardinalDir.Right;
 
-    [Header("Direction")]
-    [SerializeField] AimMode aimMode = AimMode.Cardinal;
-    [SerializeField] Vector2 cardinalDir = Vector2.right;  // (1,0),(0,1),(-1,0),(0,-1)
-    [SerializeField] Vector2 shootDir = Vector2.right;     // used if Vector2 mode
+    [Header("Rotation (Visual Prefab)")]
+    [SerializeField] CardinalDir prefabRotation = CardinalDir.Right;
 
     [Header("Collisions")]
-    [SerializeField] PlayerController player;               // PlayerController, not Transform
-    [SerializeField] Tilemap gridTilemap;                   // same as Player’s
+    [SerializeField] PlayerController player;
+    [SerializeField] Tilemap gridTilemap;
 
     [Header("Debug")]
     [SerializeField] bool debugLogs = false;
@@ -49,39 +43,57 @@ public class TurretShooter : MonoBehaviour
     void OnBeat(int beatIndex)
     {
         _beatCount = beatIndex;
-        if (IsScheduled(_beatCount, fireEveryN, fireOffset)) FireOnce();
+        if ((_beatCount - fireOffset) % Mathf.Max(1, fireEveryN) == 0)
+            FireOnce();
     }
-
-    static bool IsScheduled(int count, int everyN, int offset) =>
-        ((count - offset) % Mathf.Max(1, everyN)) == 0;
 
     void FireOnce()
     {
         if (!projectilePrefab || !player || !gridTilemap)
         {
             if (debugLogs)
-                Debug.LogWarning($"[TurretShooter] Missing refs. prefab:{projectilePrefab}, player:{player}, tilemap:{gridTilemap}");
+                Debug.LogWarning("[TurretShooter] Missing prefab/player/tilemap reference.");
             return;
         }
 
+        // Decide movement direction
+        Vector2 dir = Vector2.right;
+        switch (shootDirection)
+        {
+            case CardinalDir.Right: dir = Vector2.right; break;
+            case CardinalDir.Left: dir = Vector2.left; break;
+            case CardinalDir.Up: dir = Vector2.up; break;
+            case CardinalDir.Down: dir = Vector2.down; break;
+        }
+
+        // Decide prefab rotation (independent of movement)
+        float zDeg = 0f;
+        switch (prefabRotation)
+        {
+            case CardinalDir.Up: zDeg = 0f; break;
+            case CardinalDir.Right: zDeg = 90f; break;
+            case CardinalDir.Down: zDeg = 180f; break;
+            case CardinalDir.Left: zDeg = -90f; break;
+        }
+
         Vector3 spawnPos = muzzle ? muzzle.position : transform.position;
-        var go = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
+        Quaternion spawnRot = Quaternion.Euler(0f, 0f, zDeg);
+
+        // Instantiate projectile
+        var go = Instantiate(projectilePrefab, spawnPos, spawnRot);
 
         var proj = go.GetComponent<BeatProjectile>();
         if (!proj) { Destroy(go); return; }
 
-        Vector2 dir = aimMode == AimMode.Cardinal ? CardinalToUnit(cardinalDir) : shootDir.normalized;
-        if (dir.sqrMagnitude < 0.0001f) dir = Vector2.right;
-
         var cfg = new BeatProjectile.Config
         {
-            direction = dir,
+            direction = dir,                         // movement
             stepDistance = projectileStepDistance,
-            snapToGrid = projectileSnapToGrid,
-            smoothStep = projectileSmoothStep,
-            moveLerpFractionOfInterval = projectileLerpFraction,
-            bpmForSmoothing = bpmForSmoothing,
-            intervalBeatsForSmoothing = intervalBeatsForSmoothing,
+            snapToGrid = true,
+            smoothStep = true,
+            moveLerpFractionOfInterval = 0.35f,
+            bpmForSmoothing = 120,
+            intervalBeatsForSmoothing = 1f,
             gridTilemap = gridTilemap,
             maxSteps = projectileMaxSteps,
             damage = projectileDamage,
@@ -91,18 +103,10 @@ public class TurretShooter : MonoBehaviour
         proj.Initialize(cfg);
 
         if (debugLogs)
-            Debug.Log($"[TurretShooter] Fired beat={_beatCount} dir={dir}");
+            Debug.Log($"[TurretShooter] Fired beat={_beatCount}, dir={dir}, prefabRot={prefabRotation} ({zDeg}°)");
     }
 
-    static Vector2 CardinalToUnit(Vector2 raw)
-    {
-        // snap to nearest axis
-        return Mathf.Abs(raw.x) >= Mathf.Abs(raw.y)
-            ? new Vector2(raw.x == 0 ? 1f : Mathf.Sign(raw.x), 0f)
-            : new Vector2(0f, raw.y == 0 ? 1f : Mathf.Sign(raw.y));
-    }
-
-    // non-obsolete single finder with fallback
+    // Unity version-safe finder
     static T FindOne<T>() where T : Object
     {
 #if UNITY_2023_1_OR_NEWER || UNITY_2022_3_OR_NEWER

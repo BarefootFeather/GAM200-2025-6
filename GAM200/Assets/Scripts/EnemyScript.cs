@@ -235,11 +235,13 @@ public class EnemyScript : MonoBehaviour
             AdvancePath();
 
         var current = path[pathIndex];
-        var effectiveDir = (reverseMovement && !movingForward) ? Opposite(current.direction) : current.direction;
+        var effectiveDir = (reverseMovement && !movingForward)
+            ? Opposite(current.direction)
+            : current.direction;
         Vector2 dir = DirToVector(effectiveDir);
 
-
-        HandleSpriteFlipping(current.direction);
+        // FIX: use effectiveDir, not current.direction
+        HandleSpriteFlipping(effectiveDir);
 
         Vector2 from = M.position;
         Vector2 to = from + dir * stepDistance;
@@ -278,6 +280,8 @@ public class EnemyScript : MonoBehaviour
         // Simple loop
         pathIndex = (pathIndex + 1) % path.Count;
         return;
+
+
     }
 
     // Reverse (ping-pong) mode:

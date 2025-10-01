@@ -1,40 +1,40 @@
 fileFormatVersion: 2
-guid: 33f05bde8deabe64dbd57094f116bf85
+guid: 01450c1000620f94fb3f878841139c49
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6117587195709995798
-    second: FallenEmpire_0
+      213: 4435588314987274518
+    second: FallenEmpire 1_0
   - first:
-      213: -5322066416299412313
-    second: FallenEmpire_1
+      213: 8585401775605723491
+    second: FallenEmpire 1_1
   - first:
-      213: 3205576291182219944
-    second: FallenEmpire_2
+      213: 1277404262651995778
+    second: FallenEmpire 1_2
   - first:
-      213: 1727234463421615480
-    second: FallenEmpire_3
+      213: 4573604106400112604
+    second: FallenEmpire 1_3
   - first:
-      213: -6597935486435246015
-    second: FallenEmpire_4
+      213: -384991005120497348
+    second: FallenEmpire 1_4
   - first:
-      213: 5514114416997600760
-    second: FallenEmpire_5
+      213: 1315641725104438150
+    second: FallenEmpire 1_5
   - first:
-      213: -5761659632883301964
-    second: FallenEmpire_6
+      213: 7284561334906324950
+    second: FallenEmpire 1_6
   - first:
-      213: -5031986273249248027
-    second: FallenEmpire_7
+      213: 8253377642910368422
+    second: FallenEmpire 1_7
   - first:
-      213: 2042127002114699800
-    second: FallenEmpire_8
+      213: -6935264297006224989
+    second: FallenEmpire 1_8
   - first:
-      213: -7092005646326785056
-    second: FallenEmpire_9
+      213: 6827699796725684472
+    second: FallenEmpire 1_9
   - first:
-      213: 8260426444616614723
-    second: FallenEmpire_10
+      213: -329257368932292158
+    second: FallenEmpire 1_10
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -81,7 +81,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 333
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -130,7 +130,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: FallenEmpire_0
+      name: FallenEmpire 1_0
       rect:
         serializedVersion: 2
         x: 84
@@ -138,21 +138,21 @@ TextureImporter:
         width: 852
         height: 1367
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ae44a3d9bd6f91ba0800000000000000
-      internalID: -6117587195709995798
+      spriteID: 611a0bc52106e8d30800000000000000
+      internalID: 4435588314987274518
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: FallenEmpire_1
+      name: FallenEmpire 1_1
       rect:
         serializedVersion: 2
         x: 1023
@@ -160,21 +160,21 @@ TextureImporter:
         width: 685
         height: 1077
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7a4ff69bac83426b0800000000000000
-      internalID: -5322066416299412313
+      spriteID: 361bcf07d69752770800000000000000
+      internalID: 8585401775605723491
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: FallenEmpire_2
+      name: FallenEmpire 1_2
       rect:
         serializedVersion: 2
         x: 1742
@@ -182,21 +182,21 @@ TextureImporter:
         width: 575
         height: 685
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8a2945827ae7c7c20800000000000000
-      internalID: 3205576291182219944
+      spriteID: 28621fda8604ab110800000000000000
+      internalID: 1277404262651995778
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: FallenEmpire_3
+      name: FallenEmpire 1_3
       rect:
         serializedVersion: 2
         x: 1706
@@ -204,65 +204,131 @@ TextureImporter:
         width: 36
         height: 56
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 87dce0cd79e58f710800000000000000
-      internalID: 1727234463421615480
+      spriteID: cdf1f39e3b4b87f30800000000000000
+      internalID: 4573604106400112604
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: FallenEmpire_4
+      name: FallenEmpire 1_4
       rect:
         serializedVersion: 2
-        x: 1749
-        y: 8053
+        x: 1744
+        y: 8122
         width: 647
-        height: 641
+        height: 564
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1404518e1ac6f64a0800000000000000
-      internalID: -6597935486435246015
+      spriteID: c39721a78bc38aaf0800000000000000
+      internalID: -384991005120497348
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: FallenEmpire_5
+      name: FallenEmpire 1_5
       rect:
         serializedVersion: 2
         x: 2389
-        y: 8111
-        width: 698
-        height: 534
+        y: 8150
+        width: 599
+        height: 489
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8fd8004e8d1168c40800000000000000
-      internalID: 5514114416997600760
+      spriteID: 68b388cad29124210800000000000000
+      internalID: 1315641725104438150
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: FallenEmpire_9
+      name: FallenEmpire 1_6
+      rect:
+        serializedVersion: 2
+        x: 2961
+        y: 8165
+        width: 83
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d703a750f5f71560800000000000000
+      internalID: 7284561334906324950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FallenEmpire 1_7
+      rect:
+        serializedVersion: 2
+        x: 2075
+        y: 8083
+        width: 131
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a2c2daec33e98270800000000000000
+      internalID: 8253377642910368422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FallenEmpire 1_8
+      rect:
+        serializedVersion: 2
+        x: 3042
+        y: 8130
+        width: 32
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a9ae71ddddf0cf90800000000000000
+      internalID: -6935264297006224989
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FallenEmpire 1_9
       rect:
         serializedVersion: 2
         x: 0
@@ -270,21 +336,21 @@ TextureImporter:
         width: 4026
         height: 2606
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0eb90a19072249d90800000000000000
-      internalID: -7092005646326785056
+      spriteID: 8f857d85accd0ce50800000000000000
+      internalID: 6827699796725684472
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: FallenEmpire_10
+      name: FallenEmpire 1_10
       rect:
         serializedVersion: 2
         x: 0
@@ -292,15 +358,15 @@ TextureImporter:
         width: 7282
         height: 4098
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 343cd94f51ee2a270800000000000000
-      internalID: 8260426444616614723
+      spriteID: 2c96c1dda2e3e6bf0800000000000000
+      internalID: -329257368932292158
       vertices: []
       indices: 
       edges: []
@@ -309,7 +375,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: f2a731e830492784e929244d3c6e6144
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -319,14 +385,17 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      FallenEmpire_0: -6117587195709995798
-      FallenEmpire_1: -5322066416299412313
-      FallenEmpire_10: 8260426444616614723
-      FallenEmpire_2: 3205576291182219944
-      FallenEmpire_3: 1727234463421615480
-      FallenEmpire_4: -6597935486435246015
-      FallenEmpire_5: 5514114416997600760
-      FallenEmpire_9: -7092005646326785056
+      FallenEmpire 1_0: 4435588314987274518
+      FallenEmpire 1_1: 8585401775605723491
+      FallenEmpire 1_10: -329257368932292158
+      FallenEmpire 1_2: 1277404262651995778
+      FallenEmpire 1_3: 4573604106400112604
+      FallenEmpire 1_4: -384991005120497348
+      FallenEmpire 1_5: 1315641725104438150
+      FallenEmpire 1_6: 7284561334906324950
+      FallenEmpire 1_7: 8253377642910368422
+      FallenEmpire 1_8: -6935264297006224989
+      FallenEmpire 1_9: 6827699796725684472
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
