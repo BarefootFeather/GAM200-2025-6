@@ -1,0 +1,228 @@
+fileFormatVersion: 2
+guid: 3fb54d8732bb7be4295e49c3133e8db1
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -8962335225305866541
+    second: DEATH'S REFRAIN_0
+  - first:
+      213: -2052701574113731070
+    second: DEATH'S REFRAIN_1
+  - first:
+      213: -8591774264641342243
+    second: DEATH'S REFRAIN_2
+  - first:
+      213: -7663035684976089881
+    second: DEATH'S REFRAIN_3
+  - first:
+      213: -6515731558658731648
+    second: DEATH'S REFRAIN_4
+  - first:
+      213: -5258138505986794550
+    second: DEATH'S REFRAIN_5
+  - first:
+      213: 1314891202133144441
+    second: DEATH'S REFRAIN_6
+  - first:
+      213: 245414178295740323
+    second: DEATH'S REFRAIN_7
+  - first:
+      213: -8158642736153837783
+    second: DEATH'S REFRAIN_8
+  - first:
+      213: 977923988004753262
+    second: DEATH'S REFRAIN_9
+  - first:
+      213: 7723592892194032999
+    second: DEATH'S REFRAIN_10
+  - first:
+      213: -646721765800872676
+    second: DEATH'S REFRAIN_11
+  - first:
+      213: -8843695055342792691
+    second: DEATH'S REFRAIN_12
+  - first:
+      213: 7525197287387077552
+    second: DEATH'S REFRAIN_13
+  - first:
+      213: -1648542510207537774
+    second: DEATH'S REFRAIN_14
+  - first:
+      213: -4877124755601097868
+    second: DEATH'S REFRAIN_15
+  - first:
+      213: 5250005657229246448
+    second: DEATH'S REFRAIN_16
+  - first:
+      213: -6774098688230793654
+    second: DEATH'S REFRAIN_17
+  - first:
+      213: 8581802139877241007
+    second: DEATH'S REFRAIN_18
+  - first:
+      213: 3489579910821489762
+    second: DEATH'S REFRAIN_19
+  - first:
+      213: -2441592132445042358
+    second: DEATH'S REFRAIN_20
+  - first:
+      213: -8463663255328765421
+    second: DEATH'S REFRAIN_21
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: DEATH'S REFRAIN_0
+      rect:
+        serializedVersion: 2
+        x: 15
+        y: 95
+        width: 859
+        height: 320
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3de5ca9d8936f9380800000000000000
+      internalID: -8962335225305866541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DEATH'S REFRAIN_1
+      rect:
+        serializedVersion: 2
+        x: 1021
+        y: 93
+        width: 891
+        height: 320
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 05f5c60f46fbdc645b77bac0f97ebe56
+      internalID: 1294117258
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: fa13b2fd36aad5844b2941c783f77af7
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      DEATH'S REFRAIN_1: 1294117258
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
