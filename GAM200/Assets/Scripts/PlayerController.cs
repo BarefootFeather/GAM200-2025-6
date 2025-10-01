@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 public class PlayerController : MonoBehaviour
@@ -34,6 +35,8 @@ public class PlayerController : MonoBehaviour
     private bool isMoving = false;
     private bool player_died = false;
     private bool deathAnimationComplete = false;
+    public GameObject gameOverPanel;
+
     void Start()
     {
         // Snap to grid on start
@@ -63,6 +66,10 @@ public class PlayerController : MonoBehaviour
             HandleInput();
         }
 
+        if (player_died)
+        {
+            gameOverPanel.SetActive(true);
+        }
     }
 
     void HandleInput()
@@ -168,13 +175,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
     bool IsValidPosition(Vector3Int gridPosition)
     {
         // Simple bounds check
         BoundsInt bounds = tilemap.cellBounds;
 
         // Check for obstacles
-        return obstacleController.CanMoveTo(tilemap.GetCellCenterWorld(gridPosition)) && bounds.Contains(gridPosition);
+        //return obstacleController.CanMoveTo(tilemap.GetCellCenterWorld(gridPosition)) && bounds.Contains(gridPosition);
+        return obstacleController.CanMoveTo(tilemap.GetCellCenterWorld(gridPosition));
+
     }
 
     // Method to apply damage to the player
@@ -259,4 +269,19 @@ public class PlayerController : MonoBehaviour
         // Disable player object
         gameObject.SetActive(false);                            
     }
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void RestartGamel()
+    {
+        SceneManager.LoadScene(2);
+    }
+    public void MainMenu()
+    {
+        SceneManager.LoadScene("Main Menu");
+    }
+
 }
+
