@@ -9632,6 +9632,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: -19
       objectReference: {fileID: 0}
+    - target: {fileID: 8192512457008676313, guid: 3a47aea717d79f0428eddb0975250c90, type: 3}
+      propertyPath: toggleOffset
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 9131925784182854807, guid: 3a47aea717d79f0428eddb0975250c90, type: 3}
       propertyPath: m_Name
       value: Trap (17)
@@ -12668,7 +12672,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 326640338}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: MainMenu
         m_Mode: 1
@@ -12897,6 +12901,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: -19
       objectReference: {fileID: 0}
+    - target: {fileID: 8192512457008676313, guid: 3a47aea717d79f0428eddb0975250c90, type: 3}
+      propertyPath: toggleOffset
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9131925784182854807, guid: 3a47aea717d79f0428eddb0975250c90, type: 3}
       propertyPath: m_Name
       value: Trap (7)
@@ -13013,7 +13021,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 326640338}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: MainMenu
         m_Mode: 1
@@ -14274,7 +14282,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 326640338}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: RestartLevel
         m_Mode: 1
@@ -15917,6 +15925,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: -19
       objectReference: {fileID: 0}
+    - target: {fileID: 8192512457008676313, guid: 3a47aea717d79f0428eddb0975250c90, type: 3}
+      propertyPath: toggleOffset
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 9131925784182854807, guid: 3a47aea717d79f0428eddb0975250c90, type: 3}
       propertyPath: m_Name
       value: Trap (3)
@@ -16014,7 +16026,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 326640338}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: RestartGamel
         m_Mode: 1
@@ -16636,6 +16648,10 @@ PrefabInstance:
       propertyPath: m_SortingOrder
       value: -19
       objectReference: {fileID: 0}
+    - target: {fileID: 8192512457008676313, guid: 3a47aea717d79f0428eddb0975250c90, type: 3}
+      propertyPath: toggleOffset
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 9131925784182854807, guid: 3a47aea717d79f0428eddb0975250c90, type: 3}
       propertyPath: m_Name
       value: Trap (18)
@@ -16891,6 +16907,10 @@ PrefabInstance:
     - target: {fileID: 6992778767410475047, guid: 3a47aea717d79f0428eddb0975250c90, type: 3}
       propertyPath: m_SortingOrder
       value: -19
+      objectReference: {fileID: 0}
+    - target: {fileID: 8192512457008676313, guid: 3a47aea717d79f0428eddb0975250c90, type: 3}
+      propertyPath: toggleOffset
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9131925784182854807, guid: 3a47aea717d79f0428eddb0975250c90, type: 3}
       propertyPath: m_Name
@@ -17160,6 +17180,10 @@ PrefabInstance:
     - target: {fileID: 6992778767410475047, guid: 3a47aea717d79f0428eddb0975250c90, type: 3}
       propertyPath: m_SortingOrder
       value: -19
+      objectReference: {fileID: 0}
+    - target: {fileID: 8192512457008676313, guid: 3a47aea717d79f0428eddb0975250c90, type: 3}
+      propertyPath: toggleOffset
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9131925784182854807, guid: 3a47aea717d79f0428eddb0975250c90, type: 3}
       propertyPath: m_Name
