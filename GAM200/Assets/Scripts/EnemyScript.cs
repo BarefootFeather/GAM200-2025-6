@@ -1,3 +1,23 @@
+/*
+* Copyright (c) 2025 Infernumb. All rights reserved.
+*
+* This code is part of the hellmaker prototype project.
+* Unauthorized copying of this file, via any medium, is strictly prohibited.
+* Proprietary and confidential.
+*
+* Author:
+*   - Lin Xin
+*   - Contribution Level (100%)
+* @file
+* @brief
+*   Beat-synced, grid-aligned enemy that follows a looping path of steps (direction + count).
+*   - Moves on your beat/interval (hook OnIntervalReached).
+*   - Supports optional grid snap (Tilemap) and smooth gliding between cells.
+*   - Optional ping-pong (reverseMovement) retraces the path exactly.
+*   - Logs prospective collisions (physics/tilemap) for debugging.
+*   - Can damage the player when sharing the same grid cell.
+*/
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -45,10 +65,8 @@ public class EnemyScript : MonoBehaviour
     [SerializeField] private List<Step> path = new List<Step>();
 
     [Header("Movement Options")]
-    [SerializeField] private bool reverseMovement = false;
+    [SerializeField] private bool reverseMovement = false; // When true, ping-pong (retraces exactly).
     
-
-
     [Header("Collision LOGGING (does NOT block)")]
     [Tooltip("Log colliders at the destination using Physics2D OverlapBox.")]
     [SerializeField] private bool logPhysicsCollisions = true;
@@ -81,36 +99,35 @@ public class EnemyScript : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private SpriteRenderer spriteRenderer;
 
-    private bool isDying = false;
-    private bool deathAnimationComplete = false;
+    private bool isDying = false;                 // Prevents re-triggering death.
+    private bool deathAnimationComplete = false;  // Set by animation event.
 
-    // Runtime state for walking the path
-    
-    
-    private bool movingForward = true; // only used when reverseMovement is true
+    // Ping-pong state for reverseMovement
+    private bool movingForward = true; // Only used when reverseMovement == true
 
     // ---------------- Internals ----------------
-    private int intervalCounter = -1;
-    private Coroutine moveCo;
-    private Rigidbody2D rb2d;
-    private BoxCollider2D cachedBox;
+    private int intervalCounter = -1;     // Counts beats that have passed (used for scheduling).
+    private Coroutine moveCo;             // Active smooth movement coroutine (if any).
+    private Rigidbody2D rb2d;             // Optional physics movement for smoother collisions.
+    private BoxCollider2D cachedBox;      // For size auto-detection in OverlapBox logging.
 
+    // Helper to choose which transform actually moves.
     private Transform M => moveRoot != null ? moveRoot : transform;
 
-    // Public because it's used by the public Step struct (serialized in Inspector)
+    // Directions used by the path authoring.
     public enum Dir { Up, Right, Down, Left }
 
     [System.Serializable]
     public struct Step
     {
-        public Dir direction;
-        [Min(0)] public int count;
+        public Dir direction;     // Which way to move.
+        [Min(0)] public int count; // How many steps to take in this direction.
         public Step(Dir d, int c) { direction = d; count = c; }
     }
 
-    // Runtime state for walking the path
-    private int pathIndex = 0;
-    private int stepsTakenInCurrent = 0;
+    // Runtime counters for walking through the path list.
+    private int pathIndex = 0;          // Which Step we are on.
+    private int stepsTakenInCurrent = 0; // How many sub-steps completed in current Step.
 
     private void Awake()
     {
@@ -119,48 +136,45 @@ public class EnemyScript : MonoBehaviour
         rb2d = moveRoot.GetComponent<Rigidbody2D>();
         cachedBox = moveRoot.GetComponent<BoxCollider2D>();
 
-        // spawn
-        //SpawnAtGridPosition(spawnGridCoords);
-
-        // ========= Set the tile position to the center of the grid cell =========
-        // Convert world position to cell coordinates
+        // Snap initial spawn to the center of the current grid cell (if tilemap present).
         Vector3Int cellPosition = gridTilemap.WorldToCell(transform.position);
-
-        // Convert cell coordinates back to centered world position
         Vector3 centeredWorldPos = gridTilemap.GetCellCenterWorld(cellPosition);
-
-        // Move GameObject to center of cell
         transform.position = centeredWorldPos;
 
-        // sanitize path once at start
+        // Clean up the path (clamp counts, keep indices valid).
         SanitizePath();
     }
 
-
     private static Dir Opposite(Dir d)
     {
-    switch (d)
-    {
-        case Dir.Up:    return Dir.Down;
-        case Dir.Right: return Dir.Left;
-        case Dir.Down:  return Dir.Up;
-        default:        return Dir.Right; // Left → Right
-    }
+        // Utility to invert direction (used for reverseMovement retracing).
+        switch (d)
+        {
+            case Dir.Up:    return Dir.Down;
+            case Dir.Right: return Dir.Left;
+            case Dir.Down:  return Dir.Up;
+            default:        return Dir.Right; // Left → Right
+        }
     }
 
     private void OnValidate()
     {
+        // Keep inspector values in a safe range and indices consistent in edit-time.
         moveEveryNIntervals = Mathf.Max(1, moveEveryNIntervals);
         SanitizePath();
     }
 
     private void Update()
     {
+        // Damage player when occupying the same grid cell.
         if (canDamagePlayer && player != null && gridTilemap != null)
             CheckPlayerCollision();
     }
 
-    // Ensure non-negative counts; keep at least an empty path item to avoid division-by-zero when author forgets to fill it
+    /// <summary>
+    /// Ensure path counts are non-negative and indices are clamped.
+    /// Avoids edge cases if author leaves empty slots or zero counts.
+    /// </summary>
     private void SanitizePath()
     {
         if (path == null) path = new List<Step>();
@@ -169,7 +183,7 @@ public class EnemyScript : MonoBehaviour
 
         if (path.Count == 0)
         {
-            // optional: remain idle if empty. No auto-fallback to legacy.
+            // Stay idle if no steps are authored.
             pathIndex = 0;
             stepsTakenInCurrent = 0;
         }
@@ -180,6 +194,9 @@ public class EnemyScript : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Spawn helper (unused by default—kept for explicit spawn-at-grid use cases).
+    /// </summary>
     private void SpawnAtGridPosition(Vector2Int gridCoords)
     {
         Vector3 worldPos;
@@ -201,6 +218,9 @@ public class EnemyScript : MonoBehaviour
             Debug.Log($"[EnemyScript] Spawned at grid {gridCoords} → world {worldPos}");
     }
 
+    /// <summary>
+    /// Damages the player if both share the same tile cell (simple grid-based contact).
+    /// </summary>
     private void CheckPlayerCollision()
     {
         Vector3Int playerGridPos = gridTilemap.WorldToCell(player.transform.position);
@@ -214,38 +234,48 @@ public class EnemyScript : MonoBehaviour
         }
     }
 
-    /// <summary>Hook this to your beat/interval event.</summary>
+    /// <summary>Call this from your beat/interval system (e.g., BeatBus) each interval.</summary>
     public void OnIntervalReached()
     {
         intervalCounter++;
+        // Only move when our schedule says so (every N beats with an optional offset).
         if (IsScheduled(intervalCounter, moveEveryNIntervals, moveOffset))
             DoMoveTick();
     }
 
     private static bool IsScheduled(int count, int everyN, int offset) => ((count - offset) % everyN) == 0;
 
+    /// <summary>
+    /// Performs one move “tick”: advances along the current Step, handles snapping and visual flipping,
+    /// logs potential collisions (for debugging), and handles path advancement / ping-pong logic.
+    /// </summary>
     private void DoMoveTick()
     {
         if (isDying) return;
         if (path == null || path.Count == 0) return;
 
-        // Skip zero-count steps safely
+        // Skip zero-count steps (safety for authors).
         int guard = 0;
         while (path[pathIndex].count == 0 && guard++ < 16)
             AdvancePath();
 
         var current = path[pathIndex];
+
+        // If we’re in reverse mode and traversing backward, use the opposite direction to retrace.
         var effectiveDir = (reverseMovement && !movingForward)
             ? Opposite(current.direction)
             : current.direction;
+
         Vector2 dir = DirToVector(effectiveDir);
 
-        // FIX: use effectiveDir, not current.direction
+        // Flip sprite visuals according to the EFFECTIVE direction.
         HandleSpriteFlipping(effectiveDir);
 
+        // Compute target position for this single step.
         Vector2 from = M.position;
         Vector2 to = from + dir * stepDistance;
 
+        // Snap to tile center if tilemap exists; else optional snap by cell size.
         if (gridTilemap)
         {
             Vector3Int gridPos = gridTilemap.WorldToCell(to);
@@ -256,13 +286,16 @@ public class EnemyScript : MonoBehaviour
             to = Snap(to, stepDistance);
         }
 
+        // Debug-only “what would we hit?” logging.
         LogPotentialCollisions(from, to);
 
         if (debugLogs)
             Debug.Log($"[EnemyScript] Moving {current.direction} ({stepsTakenInCurrent + 1}/{current.count}) → {to}");
 
+        // Move (instant or smooth).
         MoveTo(to);
 
+        // Track sub-steps and advance to next step entry when count is reached.
         stepsTakenInCurrent++;
         if (stepsTakenInCurrent >= current.count)
         {
@@ -271,52 +304,52 @@ public class EnemyScript : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Advances the path index, supporting simple loop or ping-pong back-and-forth retracing.
+    /// In reverse mode: when you hit an end, flip direction but stay on the same segment
+    /// so you retrace it before moving to the next.
+    /// </summary>
     private void AdvancePath()
     {
-    if (path == null || path.Count == 0) return;
+        if (path == null || path.Count == 0) return;
 
-    if (!reverseMovement)
-    {
-        // Simple loop
-        pathIndex = (pathIndex + 1) % path.Count;
-        return;
-
-
-    }
-
-    // Reverse (ping-pong) mode:
-    // At the ends, flip direction BUT stay on the same segment first,
-    // so we retrace that exact segment before moving to the next.
-    if (movingForward)
-    {
-        if (pathIndex >= path.Count - 1)
+        if (!reverseMovement)
         {
-            // Hit the last segment: flip, stay on it to retrace next
-            movingForward = false;
-            // keep pathIndex as-is
+            // Simple loop around.
+            pathIndex = (pathIndex + 1) % path.Count;
+            return;
+        }
+
+        // Ping-pong retrace mode
+        if (movingForward)
+        {
+            if (pathIndex >= path.Count - 1)
+            {
+                movingForward = false; // flip at end
+                // stay on same segment to retrace
+            }
+            else
+            {
+                pathIndex++;
+            }
         }
         else
         {
-            pathIndex++;
+            if (pathIndex <= 0)
+            {
+                movingForward = true; // flip at start
+                // stay on same segment to replay forward
+            }
+            else
+            {
+                pathIndex--;
+            }
         }
     }
-    else
-    {
-        if (pathIndex <= 0)
-        {
-            // Hit the first segment: flip, stay on it to replay forward next
-            movingForward = true;
-            // keep pathIndex as-is
-        }
-        else
-        {
-            pathIndex--;
-        }
-    }
-    }
 
-
-
+    /// <summary>
+    /// Logs potential physics/tile collisions at the destination (debug assist only).
+    /// </summary>
     private void LogPotentialCollisions(Vector2 toFrom, Vector2 to)
     {
         if (logPhysicsCollisions)
@@ -342,6 +375,10 @@ public class EnemyScript : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Applies a move: instant or smooth glide based on smoothStep.
+    /// Uses Rigidbody2D when available for fixed-timestep lerp.
+    /// </summary>
     private void MoveTo(Vector2 nextPos)
     {
         if (!smoothStep)
@@ -356,12 +393,19 @@ public class EnemyScript : MonoBehaviour
         moveCo = StartCoroutine(StepLerp2D(rb2d, M.position, nextPos, dur));
     }
 
+    /// <summary>
+    /// Computes smoothing duration from BPM and fraction-of-interval settings.
+    /// </summary>
     private float CalcLerpDuration()
     {
         float intervalSec = (60f / Mathf.Max(1, bpmForSmoothing)) * Mathf.Max(0.0001f, intervalBeatsForSmoothing);
         return Mathf.Max(0.01f, intervalSec * moveLerpFractionOfInterval);
     }
 
+    /// <summary>
+    /// Smoothly interpolates position from 'from' to 'to' over 'duration'.
+    /// Uses FixedUpdate timing for Rigidbody2D; otherwise uses regular Update.
+    /// </summary>
     private IEnumerator StepLerp2D(Rigidbody2D body, Vector2 from, Vector2 to, float duration)
     {
         if (duration <= 0f)
@@ -395,6 +439,7 @@ public class EnemyScript : MonoBehaviour
 
     private static Vector2 DirToVector(Dir d)
     {
+        // Converts enum direction into a Vector2 step.
         switch (d)
         {
             case Dir.Up: return Vector2.up;
@@ -406,6 +451,7 @@ public class EnemyScript : MonoBehaviour
 
     private static Vector2 Snap(Vector2 pos, float cell)
     {
+        // Rounds a position to the nearest cell multiple (used when no Tilemap center is available).
         if (cell <= 0f) return pos;
         float x = Mathf.Round(pos.x / cell) * cell;
         float y = Mathf.Round(pos.y / cell) * cell;
@@ -414,6 +460,7 @@ public class EnemyScript : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        // Draws a wire box at the destination for visual debugging.
         Vector2 size = useColliderSize && cachedBox != null ? cachedBox.size : boxCheckSize;
         var mr = moveRoot ? moveRoot : transform;
 
@@ -425,6 +472,8 @@ public class EnemyScript : MonoBehaviour
     }
 
     // ===== Health / Death / Visuals =====
+
+    /// <summary>Deals 1 damage; triggers death sequence when health <= 0.</summary>
     public void TakeDamage()
     {
         if (isDying) return;
@@ -437,8 +486,10 @@ public class EnemyScript : MonoBehaviour
         }
     }
 
+    /// <summary>Animation event hook to signal the death animation finished.</summary>
     public void OnDeathAnimationComplete() => deathAnimationComplete = true;
 
+    /// <summary>Plays the death animation and disables the GameObject afterward.</summary>
     private IEnumerator DeathSequence()
     {
         if (animator) animator.SetTrigger("Death");
@@ -446,18 +497,16 @@ public class EnemyScript : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    /// <summary>Flips the sprite when moving left/right (keeps flip state for up/down).</summary>
     private void HandleSpriteFlipping(Dir direction)
     {
         if (!spriteRenderer) return;
 
         switch (direction)
         {
-            case Dir.Left: spriteRenderer.flipX = true; break;
+            case Dir.Left:  spriteRenderer.flipX = true;  break;
             case Dir.Right: spriteRenderer.flipX = false; break;
-                // Up and Down keep current flip
+            // Up and Down keep current flip
         }
     }
-
-   
-
 }
