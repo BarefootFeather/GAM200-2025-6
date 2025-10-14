@@ -9,7 +9,7 @@ public class DoorTransition : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Check if the entering object is the player
+        //Check if the entering object is the player
         if (other.CompareTag("Player") && CompareTag("CompletedLvl"))
         {
             doorUIPanel.SetActive(true);
@@ -19,7 +19,7 @@ public class DoorTransition : MonoBehaviour
             SceneManager.LoadScene(sceneToLoad);
         }
 
-    }
 
+    }
 
 }

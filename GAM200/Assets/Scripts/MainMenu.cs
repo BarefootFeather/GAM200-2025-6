@@ -11,6 +11,19 @@ public class MainMenu : MonoBehaviour
     public void PlayGame2()
     {
         SceneManager.LoadSceneAsync(2);
+        if (Time.timeScale == 0f)
+        {
+            Time.timeScale = 1f;
+        }
+    }
+
+    public void PlayGame3()
+    {
+        SceneManager.LoadSceneAsync(3);
+        if (Time.timeScale == 0f)
+        {
+            Time.timeScale = 1f;
+        }
     }
 
     public void BackToMenu()

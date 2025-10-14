@@ -6,6 +6,7 @@ TagManager:
   tags:
   - CompletedLvl
   - ToSecondLvl
+  - Collectible
   layers:
   - Default
   - TransparentFX

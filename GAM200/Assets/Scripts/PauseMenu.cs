@@ -8,7 +8,7 @@ public class PauseMenu : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab)) // Toggle with Tab
+        if (Input.GetKeyDown(KeyCode.Escape)) // Toggle with Tab
         {
             if (isPaused)
                 Resume();

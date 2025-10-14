@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
@@ -36,6 +37,7 @@ public class PlayerController : MonoBehaviour
     private bool player_died = false;
     private bool deathAnimationComplete = false;
     public GameObject gameOverPanel;
+    public Collectible diamond;
 
     void Start()
     {
@@ -281,6 +283,15 @@ public class PlayerController : MonoBehaviour
     public void MainMenu()
     {
         SceneManager.LoadScene("Main Menu");
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Collectible"))
+        {
+            Destroy(other.gameObject);
+            diamond.collectibleCount++;
+        }
     }
 
 }
