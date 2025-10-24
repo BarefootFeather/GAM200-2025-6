@@ -3,14 +3,13 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
-    public GameObject pauseMenuUI; // Assign your Pause Menu Canvas
-    private bool isPaused = false;
+    public GameObject pauseMenuUI; // Assign Pause Menu Canvas
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)) // Toggle with Tab
+        if (Input.GetKeyDown(KeyCode.Escape)) // Toggle with Esc
         {
-            if (isPaused)
+            if (BPMController.isPaused)
                 Resume();
             else
                 Pause();
@@ -21,14 +20,33 @@ public class PauseMenu : MonoBehaviour
     {
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
-        isPaused = true;
+        BPMController.isPaused = true;
     }
 
     void Resume()
     {
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
-        isPaused = false;
+        BPMController.isPaused = false;
+    }
+
+
+    public void RestartLevel()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void MainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("0_Main Menu");
+    }
+
+    public void QuitGame()
+    {
+        Time.timeScale = 1f;
+        Application.Quit();
     }
 
 }

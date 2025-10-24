@@ -50,22 +50,22 @@ public class ObstacleController : MonoBehaviour
             return;
         }
 
-        // ========= Set the tile position to the center of the grid cell =========
-        //foreach (Transform childTransform in GetComponentInChildren<Transform>())
-        //{
+        /* ========= Set the tile position to the center of the grid cell =========
+        foreach (Transform childTransform in GetComponentInChildren<Transform>())
+        {
 
-        //    if (childTransform != null)
-        //    {
+            if (childTransform != null)
+            {
 
-        //        Vector3Int cellPosition = grid.WorldToCell(childTransform.position);
+                Vector3Int cellPosition = grid.WorldToCell(childTransform.position);
 
-        //        // Convert cell coordinates back to centered world position
-        //        Vector3 centeredWorldPos = grid.GetCellCenterWorld(cellPosition);
+                // Convert cell coordinates back to centered world position
+                Vector3 centeredWorldPos = grid.GetCellCenterWorld(cellPosition);
 
-        //        // Move GameObject to center of cell
-        //        childTransform.position = centeredWorldPos;
-        //    }
-        //}
+                // Move GameObject to center of cell
+                childTransform.position = centeredWorldPos;
+            }
+        }*/
     }
 
     public bool CanMoveTo(Vector3 worldPosition)

@@ -5,6 +5,11 @@ using UnityEngine.Events;
 
 public class BPMController : MonoBehaviour
 {
+    public AudioSource GetBGMPlayer() => BGM_Player;
+    public AudioSource GetMetronomePlayer() => Metronome_SFX_Player;
+    public static bool isPaused;
+
+
 
     [Header("-------------- Assigning BPM --------------")]
     [SerializeField] private int bpm = 120; // Beats per minute
@@ -34,14 +39,15 @@ public class BPMController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        float frequency = isPaused ? 0 : BGM.frequency;
         // Calculate the current time in terms of intervals
-        float offsetInSamples = musicStartOffset * BGM.frequency;
+        float offsetInSamples = musicStartOffset * frequency;
 
         // Adjust the timeSamples by the offset
         float adjustedSamples = BGM_Player.timeSamples + offsetInSamples;
 
         // Calculate the current time in terms of intervals
-        float sampledTime = adjustedSamples / (BGM.frequency * interval.GetIntervalLength(bpm));
+        float sampledTime = adjustedSamples / (frequency * interval.GetIntervalLength(bpm));
 
         // Check if a new interval has been reached
         interval.CheckForNewInterval(sampledTime);

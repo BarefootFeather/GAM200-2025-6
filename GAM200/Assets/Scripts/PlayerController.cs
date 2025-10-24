@@ -31,6 +31,13 @@ public class PlayerController : MonoBehaviour
     [Header("UI Controller")]
     [SerializeField] private UIController uiController;
 
+    [Header("-------------- Shield System --------------")]
+    [SerializeField] private bool hasShieldAbility = true;   // Can the player use the shield
+    [SerializeField] private bool isShieldActive = false;    // Current shield status
+    [SerializeField] private GameObject shieldVisual;        // Optional: assign a glowing shield visual prefab or sprite
+    [SerializeField] private float shieldCooldown = 3f;      // Optional: delay between toggles
+    private float shieldCooldownTimer = 0f;
+
     private float invulnerabilityTimer = 0f;
     private Vector3 targetPosition;
     private bool isMoving = false;
