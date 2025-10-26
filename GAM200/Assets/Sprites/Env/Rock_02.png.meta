@@ -54,7 +54,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 400
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -107,11 +107,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 19
-        y: 218
+        y: 24
         width: 475
-        height: 239
+        height: 433
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -124,33 +124,11 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: Rock_02_1
-      rect:
-        serializedVersion: 2
-        x: 129
-        y: 24
-        width: 192
-        height: 124
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: c27fd0c3cced5a6f0800000000000000
-      internalID: -673887600459778260
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 47f3e9df6964676428c8451ee955be8e
     internalID: 0
     vertices: []
     indices: 
@@ -159,7 +137,9 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Rock_02_0: 892237361875625887
+      Rock_02_1: -673887600459778260
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

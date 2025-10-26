@@ -3077,9 +3077,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  debug: {fileID: 0}
-  inactiveTile: {fileID: 11400000, guid: 8e7c16437a539a34690a71df6513612d, type: 2}
-  activeTile: {fileID: 11400000, guid: b9c2fa4b195edfa48b992ae245b359ae, type: 2}
   targetTilemap: {fileID: 1775063564188177146}
+  inactiveTile: {fileID: 0}
+  activeTile: {fileID: 0}
   damageAmount: 1
   debugCollisions: 0

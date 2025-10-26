@@ -52,6 +52,10 @@ public class PlayerController : MonoBehaviour
         Vector3Int gridPos = tilemap.WorldToCell(transform.position);
         targetPosition = tilemap.GetCellCenterWorld(gridPos);
         transform.position = targetPosition;
+
+        // Ensure shield visual starts hidden
+        if (shieldVisual != null)
+            shieldVisual.SetActive(false);
     }
 
     void Update()
@@ -79,6 +83,13 @@ public class PlayerController : MonoBehaviour
         {
             gameOverPanel.SetActive(true);
         }
+
+        // Handle cooldown timer
+        if (shieldCooldownTimer > 0f)
+            shieldCooldownTimer -= Time.deltaTime;
+
+        // Tick down invulnerability if needed
+        TickInvulnerability();
     }
 
     void HandleInput()
@@ -95,7 +106,19 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.A)) direction = Vector3.left;
         else if (Input.GetKeyDown(KeyCode.D)) direction = Vector3.right;
 
+        //  Shield toggle logic
+        if (hasShieldAbility && Input.GetKeyDown(KeyCode.Space) && shieldCooldownTimer <= 0f)
+        {
+            ToggleShield();
+        }
+
         if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            if (canBeInvulnerable && !isInvulnerable)
+                BecomeInvulnerable();
+        }
+
+        /*if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             if(canBeInvulnerable)
             {
@@ -104,7 +127,7 @@ public class PlayerController : MonoBehaviour
                     BecomeInvulnerable();
                 }
             }
-        }
+        }*/
 
         // If a direction was chosen, calculate target position
         if (direction != Vector3.zero)
@@ -142,6 +165,32 @@ public class PlayerController : MonoBehaviour
                 // Trigger movement animation
                 animator.SetTrigger("Dash");
             }
+        }
+    }
+
+    // Toggle shield activation
+    private void ToggleShield()
+    {
+        isShieldActive = !isShieldActive;
+
+        if (isShieldActive)
+        {
+            // Activate shield
+            isInvulnerable = true;
+            if (shieldVisual != null)
+                shieldVisual.SetActive(true);
+            playerSprite.color = new Color(1f, 1f, 1f, 0.5f); // Optional fade look
+            Debug.Log("Shield activated!");
+        }
+        else
+        {
+            // Deactivate shield
+            isInvulnerable = false;
+            if (shieldVisual != null)
+                shieldVisual.SetActive(false);
+            playerSprite.color = Color.white;
+            shieldCooldownTimer = shieldCooldown; // Start cooldown
+            Debug.Log("Shield deactivated!");
         }
     }
 
@@ -243,7 +292,18 @@ public class PlayerController : MonoBehaviour
     }
     public void TickInvulnerability()
     {
-        if (isInvulnerable)
+        if (isInvulnerable && !isShieldActive) // shield prevents countdown
+        {
+            invulnerabilityTimer -= Time.deltaTime;
+            if (invulnerabilityTimer <= 0)
+            {
+                isInvulnerable = false;
+                if (playerSprite != null)
+                    playerSprite.color = Color.white;
+            }
+        }
+
+        /*if (isInvulnerable)
         {
             invulnerabilityTimer -= 1;
             Debug.Log("Invulnerability time left: " + invulnerabilityTimer);
@@ -254,7 +314,7 @@ public class PlayerController : MonoBehaviour
                 if (playerSprite != null)
                     playerSprite.color = Color.white;
             }
-        }
+        }*/
     }
 
     public bool IsInvulnerable()

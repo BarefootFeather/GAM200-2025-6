@@ -7982,7 +7982,12 @@ MonoBehaviour:
   canBeInvulnerable: 0
   enemyParent: {fileID: 504035333}
   uiController: {fileID: 1195181195}
+  hasShieldAbility: 1
+  isShieldActive: 0
+  shieldVisual: {fileID: 0}
+  shieldCooldown: 3
   gameOverPanel: {fileID: 875553453}
+  diamond: {fileID: 0}
 --- !u!212 &326640339
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -15665,7 +15670,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1874625581
 Transform:
   m_ObjectHideFlags: 0
@@ -15676,7 +15681,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.93, z: 0}
-  m_LocalScale: {x: 0.07161054, y: 0.07161054, z: 0.07161054}
+  m_LocalScale: {x: 0.4358977, y: 0.4358977, z: 0.4358977}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 55321490}
@@ -15725,12 +15730,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -20
-  m_Sprite: {fileID: 8393139398476343878, guid: 21bacb76fa2e03841a30e9efbbee0e0c, type: 3}
+  m_Sprite: {fileID: 8393139398476343878, guid: 372f8abf78dd65a408efc73d56f2400c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 434.8125, y: 246.2805}
+  m_Size: {x: 69.57, y: 39.40488}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -16079,6 +16084,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneToLoad: Prototype_Gameplay_Scene
   doorUIPanel: {fileID: 1558021050}
+  collectible: {fileID: 0}
+  requiresCollectible: 1
 --- !u!212 &2011137064
 SpriteRenderer:
   m_ObjectHideFlags: 0

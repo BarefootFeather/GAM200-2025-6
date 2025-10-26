@@ -47,18 +47,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireEveryN: 6
   fireOffset: 0
-  projectilePrefab: {fileID: 9189772072053379975, guid: dea02966a05080f42baf8bda6864ede6, type: 3}
+  projectilePrefab: {fileID: 0}
   muzzle: {fileID: 0}
   projectileDamage: 1
   projectileMaxSteps: 12
   projectileStepDistance: 1
-  projectileSnapToGrid: 1
-  projectileSmoothStep: 1
-  projectileLerpFraction: 0.35
-  bpmForSmoothing: 120
-  intervalBeatsForSmoothing: 1
-  aimMode: 0
-  cardinalDir: {x: 1, y: 0}
+  shootDirection: 0
+  prefabRotation: 0
   player: {fileID: 0}
   gridTilemap: {fileID: 0}
   debugLogs: 0
@@ -106,7 +101,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: -539579915749326718, guid: fbb421c3e77d42141a0a9a062f287c6b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
