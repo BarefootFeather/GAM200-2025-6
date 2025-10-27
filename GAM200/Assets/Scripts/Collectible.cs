@@ -1,26 +1,32 @@
 using TMPro;
 using UnityEngine;
 
-
 public class Collectible : MonoBehaviour
 {
     public int collectibleCount;
     public TMP_Text collectibleText;
     public GameObject door;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    private bool hasGivenShield = false; // Prevents giving shield multiple times
 
-    // Update is called once per frame
     void Update()
     {
         if (collectibleText != null)
         {
             collectibleText.text = "Collectible Count: " + collectibleCount.ToString();
+        }
+    }
 
+    public void OnCollect(PlayerController player)
+    {
+        collectibleCount++;
+
+        // Give shield ability the first time a collectible is picked up
+        if (!hasGivenShield && player != null)
+        {
+            player.EnableShieldAbility();
+            hasGivenShield = true;
+            Debug.Log("Player has unlocked the Shield Ability!");
         }
     }
 }

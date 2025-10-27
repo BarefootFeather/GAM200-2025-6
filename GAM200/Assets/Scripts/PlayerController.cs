@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
@@ -32,11 +32,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private UIController uiController;
 
     [Header("-------------- Shield System --------------")]
-    [SerializeField] private bool hasShieldAbility = true;   // Can the player use the shield
+    [SerializeField] private bool hasShieldAbility = false;  // player starts without the shield power
     [SerializeField] private bool isShieldActive = false;    // Current shield status
-    [SerializeField] private GameObject shieldVisual;        // Optional: assign a glowing shield visual prefab or sprite
-    [SerializeField] private float shieldCooldown = 3f;      // Optional: delay between toggles
+    [SerializeField] private GameObject shieldVisual;        // shield effect visual
+    [SerializeField] private float shieldCooldown = 1f;      // cooldown after blocking
     private float shieldCooldownTimer = 0f;
+    private bool shieldOnCooldown = false;
 
     private float invulnerabilityTimer = 0f;
     private Vector3 targetPosition;
@@ -84,12 +85,15 @@ public class PlayerController : MonoBehaviour
             gameOverPanel.SetActive(true);
         }
 
-        // Handle cooldown timer
+        /* Handle cooldown timer
         if (shieldCooldownTimer > 0f)
-            shieldCooldownTimer -= Time.deltaTime;
+            shieldCooldownTimer -= Time.deltaTime;*/
 
         // Tick down invulnerability if needed
         TickInvulnerability();
+
+        if (hasShieldAbility)
+            HandleShieldCooldown();
     }
 
     void HandleInput()
@@ -98,7 +102,10 @@ public class PlayerController : MonoBehaviour
 
         // Will be true if shift is held down
         // Used for attack action
-        bool isAttack = Input.GetKey(KeyCode.LeftShift);
+        bool isAttack = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+
+        // hold Ctrl to push
+        bool isPush = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl); 
 
         // Only allow movement in one direction at a time
         if (Input.GetKeyDown(KeyCode.W)) direction = Vector3.up;
@@ -106,37 +113,25 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.A)) direction = Vector3.left;
         else if (Input.GetKeyDown(KeyCode.D)) direction = Vector3.right;
 
-        //  Shield toggle logic
-        if (hasShieldAbility && Input.GetKeyDown(KeyCode.Space) && shieldCooldownTimer <= 0f)
-        {
-            ToggleShield();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        /*if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             if (canBeInvulnerable && !isInvulnerable)
                 BecomeInvulnerable();
-        }
-
-        /*if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            if(canBeInvulnerable)
-            {
-                if (!isInvulnerable)
-                {
-                    BecomeInvulnerable();
-                }
-            }
         }*/
+
 
         // If a direction was chosen, calculate target position
         if (direction != Vector3.zero)
         {
-
             Vector3Int currentGrid = tilemap.WorldToCell(transform.position);
             Vector3Int targetGrid = currentGrid + Vector3Int.RoundToInt(direction);
 
-            if (isAttack)
+            if (isPush)
+            {
+                TryPushWall(direction);
+            }
+
+            else if (isAttack)
             {
                 // Attack mode: don't move, just face direction and attack
                 // Handle facing direction
@@ -168,32 +163,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // Toggle shield activation
-    private void ToggleShield()
-    {
-        isShieldActive = !isShieldActive;
-
-        if (isShieldActive)
-        {
-            // Activate shield
-            isInvulnerable = true;
-            if (shieldVisual != null)
-                shieldVisual.SetActive(true);
-            playerSprite.color = new Color(1f, 1f, 1f, 0.5f); // Optional fade look
-            Debug.Log("Shield activated!");
-        }
-        else
-        {
-            // Deactivate shield
-            isInvulnerable = false;
-            if (shieldVisual != null)
-                shieldVisual.SetActive(false);
-            playerSprite.color = Color.white;
-            shieldCooldownTimer = shieldCooldown; // Start cooldown
-            Debug.Log("Shield deactivated!");
-        }
-    }
-
     void CheckAttackHit(Vector3Int attackGridPosition)
     {
         // Convert attack position to world position for comparison
@@ -218,7 +187,7 @@ public class PlayerController : MonoBehaviour
             if (enemyGridPos == attackGridPosition)
             {
                 // Get the enemy component and damage it
-                var enemyScript = enemy.GetComponent<EnemyScript>(); // Replace with your actual enemy script name
+                var enemyScript = enemy.GetComponent<EnemyScript>(); 
                 if (enemyScript != null)
                 {
                     enemyScript.TakeDamage();
@@ -248,37 +217,45 @@ public class PlayerController : MonoBehaviour
     // Method to apply damage to the player
     public void TakeDamage(int damage)
     {
-        if (isInvulnerable || player_died) return;
+        if (player_died) return;
 
+        // Shield absorbs one hit if active
+        if (isShieldActive)
+        {
+            Debug.Log("Shield absorbed the damage!");
+            DeactivateShield(); // consume shield charge
+            return;
+        }
+
+        // If invulnerable from other effects, ignore
+        if (isInvulnerable) return;
+
+        // Apply damage
         playerHealth -= damage;
+        if (playerHealth >= 0)
+        {
+            uiController.UpdateHealthUI(playerHealth);
+        }
 
-        if(playerHealth >=0 ) uiController.UpdateHealthUI(playerHealth);
-
-        if (playerHealth <= 0)
+            if (playerHealth <= 0)
         {
             Debug.Log("Player has died.");
-
-            // Handle player death
             StartCoroutine(PlayDeathAnimation());
-
-            // Set player_died to true to prevent further actions
             player_died = true;
         }
         else
         {
-
-            // Start invulnerability
+            // Normal invulnerability period
             isInvulnerable = true;
             invulnerabilityTimer = invulnerabilityDuration;
 
-            // Change sprite color during invulnerability (When Added)
-            if (playerSprite != null)
-                playerSprite.color = new Color(1f, 1f, 1f, 0.5f);
-
-            Debug.Log("Player took damage, now invulnerable for " + invulnerabilityDuration + " seconds");
+            /*if (playerSprite != null)
+                playerSprite.color = new Color(1f, 1f, 1f, 0.5f);*/
+            playerSprite.color = new Color(1f, 1f, 1f, 0.5f);
         }
     }
-    private void BecomeInvulnerable()
+
+    /*private void BecomeInvulnerable()
     {
         // Start invulnerability
         isInvulnerable = true;
@@ -289,7 +266,8 @@ public class PlayerController : MonoBehaviour
             playerSprite.color = new Color(1f, 1f, 1f, 0.5f);
 
         Debug.Log("Player took damage, now invulnerable for " + invulnerabilityDuration + " seconds");
-    }
+    }*/
+
     public void TickInvulnerability()
     {
         if (isInvulnerable && !isShieldActive) // shield prevents countdown
@@ -298,24 +276,82 @@ public class PlayerController : MonoBehaviour
             if (invulnerabilityTimer <= 0)
             {
                 isInvulnerable = false;
-                if (playerSprite != null)
+                //if (playerSprite != null)
                     playerSprite.color = Color.white;
             }
         }
+    }
 
-        /*if (isInvulnerable)
+    public void EnableShieldAbility()
+    {
+        if (!hasShieldAbility)
         {
-            invulnerabilityTimer -= 1;
-            Debug.Log("Invulnerability time left: " + invulnerabilityTimer);
-            if (invulnerabilityTimer < 0)
+            hasShieldAbility = true;
+            ActivateShield();
+            Debug.Log("Shield power-up collected! Shield activated.");
+        }
+    }
+
+    private void ActivateShield()
+    {
+        if (!hasShieldAbility || shieldOnCooldown) return;
+
+        isShieldActive = true;
+        isInvulnerable = true;
+
+        if (shieldVisual != null)
+            shieldVisual.SetActive(true);
+
+        playerSprite.color = new Color(1f, 1f, 1f, 0.5f);
+        Debug.Log("Shield activated!");
+    }
+
+    // Deactivates shield after blocking a hit
+    private void DeactivateShield()
+    {
+        isShieldActive = false;
+        isInvulnerable = false;
+
+        if (shieldVisual != null)
+            shieldVisual.SetActive(false);
+
+        playerSprite.color = Color.white;
+
+        // Start cooldown
+        shieldOnCooldown = true;
+        shieldCooldownTimer = shieldCooldown;
+
+        Debug.Log("Shield broke! Starting cooldown...");
+    }
+
+    // Handles cooldown logic — call from Update()
+    private void HandleShieldCooldown()
+    {
+        /*if (shieldOnCooldown)
+        {
+            shieldCooldownTimer -= Time.deltaTime;
+
+            if (shieldCooldownTimer <= 0f)
             {
-                isInvulnerable = false;
-                // Reset sprite color if using visual feedback
-                if (playerSprite != null)
-                    playerSprite.color = Color.white;
+                shieldOnCooldown = false;
+                Debug.Log("Shield cooldown complete — reactivated!");
+                ActivateShield();
             }
         }*/
+
+        if (shieldOnCooldown)
+        {
+            shieldCooldownTimer -= Time.deltaTime;
+
+            if (shieldCooldownTimer <= 0f)
+            {
+                shieldOnCooldown = false;
+                Debug.Log("Shield cooldown complete — reactivated!");
+                ActivateShield();
+            }
+        }
     }
+
 
     public bool IsInvulnerable()
     {
@@ -338,6 +374,57 @@ public class PlayerController : MonoBehaviour
         // Disable player object
         gameObject.SetActive(false);                            
     }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        /*if (other.gameObject.CompareTag("Collectible"))
+        {
+            Destroy(other.gameObject);
+            diamond.collectibleCount++;
+        }*/
+
+        if (other.gameObject.CompareTag("Collectible"))
+        {
+            // Update collectible count
+            if (diamond != null)
+            {
+                diamond.OnCollect(this); // Pass the PlayerController to grant shield ability
+            }
+
+
+            // Destroy the collectible object
+            Destroy(other.gameObject);
+        }
+    }
+
+    private void TryPushWall(Vector3 direction)
+    {
+        Vector3Int currentGrid = tilemap.WorldToCell(transform.position);
+        Vector3Int targetGrid = currentGrid + Vector3Int.RoundToInt(direction);
+
+        // Convert target grid to world
+        Vector3 targetWorld = tilemap.GetCellCenterWorld(targetGrid);
+
+        // Raycast or overlap check for a MoveableWall
+        Collider2D hit = Physics2D.OverlapPoint(targetWorld);
+        if (hit != null && hit.CompareTag("Moveable"))
+        {
+            MoveableWall wall = hit.GetComponent<MoveableWall>();
+            if (wall != null)
+            {
+                Vector3Int pushDir = Vector3Int.RoundToInt(direction);
+                bool pushed = wall.TryPush(pushDir);
+                if (pushed)
+                {
+                    // play push animation
+                    animator.SetTrigger("Push");
+                    Debug.Log("Player pushed wall!");
+                }
+            }
+        }
+    }
+
+
     public void RestartLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -352,14 +439,7 @@ public class PlayerController : MonoBehaviour
         SceneManager.LoadScene("Main Menu");
     }
 
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.CompareTag("Collectible"))
-        {
-            Destroy(other.gameObject);
-            diamond.collectibleCount++;
-        }
-    }
+    
 
 }
 
