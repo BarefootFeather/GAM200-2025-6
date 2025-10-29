@@ -38,6 +38,7 @@ public class PlayerController : MonoBehaviour
     private float shieldCooldownTimer = 0f;
     private bool shieldOnCooldown = false;
 
+    private Vector3 moveStartPosition; // Where the movement started
     private float invulnerabilityTimer = 0f;
     private Vector3 targetPosition;
     private bool isMoving = false;
@@ -45,7 +46,7 @@ public class PlayerController : MonoBehaviour
     private bool deathAnimationComplete = false;
     public GameObject gameOverPanel;
     public Collectible diamond;
-    private Vector3 direction = Vector3Int.zero;
+    private Vector3 direction = Vector3.zero;
 
     void Start()
     {
@@ -67,12 +68,23 @@ public class PlayerController : MonoBehaviour
             // Move towards target position
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
 
-            // Check when larped to target
             if (Vector3.Distance(transform.position, targetPosition) < 0.01f)
             {
                 transform.position = targetPosition;
                 isMoving = false;
             }
+
+            // Check how far player has moved since start
+            float distanceMoved = Vector3.Distance(moveStartPosition, transform.position);
+
+            // If player moved 1f or more, stop and snap to tile center
+            /*if (distanceMoved >= 1f)
+            {
+                Vector3Int gridCell = tilemap.WorldToCell(transform.position);
+                transform.position = tilemap.GetCellCenterWorld(gridCell);
+
+                isMoving = false;
+            }*/
         }
         else
         {
@@ -85,9 +97,6 @@ public class PlayerController : MonoBehaviour
             gameOverPanel.SetActive(true);
         }
 
-        /* Handle cooldown timer
-        if (shieldCooldownTimer > 0f)
-            shieldCooldownTimer -= Time.deltaTime;*/
 
         // Tick down invulnerability if needed
         TickInvulnerability();
@@ -98,23 +107,15 @@ public class PlayerController : MonoBehaviour
 
     void HandleInput()
     {
-        
-
         // Will be true if shift is held down
         // Used for attack action
         bool isAttack = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift); 
         
         // Only allow movement in one direction at a time
-        if (Input.GetKeyDown(KeyCode.W)) direction = Vector3Int.up;
+        if (Input.GetKeyDown(KeyCode.W)) direction = Vector3.up;
         else if (Input.GetKeyDown(KeyCode.S)) direction = Vector3.down;
         else if (Input.GetKeyDown(KeyCode.A)) direction = Vector3.left;
         else if (Input.GetKeyDown(KeyCode.D)) direction = Vector3.right;
-
-        /*if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            if (canBeInvulnerable && !isInvulnerable)
-                BecomeInvulnerable();
-        }*/
 
 
         // If a direction was chosen, calculate target position
@@ -122,6 +123,10 @@ public class PlayerController : MonoBehaviour
         {
             Vector3Int currentGrid = tilemap.WorldToCell(transform.position);
             Vector3Int targetGrid = currentGrid + Vector3Int.RoundToInt(direction);
+            //moveStartPosition = transform.position; // Record where the move began
+            //targetPosition = transform.position + direction; // Move 1f in that direction
+            //isMoving = true;
+
 
             if (isAttack)
             {
@@ -173,7 +178,7 @@ public class PlayerController : MonoBehaviour
             Transform enemy = enemyParent.GetChild(i);
 
             // Convert enemy position to grid position
-            Vector3Int enemyGridPos = tilemap.WorldToCell(enemy.position);
+            Vector3 enemyGridPos = tilemap.WorldToCell(enemy.position);
 
             // Check if enemy is at the attack position
             if (enemyGridPos == attackGridPosition)
