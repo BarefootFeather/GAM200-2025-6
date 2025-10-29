@@ -27,7 +27,7 @@ public class TrapController : MonoBehaviour
 
     public void ToggleTraps()
     {
-        Debug.Log("Toggling traps...");
+        //Debug.Log("Toggling traps...");
 
         foreach (TrapScript trapscript in this.GetComponentsInChildren<TrapScript>())
         {

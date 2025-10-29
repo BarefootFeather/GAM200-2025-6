@@ -359,7 +359,17 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Wanderer_death_sprite_sheet_0: -99528203217329247
+      Wanderer_death_sprite_sheet_1: 2972043795119749802
+      Wanderer_death_sprite_sheet_2: -7595263784235596618
+      Wanderer_death_sprite_sheet_3: -6283356952828252455
+      Wanderer_death_sprite_sheet_4: 7975609000998703656
+      Wanderer_death_sprite_sheet_5: 5981440099932963722
+      Wanderer_death_sprite_sheet_6: -7658908819077057917
+      Wanderer_death_sprite_sheet_7: -4990240630060771664
+      Wanderer_death_sprite_sheet_8: -8875716259365089212
+      Wanderer_death_sprite_sheet_9: -1431343993183960119
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

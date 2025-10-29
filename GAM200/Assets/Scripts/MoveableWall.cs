@@ -32,36 +32,37 @@ public class MoveableWall : MonoBehaviour
         }
     }
 
-    public void TryPush(Vector3Int direction)
+    public bool TryPush(Vector3Int direction)
     {
-        if (isMoving) // ignore during movement
+        if (isMoving) return false; // already moving
+
+
+        Vector3Int currentCell = tilemap.WorldToCell(transform.position);
+        Vector3Int targetCell = currentCell + direction;
+        Vector3 targetWorld = tilemap.GetCellCenterWorld(targetCell);
+
+        Debug.Log("Current cell: " + currentCell);
+        Debug.Log("Trying to push MoveableWall to " + targetCell);
+
+        // check if destination is free
+        if (obstacleController != null && obstacleController.CanMoveToObj(targetWorld))
         {
+            Debug.Log("Pushing MoveableWall to " + targetCell);
+            // tell ObstacleController to update occupied tiles
+            obstacleController.OnObjectDestroyed(transform);
+            targetPosition = targetWorld;
+            isMoving = true;
 
+            // update position in obstacle controller after move
+            obstacleController.OnObjectAdded(transform);
+
+            return true;
         }
-
         else
         {
-            Vector3Int currentCell = tilemap.WorldToCell(transform.position);
-            Vector3Int targetCell = currentCell + direction;
-            Vector3 targetWorld = tilemap.GetCellCenterWorld(targetCell);
-
-            // check if destination is free
-            if (obstacleController != null && obstacleController.CanMoveTo(targetWorld))
-            {
-                // tell ObstacleController to update occupied tiles
-                obstacleController.OnObjectDestroyed(transform);
-                targetPosition = targetWorld;
-                isMoving = true;
-
-                // update position in obstacle controller after move
-                obstacleController.OnObjectAdded(transform);
-
-                //return true;
-            }
+            Debug.Log("Cannot push MoveableWall to " + targetCell + " - blocked");
+            return false;
         }
-        
 
-
-        //return false;
     }
 }

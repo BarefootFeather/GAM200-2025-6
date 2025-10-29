@@ -8,6 +8,7 @@ TagManager:
   - ToSecondLvl
   - Collectible
   - Moveable
+  - Breakable
   layers:
   - Default
   - TransparentFX

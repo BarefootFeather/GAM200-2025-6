@@ -116,11 +116,13 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.S)) direction = Vector3.down;
         else if (Input.GetKeyDown(KeyCode.A)) direction = Vector3.left;
         else if (Input.GetKeyDown(KeyCode.D)) direction = Vector3.right;
-
+        else direction = Vector3.zero;
 
         // If a direction was chosen, calculate target position
         if (direction != Vector3.zero)
         {
+            Debug.Log($"Input direction: {direction}");
+
             Vector3Int currentGrid = tilemap.WorldToCell(transform.position);
             Vector3Int targetGrid = currentGrid + Vector3Int.RoundToInt(direction);
             //moveStartPosition = transform.position; // Record where the move began
@@ -143,7 +145,7 @@ public class PlayerController : MonoBehaviour
                 // Check for enemies in attack direction
                 CheckAttackHit(targetGrid);
             }
-            else if (IsValidPosition(targetGrid))  // Check tilemap bounds
+            else if (IsValidPosition(targetGrid, direction))  // Check tilemap bounds
             {
                 targetPosition = tilemap.GetCellCenterWorld(targetGrid);
                 isMoving = true;
@@ -200,14 +202,14 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    bool IsValidPosition(Vector3Int gridPosition)
+    bool IsValidPosition(Vector3Int gridPosition, Vector3 direction)
     {
         // Simple bounds check
         BoundsInt bounds = tilemap.cellBounds;
 
         // Check for obstacles
         //return obstacleController.CanMoveTo(tilemap.GetCellCenterWorld(gridPosition)) && bounds.Contains(gridPosition);
-        return obstacleController.CanMoveTo(tilemap.GetCellCenterWorld(gridPosition));
+        return obstacleController.CanMoveTo(tilemap.GetCellCenterWorld(gridPosition), Vector3Int.RoundToInt(direction));
 
     }
 
@@ -395,16 +397,16 @@ public class PlayerController : MonoBehaviour
         }
 
         // Raycast or overlap check for a MoveableWall
-        if (other.gameObject.CompareTag("Moveable"))
-        {
-            MoveableWall wall = other.GetComponent<MoveableWall>();
-            if (wall != null)
-            {
-                Vector3Int tempDirection = Vector3Int.RoundToInt(direction);
-                wall.TryPush(tempDirection);
+        //if (other.gameObject.CompareTag("Moveable"))
+        //{
+        //    MoveableWall wall = other.GetComponent<MoveableWall>();
+        //    if (wall != null)
+        //    {
+        //        Vector3Int tempDirection = Vector3Int.RoundToInt(direction);
+        //        wall.TryPush(tempDirection);
 
-            }
-        }
+        //    }
+        //}
     }
 
 

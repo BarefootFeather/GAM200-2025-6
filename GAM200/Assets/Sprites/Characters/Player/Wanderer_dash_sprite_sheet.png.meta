@@ -334,7 +334,16 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Wanderer_dash_sprite_sheet_0: 2964000464906703409
+      Wanderer_dash_sprite_sheet_1: -19566508725657526
+      Wanderer_dash_sprite_sheet_2: 2494438049376360654
+      Wanderer_dash_sprite_sheet_3: -8783725074014893797
+      Wanderer_dash_sprite_sheet_4: -7992036008633625756
+      Wanderer_dash_sprite_sheet_5: -1599478167631684639
+      Wanderer_dash_sprite_sheet_6: -3178100946850170379
+      Wanderer_dash_sprite_sheet_7: 7596540165550754762
+      Wanderer_dash_sprite_sheet_8: 4510377547749967375
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

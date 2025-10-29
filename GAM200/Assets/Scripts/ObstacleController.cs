@@ -10,8 +10,10 @@ public class ObstacleController : MonoBehaviour
 
     private HashSet<Vector3Int> occupiedTiles = new();
     private Dictionary<Transform, Vector3> lastPositions = new();
+    private Dictionary<Transform, Vector3Int> lastPositions_Cell = new();
     private Dictionary<Transform, HashSet<Vector3Int>> lastTiles = new();
     private HashSet<Transform> trackedBreakables = new();
+    private HashSet<Transform> trackedMoveables = new();
 
     void Awake()
     {
@@ -28,15 +30,16 @@ public class ObstacleController : MonoBehaviour
     {
         occupiedTiles.Clear();
         lastPositions.Clear();
+        lastPositions_Cell.Clear();
         lastTiles.Clear();
         trackedBreakables.Clear();
+        trackedMoveables.Clear();
 
         foreach (Transform child in transform)
         {
             if (child != null)
             {
                 var tiles = GetObjectTiles(child);
-
 
                 foreach (var tile in tiles)
                 {
@@ -45,7 +48,9 @@ public class ObstacleController : MonoBehaviour
 
                 if (child.CompareTag("Moveable"))
                 {
+                    trackedMoveables.Add(child);
                     lastPositions[child] = child.position;
+                    lastPositions_Cell[child] = targetTilemap.WorldToCell(child.position);
                     lastTiles[child] = tiles;
                 }
                 else if (child.CompareTag("Breakable"))
@@ -59,13 +64,14 @@ public class ObstacleController : MonoBehaviour
 
     private void CheckMoveableObjects()
     {
-        foreach (Transform child in transform)
+        // FIX: Use trackedMoveables instead of iterating through all children
+        foreach (Transform moveableObj in trackedMoveables)
         {
-            if (child != null && child.CompareTag("Moveable"))
+            if (moveableObj != null && moveableObj.CompareTag("Moveable"))
             {
-                if (!lastPositions.ContainsKey(child) || child.position != lastPositions[child])
+                if (!lastPositions.ContainsKey(moveableObj) || moveableObj.position != lastPositions[moveableObj])
                 {
-                    UpdateMoveableObject(child);
+                    UpdateMoveableObject(moveableObj);
                 }
             }
         }
@@ -105,8 +111,9 @@ public class ObstacleController : MonoBehaviour
             occupiedTiles.Add(tile);
         }
 
-        // Update tracking
+        // FIX: Update both position and cell position tracking
         lastPositions[obj] = obj.position;
+        lastPositions_Cell[obj] = targetTilemap.WorldToCell(obj.position);
         lastTiles[obj] = newTiles;
     }
 
@@ -114,7 +121,6 @@ public class ObstacleController : MonoBehaviour
     {
         if (lastTiles.ContainsKey(obj))
         {
-            // Instead of ExceptWith, use simple Remove loop
             foreach (var tile in lastTiles[obj])
             {
                 occupiedTiles.Remove(tile);
@@ -148,10 +154,40 @@ public class ObstacleController : MonoBehaviour
         return tiles;
     }
 
-    public bool CanMoveTo(Vector3 worldPosition)
+    public bool CanMoveTo(Vector3 worldPosition, Vector3Int dir)
     {
         Vector3Int cellPosition = targetTilemap.WorldToCell(worldPosition);
-        return !occupiedTiles.Contains(cellPosition);
+
+        // Check if there is an occupied tile at the target position
+        if (occupiedTiles.Contains(cellPosition))
+        {
+            // Check if it is occupied by a moveable object
+            if (lastPositions_Cell.ContainsValue(cellPosition))
+            {
+                foreach (var moveable in lastPositions_Cell)
+                {
+                    if (moveable.Value == cellPosition)
+                    {
+                        var moveableWall = moveable.Key.GetComponent<MoveableWall>();
+                        bool canPush = false;
+                        if (moveableWall != null)
+                        {
+                            canPush = moveableWall.TryPush(dir);
+                        }
+                        return canPush; // Allow move onto moveable object
+                    }
+                }
+            }
+            return false; // Occupied by non-moveable object
+        }
+        return true; // Free to move
+    }
+
+    public bool CanMoveToObj(Vector3 worldPosition)
+    {
+        Vector3Int cellPosition = targetTilemap.WorldToCell(worldPosition);
+        Debug.Log("Checking CanMoveToObj for cell " + occupiedTiles.Contains(cellPosition));
+        return !occupiedTiles.Contains(cellPosition); // Free to move
     }
 
     public void OnObjectDestroyed(Transform obj)
@@ -162,6 +198,7 @@ public class ObstacleController : MonoBehaviour
         }
         else if (obj.CompareTag("Moveable"))
         {
+            // Remove from all tracking dictionaries and sets
             if (lastTiles.ContainsKey(obj))
             {
                 foreach (var tile in lastTiles[obj])
@@ -171,6 +208,8 @@ public class ObstacleController : MonoBehaviour
                 lastTiles.Remove(obj);
             }
             lastPositions.Remove(obj);
+            lastPositions_Cell.Remove(obj);
+            trackedMoveables.Remove(obj);
         }
         else
         {
@@ -190,7 +229,9 @@ public class ObstacleController : MonoBehaviour
 
         if (obj.CompareTag("Moveable"))
         {
+            trackedMoveables.Add(obj);
             lastPositions[obj] = obj.position;
+            lastPositions_Cell[obj] = targetTilemap.WorldToCell(obj.position);
             lastTiles[obj] = tiles;
         }
         else if (obj.CompareTag("Breakable"))

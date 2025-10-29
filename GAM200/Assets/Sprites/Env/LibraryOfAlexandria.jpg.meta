@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      LibraryOfAlexandria_0: 8393139398476343878
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
