@@ -23,7 +23,6 @@ public class PlayerController : MonoBehaviour
     [Header("Invulnerability")]
     [SerializeField] private float invulnerabilityDuration = 1.5f;
     [SerializeField] private bool isInvulnerable = false;
-    [SerializeField] private bool canBeInvulnerable = false;
 
     [Header("-------------- Attack Variables --------------")]
     [SerializeField] private Transform enemyParent; // Drag Enemy Parent GameObject here
@@ -46,6 +45,7 @@ public class PlayerController : MonoBehaviour
     private bool deathAnimationComplete = false;
     public GameObject gameOverPanel;
     public Collectible diamond;
+    private Vector3 direction = Vector3Int.zero;
 
     void Start()
     {
@@ -98,17 +98,14 @@ public class PlayerController : MonoBehaviour
 
     void HandleInput()
     {
-        Vector3 direction = Vector3.zero;
+        
 
         // Will be true if shift is held down
         // Used for attack action
-        bool isAttack = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-
-        // hold Ctrl to push
-        bool isPush = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl); 
-
+        bool isAttack = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift); 
+        
         // Only allow movement in one direction at a time
-        if (Input.GetKeyDown(KeyCode.W)) direction = Vector3.up;
+        if (Input.GetKeyDown(KeyCode.W)) direction = Vector3Int.up;
         else if (Input.GetKeyDown(KeyCode.S)) direction = Vector3.down;
         else if (Input.GetKeyDown(KeyCode.A)) direction = Vector3.left;
         else if (Input.GetKeyDown(KeyCode.D)) direction = Vector3.right;
@@ -126,12 +123,7 @@ public class PlayerController : MonoBehaviour
             Vector3Int currentGrid = tilemap.WorldToCell(transform.position);
             Vector3Int targetGrid = currentGrid + Vector3Int.RoundToInt(direction);
 
-            if (isPush)
-            {
-                TryPushWall(direction);
-            }
-
-            else if (isAttack)
+            if (isAttack)
             {
                 // Attack mode: don't move, just face direction and attack
                 // Handle facing direction
@@ -383,6 +375,8 @@ public class PlayerController : MonoBehaviour
             diamond.collectibleCount++;
         }*/
 
+        Debug.Log("Colliders are touching!");
+
         if (other.gameObject.CompareTag("Collectible"))
         {
             // Update collectible count
@@ -391,35 +385,19 @@ public class PlayerController : MonoBehaviour
                 diamond.OnCollect(this); // Pass the PlayerController to grant shield ability
             }
 
-
             // Destroy the collectible object
             Destroy(other.gameObject);
         }
-    }
-
-    private void TryPushWall(Vector3 direction)
-    {
-        Vector3Int currentGrid = tilemap.WorldToCell(transform.position);
-        Vector3Int targetGrid = currentGrid + Vector3Int.RoundToInt(direction);
-
-        // Convert target grid to world
-        Vector3 targetWorld = tilemap.GetCellCenterWorld(targetGrid);
 
         // Raycast or overlap check for a MoveableWall
-        Collider2D hit = Physics2D.OverlapPoint(targetWorld);
-        if (hit != null && hit.CompareTag("Moveable"))
+        if (other.gameObject.CompareTag("Moveable"))
         {
-            MoveableWall wall = hit.GetComponent<MoveableWall>();
+            MoveableWall wall = other.GetComponent<MoveableWall>();
             if (wall != null)
             {
-                Vector3Int pushDir = Vector3Int.RoundToInt(direction);
-                bool pushed = wall.TryPush(pushDir);
-                if (pushed)
-                {
-                    // play push animation
-                    animator.SetTrigger("Push");
-                    Debug.Log("Player pushed wall!");
-                }
+                Vector3Int tempDirection = Vector3Int.RoundToInt(direction);
+                wall.TryPush(tempDirection);
+
             }
         }
     }
