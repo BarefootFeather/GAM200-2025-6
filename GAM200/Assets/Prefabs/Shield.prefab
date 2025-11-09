@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6069363824689400910
+--- !u!1 &7947351941935264809
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,88 +8,38 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 9145687301884664753}
-  - component: {fileID: 2785487531202639617}
-  - component: {fileID: 6448935854591250224}
-  - component: {fileID: 1021984144553020177}
-  m_Layer: 9
-  m_Name: Enemy_Cursed_Tome
+  - component: {fileID: 3327232762782613224}
+  - component: {fileID: 400963539683868688}
+  - component: {fileID: 5583958219536123539}
+  m_Layer: 0
+  m_Name: Shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &9145687301884664753
+--- !u!4 &3327232762782613224
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6069363824689400910}
+  m_GameObject: {fileID: 7947351941935264809}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -18.58, y: 1.08, z: -0.042126425}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.04300022, y: 0.0009999275, z: 0}
+  m_LocalScale: {x: 0.81615, y: 0.81615, z: 0.81615}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2785487531202639617
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6069363824689400910}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1943dc1efbcf96d418ec185bd2cec936, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gridTilemap: {fileID: 0}
-  spawnGridCoords: {x: 0, y: 0}
-  moveRoot: {fileID: 0}
-  moveEveryNIntervals: 1
-  moveOffset: 0
-  stepDistance: 1
-  snapToGrid: 0
-  smoothStep: 0
-  moveLerpFractionOfInterval: 0.35
-  bpmForSmoothing: 120
-  intervalBeatsForSmoothing: 1
-  path:
-  - direction: 1
-    count: 1
-  - direction: 0
-    count: 2
-  - direction: 3
-    count: 1
-  - direction: 2
-    count: 2
-  reverseMovement: 0
-  logPhysicsCollisions: 1
-  useColliderSize: 1
-  boxCheckSize: {x: 0.8, y: 0.8}
-  includeTriggers: 0
-  physicsMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  logTilemapCollisions: 0
-  collisionTilemap: {fileID: 0}
-  player: {fileID: 0}
-  damageAmount: 2
-  canDamagePlayer: 1
-  debugLogs: 0
-  enemyHealth: 0
-  animator: {fileID: 1021984144553020177}
-  spriteRenderer: {fileID: 6448935854591250224}
---- !u!212 &6448935854591250224
+--- !u!212 &400963539683868688
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6069363824689400910}
+  m_GameObject: {fileID: 7947351941935264809}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -106,7 +56,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -126,29 +76,29 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 7130397906811056404, guid: 7046388468ce81346b6ab1ff7ae24bb7, type: 3}
+  m_SortingOrder: 3
+  m_Sprite: {fileID: 7571401643613406209, guid: 703e701fff14f77419858996ad58ec95, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.2, y: 0.2}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &1021984144553020177
+--- !u!95 &5583958219536123539
 Animator:
   serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6069363824689400910}
+  m_GameObject: {fileID: 7947351941935264809}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ea398d3edfd5c1944b878fc93fd99f41, type: 2}
+  m_Controller: {fileID: 9100000, guid: 4d47ae2c7c836614b8892c467441f5d3, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

@@ -7979,15 +7979,16 @@ MonoBehaviour:
   animator: {fileID: 326640343}
   invulnerabilityDuration: 4
   isInvulnerable: 0
-  canBeInvulnerable: 0
   enemyParent: {fileID: 504035333}
   uiController: {fileID: 1195181195}
   hasShieldAbility: 1
   isShieldActive: 0
   shieldVisual: {fileID: 0}
   shieldCooldown: 3
+  shield_animator: {fileID: 0}
   gameOverPanel: {fileID: 875553453}
   diamond: {fileID: 0}
+  isPowerup: 0
 --- !u!212 &326640339
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -16084,6 +16085,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneToLoad: Prototype_Gameplay_Scene
   doorUIPanel: {fileID: 1558021050}
+  CollectOneMoreUIPanel: {fileID: 0}
   collectible: {fileID: 0}
   requiresCollectible: 1
 --- !u!212 &2011137064

@@ -8,10 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/0_Main Menu.unity
     guid: bc17e72c7b27f034fa4e1d2a35e01c83
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/1_FallenKingdom.unity
     guid: 907a191f48999114cb97c80bc004323c
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/2_M1_level.unity
     guid: 390fed4b0a3eeda4f9e87e21c1fc6a73
   - enabled: 1

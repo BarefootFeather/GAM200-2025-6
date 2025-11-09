@@ -34,9 +34,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool hasShieldAbility = false;  // player starts without the shield power
     [SerializeField] public bool isShieldActive = false;    // Current shield status
     [SerializeField] private GameObject shieldVisual;        // shield effect visual
-    [SerializeField] private float shieldCooldown = 1f;      // cooldown after blocking
+    [SerializeField] private float shieldCooldown = 1f;
     private float shieldCooldownTimer = 0f;
     private bool shieldOnCooldown = false;
+
 
     private Vector3 moveStartPosition; // Where the movement started
     private float invulnerabilityTimer = 0f;
@@ -342,6 +343,9 @@ public class PlayerController : MonoBehaviour
         {
             hasShieldAbility = true;
             ActivateShield();
+
+            // Trigger shield animation
+            animator.SetTrigger("Shield_VFX");
             Debug.Log("Shield power-up collected! Shield activated.");
         }
     }

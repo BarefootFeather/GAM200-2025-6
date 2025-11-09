@@ -5,7 +5,7 @@ public class DoorTransition : MonoBehaviour
 {
     [SerializeField] private string sceneToLoad; 
     [SerializeField] private GameObject doorUIPanel;
-    [SerializeField] private GameObject CollectOneMoreUIPanel;
+    
     [SerializeField] private Collectible collectible;     
     [SerializeField] private bool requiresCollectible = true; // Whether this door needs collectibles to unlock
 
@@ -42,8 +42,7 @@ public class DoorTransition : MonoBehaviour
                 {
 
                     SetDoorLocked(true);
-                    if (CollectOneMoreUIPanel != null)
-                        CollectOneMoreUIPanel.SetActive(true);
+                    
                 }
             }
                 
@@ -52,7 +51,6 @@ public class DoorTransition : MonoBehaviour
                 SetDoorLocked(true);
         }
     }
-
 
     private void OnTriggerEnter2D(Collider2D other)
     {

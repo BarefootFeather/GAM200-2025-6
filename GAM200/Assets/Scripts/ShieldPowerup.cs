@@ -6,6 +6,8 @@ public class ShieldPowerup : MonoBehaviour
     [SerializeField] private AudioClip pickupSound;
     [SerializeField] private GameObject pickupEffect;
 
+    [SerializeField] private Animator animator;
+
 
     private void OnTriggerEnter2D(Collider2D other)
     {
