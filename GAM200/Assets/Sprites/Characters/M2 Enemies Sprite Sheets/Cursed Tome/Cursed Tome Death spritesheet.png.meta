@@ -184,7 +184,10 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Cursed Tome Death spritesheet_0: -8066955275603732834
+      Cursed Tome Death spritesheet_1: 3737935088102662867
+      Cursed Tome Death spritesheet_2: -2963471504857024093
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

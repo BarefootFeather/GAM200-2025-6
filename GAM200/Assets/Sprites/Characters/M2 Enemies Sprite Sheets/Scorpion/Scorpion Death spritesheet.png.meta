@@ -184,7 +184,10 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Scorpion Death spritesheet_0: -2368225556105569926
+      Scorpion Death spritesheet_1: -7329507094363732332
+      Scorpion Death spritesheet_2: 5138308978947848091
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
