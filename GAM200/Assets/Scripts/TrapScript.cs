@@ -158,7 +158,7 @@ public class TrapScript : MonoBehaviour
         Vector3Int trapGridPos = grid.WorldToCell(transform.position);
 
         // Check if player and trap are in the same cell
-        if (playerGridPos == trapGridPos && !player.IsInvulnerable())
+        if (playerGridPos == trapGridPos && (player.isShieldActive || !player.IsInvulnerable()))
         {
             player.TakeDamage(damageAmount);
 

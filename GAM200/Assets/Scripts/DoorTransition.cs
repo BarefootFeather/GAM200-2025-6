@@ -3,11 +3,11 @@ using UnityEngine.SceneManagement; // Required for scene management
 
 public class DoorTransition : MonoBehaviour
 {
-    [SerializeField] private string sceneToLoad; // Name of the scene to load
-    [SerializeField] private GameObject doorUIPanel; // Reference to the UI Panel
-    [SerializeField] private Collectible collectible;     // Reference to the Collectible script
+    [SerializeField] private string sceneToLoad; 
+    [SerializeField] private GameObject doorUIPanel;
+    [SerializeField] private GameObject CollectOneMoreUIPanel;
+    [SerializeField] private Collectible collectible;     
     [SerializeField] private bool requiresCollectible = true; // Whether this door needs collectibles to unlock
-
 
     private Collider2D doorCollider;
 
@@ -32,7 +32,21 @@ public class DoorTransition : MonoBehaviour
         if (requiresCollectible)
         {
             if (collectible.collectibleCount > 0)
-                SetDoorLocked(false);
+            {
+                if (collectible.collectibleCount >= 2)
+                {
+                    SetDoorLocked(false);
+                }
+
+                else
+                {
+                    
+                    SetDoorLocked(true);
+                    CollectOneMoreUIPanel.SetActive(true);
+                }
+            }
+                
+
             else
                 SetDoorLocked(true);
         }
@@ -67,20 +81,5 @@ public class DoorTransition : MonoBehaviour
             doorCollider.isTrigger = !locked;
         }
     }
-
-    /*private void OnTriggerEnter2D(Collider2D other)
-    {
-        //Check if the entering object is the player
-        if (other.CompareTag("Player") && CompareTag("CompletedLvl"))
-        {
-            doorUIPanel.SetActive(true);
-        }
-        if (other.CompareTag("Player") && CompareTag("ToSecondLvl"))
-        {
-            SceneManager.LoadScene(sceneToLoad);
-        }
-
-
-    }*/
 
 }

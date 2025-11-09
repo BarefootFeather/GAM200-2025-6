@@ -226,7 +226,7 @@ public class EnemyScript : MonoBehaviour
         Vector3Int playerGridPos = gridTilemap.WorldToCell(player.transform.position);
         Vector3Int enemyGridPos = gridTilemap.WorldToCell(M.position);
 
-        if (playerGridPos == enemyGridPos && !player.IsInvulnerable())
+        if (playerGridPos == enemyGridPos && (player.isShieldActive || !player.IsInvulnerable()))
         {
             player.TakeDamage(damageAmount);
             if (debugLogs)

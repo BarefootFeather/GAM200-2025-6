@@ -135,7 +135,7 @@ public class BeatProjectile : MonoBehaviour
         Vector3Int currCell   = _tilemap.WorldToCell(transform.position);
         Vector3Int playerCell = _tilemap.WorldToCell(_player.transform.position);
 
-        if ((currCell == playerCell || destCell == playerCell) && !_player.IsInvulnerable())
+        if ((currCell == playerCell || destCell == playerCell) && (_player.isShieldActive || !_player.IsInvulnerable()))
         {
             _player.TakeDamage(_damageToPlayer);
             if (debugLogs)

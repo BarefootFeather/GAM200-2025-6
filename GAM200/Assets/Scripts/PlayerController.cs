@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("-------------- Shield System --------------")]
     [SerializeField] private bool hasShieldAbility = false;  // player starts without the shield power
-    [SerializeField] private bool isShieldActive = false;    // Current shield status
+    [SerializeField] public bool isShieldActive = false;    // Current shield status
     [SerializeField] private GameObject shieldVisual;        // shield effect visual
     [SerializeField] private float shieldCooldown = 1f;      // cooldown after blocking
     private float shieldCooldownTimer = 0f;
@@ -47,9 +47,20 @@ public class PlayerController : MonoBehaviour
     public GameObject gameOverPanel;
     public Collectible diamond;
     private Vector3 direction = Vector3.zero;
+    public bool isPowerup;
+    private GameObject currentTeleporter;
+    
 
     void Start()
     {
+        // Check if there's a saved spawn position from RespawnManager
+        if (RespawnManager.I != null)
+        {
+            Vector3 spawnPos = RespawnManager.I.GetSpawnOr(transform.position);
+            transform.position = spawnPos;
+            transform.rotation = RespawnManager.I.GetSpawnRotOr(transform.rotation);
+        }
+
         // Snap to grid on start
         Vector3Int gridPos = tilemap.WorldToCell(transform.position);
         targetPosition = tilemap.GetCellCenterWorld(gridPos);
@@ -101,8 +112,31 @@ public class PlayerController : MonoBehaviour
         // Tick down invulnerability if needed
         TickInvulnerability();
 
+
         if (hasShieldAbility)
             HandleShieldCooldown();
+
+        
+    }
+
+    void Teleporting()
+    {
+        if (currentTeleporter != null)
+        {
+            Debug.Log("Target location: " + targetPosition);
+            transform.position = currentTeleporter.GetComponent<Teleporter>().GetDestination().position;
+            isMoving = false;
+            Debug.Log("Teleporter's position: " + currentTeleporter.GetComponent<Teleporter>().GetDestination().position);
+            if (transform.position != null)
+            {
+                Debug.Log("Transform position: " + transform.position);
+            }
+            if (currentTeleporter != null)
+            {
+                Debug.Log("Current teleporter: " + currentTeleporter);
+            }
+
+        }
     }
 
     void HandleInput()
@@ -254,19 +288,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    /*private void BecomeInvulnerable()
-    {
-        // Start invulnerability
-        isInvulnerable = true;
-        invulnerabilityTimer = invulnerabilityDuration;
-
-        // Change sprite color during invulnerability (When Added)
-        if (playerSprite != null)
-            playerSprite.color = new Color(1f, 1f, 1f, 0.5f);
-
-        Debug.Log("Player took damage, now invulnerable for " + invulnerabilityDuration + " seconds");
-    }*/
-
     public void TickInvulnerability()
     {
         if (isInvulnerable && !isShieldActive) // shield prevents countdown
@@ -326,18 +347,6 @@ public class PlayerController : MonoBehaviour
     // Handles cooldown logic — call from Update()
     private void HandleShieldCooldown()
     {
-        /*if (shieldOnCooldown)
-        {
-            shieldCooldownTimer -= Time.deltaTime;
-
-            if (shieldCooldownTimer <= 0f)
-            {
-                shieldOnCooldown = false;
-                Debug.Log("Shield cooldown complete — reactivated!");
-                ActivateShield();
-            }
-        }*/
-
         if (shieldOnCooldown)
         {
             shieldCooldownTimer -= Time.deltaTime;
@@ -396,19 +405,25 @@ public class PlayerController : MonoBehaviour
             Destroy(other.gameObject);
         }
 
-        // Raycast or overlap check for a MoveableWall
-        //if (other.gameObject.CompareTag("Moveable"))
-        //{
-        //    MoveableWall wall = other.GetComponent<MoveableWall>();
-        //    if (wall != null)
-        //    {
-        //        Vector3Int tempDirection = Vector3Int.RoundToInt(direction);
-        //        wall.TryPush(tempDirection);
-
-        //    }
-        //}
+        if (other.CompareTag("Teleporter"))
+        {
+            currentTeleporter = other.gameObject;
+            Teleporting();
+        }
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Teleporter"))
+        {
+            if (other.gameObject == currentTeleporter)
+            {
+                currentTeleporter = null;
+            }
+        }
+    }
+
+    
 
     public void RestartLevel()
     {
@@ -424,7 +439,6 @@ public class PlayerController : MonoBehaviour
         SceneManager.LoadScene("Main Menu");
     }
 
-    
 
 }
 

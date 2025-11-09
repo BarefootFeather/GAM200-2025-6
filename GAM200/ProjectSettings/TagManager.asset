@@ -9,6 +9,7 @@ TagManager:
   - Collectible
   - Moveable
   - Breakable
+  - Teleporter
   layers:
   - Default
   - TransparentFX
