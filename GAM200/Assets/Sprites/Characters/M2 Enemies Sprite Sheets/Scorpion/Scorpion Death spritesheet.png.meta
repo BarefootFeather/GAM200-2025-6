@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: d39a2842093c3b948a2c9240a40a0d4e
+guid: 6323d29be0bc4a444b4bb1241785c020
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6717884257390833292
-    second: Shield_0
+      213: -2368225556105569926
+    second: Scorpion Death spritesheet_0
   - first:
-      213: -7947067082740497745
-    second: Shield_1
+      213: -7329507094363732332
+    second: Scorpion Death spritesheet_1
   - first:
-      213: -4098029715399502762
-    second: Shield_2
+      213: 5138308978947848091
+    second: Scorpion Death spritesheet_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -57,7 +57,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 588
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -106,23 +106,67 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Shield_0
+      name: Scorpion Death spritesheet_0
       rect:
         serializedVersion: 2
-        x: 90
-        y: 47
-        width: 1361
-        height: 1381
+        x: 80
+        y: 22
+        width: 340
+        height: 422
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 471d70c5cd745c2a0800000000000000
-      internalID: -6717884257390833292
+      spriteID: a795354776f522fd0800000000000000
+      internalID: -2368225556105569926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Scorpion Death spritesheet_1
+      rect:
+        serializedVersion: 2
+        x: 592
+        y: 22
+        width: 340
+        height: 424
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4968ebd812c584a90800000000000000
+      internalID: -7329507094363732332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Scorpion Death spritesheet_2
+      rect:
+        serializedVersion: 2
+        x: 1100
+        y: 23
+        width: 340
+        height: 418
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b97f26cdac0fe4740800000000000000
+      internalID: 5138308978947848091
       vertices: []
       indices: 
       edges: []
@@ -131,7 +175,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 24f20f33f7215924ebf33043038b3169
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -140,13 +184,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      Shield_0: -6717884257390833292
-<<<<<<< Updated upstream
-      Shield_1: -7947067082740497745
-      Shield_2: -4098029715399502762
-=======
->>>>>>> Stashed changes
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

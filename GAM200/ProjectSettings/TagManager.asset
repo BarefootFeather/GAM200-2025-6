@@ -10,6 +10,7 @@ TagManager:
   - Moveable
   - Breakable
   - Teleporter
+  - Audio
   layers:
   - Default
   - TransparentFX

@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: d39a2842093c3b948a2c9240a40a0d4e
+guid: ae8b2ac8e8609e74999be7ecf4b50533
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6717884257390833292
-    second: Shield_0
+      213: -8066955275603732834
+    second: Cursed Tome Death spritesheet_0
   - first:
-      213: -7947067082740497745
-    second: Shield_1
+      213: 3737935088102662867
+    second: Cursed Tome Death spritesheet_1
   - first:
-      213: -4098029715399502762
-    second: Shield_2
+      213: -2963471504857024093
+    second: Cursed Tome Death spritesheet_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -57,7 +57,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 588
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -106,23 +106,67 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Shield_0
+      name: Cursed Tome Death spritesheet_0
       rect:
         serializedVersion: 2
-        x: 90
-        y: 47
-        width: 1361
-        height: 1381
+        x: 116
+        y: 19
+        width: 330
+        height: 398
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 471d70c5cd745c2a0800000000000000
-      internalID: -6717884257390833292
+      spriteID: e961daadaea6c0090800000000000000
+      internalID: -8066955275603732834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cursed Tome Death spritesheet_1
+      rect:
+        serializedVersion: 2
+        x: 638
+        y: 25
+        width: 341
+        height: 387
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3d2e3df7820dfd330800000000000000
+      internalID: 3737935088102662867
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Cursed Tome Death spritesheet_2
+      rect:
+        serializedVersion: 2
+        x: 1141
+        y: 29
+        width: 339
+        height: 374
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3a931031e52afd6d0800000000000000
+      internalID: -2963471504857024093
       vertices: []
       indices: 
       edges: []
@@ -131,7 +175,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 24f20f33f7215924ebf33043038b3169
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -140,13 +184,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      Shield_0: -6717884257390833292
-<<<<<<< Updated upstream
-      Shield_1: -7947067082740497745
-      Shield_2: -4098029715399502762
-=======
->>>>>>> Stashed changes
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
