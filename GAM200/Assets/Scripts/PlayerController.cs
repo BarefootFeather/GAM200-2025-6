@@ -140,11 +140,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        // Teleport the player
-        Debug.Log("Teleporting to: " + destination.position);
-        transform.position = destination.position;
-
-        // Update camera bounds if teleporter has a destination boundary set
+        // Update camera bounds FIRST if teleporter has a destination boundary set
         PolygonCollider2D destinationBoundary = teleporterScript.GetDestinationBoundary();
         if (destinationBoundary != null)
         {
@@ -153,6 +149,17 @@ public class PlayerController : MonoBehaviour
             {
                 confiner.BoundingShape2D = destinationBoundary;
             }
+        }
+
+        // Teleport the player
+        Debug.Log("Teleporting to: " + destination.position);
+        transform.position = destination.position;
+
+        // Force Cinemachine camera to snap instantly by invalidating its state
+        var vcam = FindFirstObjectByType<Unity.Cinemachine.CinemachineCamera>();
+        if (vcam != null)
+        {
+            vcam.PreviousStateIsValid = false;
         }
 
         // Stop movement properly (resets isMoving and targetPosition)
