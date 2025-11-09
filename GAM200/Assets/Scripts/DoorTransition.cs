@@ -40,9 +40,10 @@ public class DoorTransition : MonoBehaviour
 
                 else
                 {
-                    
+
                     SetDoorLocked(true);
-                    CollectOneMoreUIPanel.SetActive(true);
+                    if (CollectOneMoreUIPanel != null)
+                        CollectOneMoreUIPanel.SetActive(true);
                 }
             }
                 

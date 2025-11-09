@@ -121,22 +121,42 @@ public class PlayerController : MonoBehaviour
 
     void Teleporting()
     {
-        if (currentTeleporter != null)
-        {
-            Debug.Log("Target location: " + targetPosition);
-            transform.position = currentTeleporter.GetComponent<Teleporter>().GetDestination().position;
-            isMoving = false;
-            Debug.Log("Teleporter's position: " + currentTeleporter.GetComponent<Teleporter>().GetDestination().position);
-            if (transform.position != null)
-            {
-                Debug.Log("Transform position: " + transform.position);
-            }
-            if (currentTeleporter != null)
-            {
-                Debug.Log("Current teleporter: " + currentTeleporter);
-            }
+        if (currentTeleporter == null) return;
 
+        // Cache the Teleporter component (call GetComponent only once)
+        Teleporter teleporterScript = currentTeleporter.GetComponent<Teleporter>();
+
+        if (teleporterScript == null)
+        {
+            Debug.LogError("Teleporter component not found on " + currentTeleporter.name);
+            return;
         }
+
+        Transform destination = teleporterScript.GetDestination();
+
+        if (destination == null)
+        {
+            Debug.LogError("Destination not assigned on teleporter " + currentTeleporter.name);
+            return;
+        }
+
+        // Teleport the player
+        Debug.Log("Teleporting to: " + destination.position);
+        transform.position = destination.position;
+
+        // Update camera bounds if teleporter has a destination boundary set
+        PolygonCollider2D destinationBoundary = teleporterScript.GetDestinationBoundary();
+        if (destinationBoundary != null)
+        {
+            var confiner = FindFirstObjectByType<Unity.Cinemachine.CinemachineConfiner2D>();
+            if (confiner != null)
+            {
+                confiner.BoundingShape2D = destinationBoundary;
+            }
+        }
+
+        // Stop movement properly (resets isMoving and targetPosition)
+        StopMovement();
     }
 
     // Called by MapTransition to stop player movement

@@ -1504,7 +1504,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f453f694addf4275988fac205bc91968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BoundingShape2D: {fileID: 1473937552}
+  BoundingShape2D: {fileID: 2047292201}
   Damping: 0.5
   SlowingDistance: 5
   OversizeWindow:
@@ -3250,6 +3250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destination: {fileID: 1121896876}
+  destinationMapBoundary: {fileID: 2047292201}
 --- !u!61 &120808050
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5678,6 +5679,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destination: {fileID: 1121896876}
+  destinationMapBoundary: {fileID: 2047292201}
 --- !u!61 &190127239
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -42052,7 +42054,7 @@ GameObject:
   - component: {fileID: 1121896875}
   m_Layer: 0
   m_Name: Teleport_destination
-  m_TagString: Teleporter
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -51918,7 +51920,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1432205248
 Transform:
   m_ObjectHideFlags: 0
@@ -52910,7 +52912,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!60 &1473937552
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -59069,7 +59071,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1748761461
 Transform:
   m_ObjectHideFlags: 0
@@ -69067,7 +69069,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!60 &2047292201
 PolygonCollider2D:
   m_ObjectHideFlags: 0
