@@ -20,7 +20,9 @@ public class MapTransition : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            confiner.BoundingShape2D = mapBoundry;
+            if (confiner != null)
+                confiner.BoundingShape2D = mapBoundry;
+
             UpdatePlayerPosition(collision.gameObject);
         }
     }
@@ -49,6 +51,14 @@ public class MapTransition : MonoBehaviour
         }
 
         player.transform.position = newPos;
+
+        // Stop the player controller from continuing its movement
+        PlayerController playerController = player.GetComponent<PlayerController>();
+        if (playerController != null)
+        {
+            // Reset movement - we need to add a public method to PlayerController
+            playerController.SendMessage("StopMovement", SendMessageOptions.DontRequireReceiver);
+        }
     }
 
     

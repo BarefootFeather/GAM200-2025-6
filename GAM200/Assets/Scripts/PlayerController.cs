@@ -139,6 +139,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // Called by MapTransition to stop player movement
+    public void StopMovement()
+    {
+        isMoving = false;
+        targetPosition = transform.position;
+    }
+
     void HandleInput()
     {
         // Will be true if shift is held down

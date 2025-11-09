@@ -1109,7 +1109,47 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Projectile_0: -1229858627709956937
+      Projectile_1: 6591756066159149786
+      Projectile_10: 6170162980664748693
+      Projectile_11: 5224621956880112868
+      Projectile_12: 2494861657988293883
+      Projectile_13: -294844597996351798
+      Projectile_14: -880972815548018641
+      Projectile_15: 2725965441789311827
+      Projectile_16: -1951106260043528466
+      Projectile_17: -8028487702751732626
+      Projectile_18: 236786683033278190
+      Projectile_19: -6927060194219313793
+      Projectile_2: 8551939251423866323
+      Projectile_20: -6240788564579919964
+      Projectile_21: 5540131122602306701
+      Projectile_22: -4148801170800612436
+      Projectile_23: 8628813319175238132
+      Projectile_24: -6900245448959493624
+      Projectile_25: 6293769481566525182
+      Projectile_26: 1506006718127954595
+      Projectile_27: -1101941024344518681
+      Projectile_28: -2330527274961049600
+      Projectile_29: -9172908624147158755
+      Projectile_3: 8972715148466146729
+      Projectile_30: -7526957685761226847
+      Projectile_31: 8983067774593293482
+      Projectile_32: -8297091334433701028
+      Projectile_33: -4222655592049942808
+      Projectile_34: 5893664693033979138
+      Projectile_35: -3600158658824572492
+      Projectile_36: -2688531691266239635
+      Projectile_37: -799510412100653742
+      Projectile_38: 5779237366958334247
+      Projectile_39: -8107053064046754103
+      Projectile_4: -8008892853370628865
+      Projectile_5: -8816637592536531732
+      Projectile_6: -236376373372831309
+      Projectile_7: -2302302140874968506
+      Projectile_8: 1206010788229991514
+      Projectile_9: 6491748154043796789
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

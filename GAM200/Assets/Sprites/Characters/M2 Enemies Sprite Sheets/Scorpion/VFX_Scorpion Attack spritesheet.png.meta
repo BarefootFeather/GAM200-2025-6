@@ -159,7 +159,9 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      VFX_Scorpion Attack spritesheet_0: -3820070235582844777
+      VFX_Scorpion Attack spritesheet_1: 7179320738512728865
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
