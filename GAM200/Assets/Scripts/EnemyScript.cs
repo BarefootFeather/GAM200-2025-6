@@ -52,11 +52,11 @@ public class EnemyScript : MonoBehaviour
 
     [Header("Smooth Step (optional)")]
     [Tooltip("If off, we teleport one step each beat. If on, we glide between cells.")]
-    [SerializeField] private bool smoothStep = false;
+    [SerializeField] private bool smoothStep = true;
     [Tooltip("How long the glide lasts, as a fraction of one interval.")]
     [SerializeField, Range(0.05f, 0.9f)] private float moveLerpFractionOfInterval = 0.35f;
-    [Tooltip("Only used to calculate the glide time (no need to match the real BPM exactly).")]
-    [SerializeField] private int bpmForSmoothing = 120;
+    [Tooltip("Reference to BPMController to get current BPM for accurate timing")]
+    [SerializeField] private BPMController bpmController;
     [Tooltip("How many beats between moves when calculating the glide duration (usually 1).")]
     [SerializeField] private float intervalBeatsForSmoothing = 1f;
 
@@ -98,6 +98,18 @@ public class EnemyScript : MonoBehaviour
     [SerializeField] private int enemyHealth = 1;
     [SerializeField] private Animator animator;
     [SerializeField] private SpriteRenderer spriteRenderer;
+    [Header("Animation Settings")]
+    [Tooltip("Name of the move trigger parameter in the animator (leave empty to disable move animations)")]
+    [SerializeField] private string moveTriggerName = "Move";
+    [Tooltip("Whether to play move animations when the enemy moves")]
+    [SerializeField] private bool useMoveAnimations = true;
+    [Tooltip("Wait for move animation to complete before starting movement. If false, animation and movement run simultaneously.")]
+    [SerializeField] private bool waitForMoveAnimation = false;
+    [Tooltip("Use animation events to control movement timing")]
+    [SerializeField] private bool useAnimationEvents = false;
+    [Header("Dynamic BPM Settings")]
+    [Tooltip("If true, recalculate movement duration when BPM changes during movement")]
+    [SerializeField] private bool adaptToBPMChanges = true;
 
     AudioManager audioManager;
 
@@ -112,6 +124,7 @@ public class EnemyScript : MonoBehaviour
     private Coroutine moveCo;             // Active smooth movement coroutine (if any).
     private Rigidbody2D rb2d;             // Optional physics movement for smoother collisions.
     private BoxCollider2D cachedBox;      // For size auto-detection in OverlapBox logging.
+    private Vector2 logicalPosition;      // Track the intended grid position separately from visual position
 
     // Helper to choose which transform actually moves.
     private Transform M => moveRoot != null ? moveRoot : transform;
@@ -138,10 +151,29 @@ public class EnemyScript : MonoBehaviour
         rb2d = moveRoot.GetComponent<Rigidbody2D>();
         cachedBox = moveRoot.GetComponent<BoxCollider2D>();
 
+        // Auto-find BPMController if not assigned
+        if (bpmController == null)
+            bpmController = FindFirstObjectByType<BPMController>();
+
         // Snap initial spawn to the center of the current grid cell (if tilemap present).
-        Vector3Int cellPosition = gridTilemap.WorldToCell(transform.position);
-        Vector3 centeredWorldPos = gridTilemap.GetCellCenterWorld(cellPosition);
-        transform.position = centeredWorldPos;
+        if (gridTilemap)
+        {
+            Vector3Int cellPosition = gridTilemap.WorldToCell(transform.position);
+            Vector3 centeredWorldPos = gridTilemap.GetCellCenterWorld(cellPosition);
+            transform.position = centeredWorldPos;
+            
+            // Also update the moveRoot position if it's different from transform
+            if (moveRoot != transform)
+                moveRoot.position = centeredWorldPos;
+                
+            // Initialize logical position
+            logicalPosition = centeredWorldPos;
+        }
+        else
+        {
+            // Initialize logical position to current position if no tilemap
+            logicalPosition = M.position;
+        }
 
         // Clean up the path (clamp counts, keep indices valid).
         SanitizePath();
@@ -197,36 +229,15 @@ public class EnemyScript : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawn helper (unused by default—kept for explicit spawn-at-grid use cases).
-    /// </summary>
-    private void SpawnAtGridPosition(Vector2Int gridCoords)
-    {
-        Vector3 worldPos;
-
-        if (gridTilemap != null)
-        {
-            Vector3Int cellPos = new Vector3Int(gridCoords.x, gridCoords.y, 0);
-            worldPos = gridTilemap.GetCellCenterWorld(cellPos);
-        }
-        else
-        {
-            worldPos = new Vector3(gridCoords.x * stepDistance, gridCoords.y * stepDistance, 0);
-        }
-
-        if (rb2d) rb2d.MovePosition(worldPos);
-        else M.position = worldPos;
-
-        if (debugLogs)
-            Debug.Log($"[EnemyScript] Spawned at grid {gridCoords} → world {worldPos}");
-    }
-
-    /// <summary>
     /// Damages the player if both share the same tile cell (simple grid-based contact).
     /// </summary>
     private void CheckPlayerCollision()
     {
+        // Don't damage if dying
+        if (isDying) return;
+
         Vector3Int playerGridPos = gridTilemap.WorldToCell(player.transform.position);
-        Vector3Int enemyGridPos = gridTilemap.WorldToCell(M.position);
+        Vector3Int enemyGridPos = gridTilemap.WorldToCell(logicalPosition);
 
         if (playerGridPos == enemyGridPos && (player.isShieldActive || !player.IsInvulnerable()))
         {
@@ -248,7 +259,7 @@ public class EnemyScript : MonoBehaviour
     private static bool IsScheduled(int count, int everyN, int offset) => ((count - offset) % everyN) == 0;
 
     /// <summary>
-    /// Performs one move “tick”: advances along the current Step, handles snapping and visual flipping,
+    /// Performs one move "tick": advances along the current Step, handles snapping and visual flipping,
     /// logs potential collisions (for debugging), and handles path advancement / ping-pong logic.
     /// </summary>
     private void DoMoveTick()
@@ -263,7 +274,7 @@ public class EnemyScript : MonoBehaviour
 
         var current = path[pathIndex];
 
-        // If we’re in reverse mode and traversing backward, use the opposite direction to retrace.
+        // If we're in reverse mode and traversing backward, use the opposite direction to retrace.
         var effectiveDir = (reverseMovement && !movingForward)
             ? Opposite(current.direction)
             : current.direction;
@@ -273,8 +284,8 @@ public class EnemyScript : MonoBehaviour
         // Flip sprite visuals according to the EFFECTIVE direction.
         HandleSpriteFlipping(effectiveDir);
 
-        // Compute target position for this single step.
-        Vector2 from = M.position;
+        // Use logical position (intended position) instead of current animated position
+        Vector2 from = logicalPosition;
         Vector2 to = from + dir * stepDistance;
 
         // Snap to tile center if tilemap exists; else optional snap by cell size.
@@ -288,14 +299,17 @@ public class EnemyScript : MonoBehaviour
             to = Snap(to, stepDistance);
         }
 
-        // Debug-only “what would we hit?” logging.
+        // Update logical position to the target position
+        logicalPosition = to;
+
+        // Debug-only "what would we hit?" logging.
         LogPotentialCollisions(from, to);
 
         if (debugLogs)
-            Debug.Log($"[EnemyScript] Moving {current.direction} ({stepsTakenInCurrent + 1}/{current.count}) → {to}");
+            Debug.Log($"[EnemyScript] Moving {current.direction} ({stepsTakenInCurrent + 1}/{current.count}) from {from} → {to} (distance: {Vector2.Distance(from, to)})");
 
-        // Move (instant or smooth).
-        MoveTo(to);
+        // Move (instant or smooth) - pass the original starting position
+        MoveTo(from, to);
 
         // Track sub-steps and advance to next step entry when count is reached.
         stepsTakenInCurrent++;
@@ -381,62 +395,196 @@ public class EnemyScript : MonoBehaviour
     /// Applies a move: instant or smooth glide based on smoothStep.
     /// Uses Rigidbody2D when available for fixed-timestep lerp.
     /// </summary>
-    private void MoveTo(Vector2 nextPos)
+    private void MoveTo(Vector2 fromPos, Vector2 nextPos)
     {
-        if (!smoothStep)
+        if (useAnimationEvents)
         {
-            if (rb2d) rb2d.MovePosition(nextPos);
-            else M.position = nextPos;
-            return;
+            // Store movement data for animation event callback
+            pendingMovement = new PendingMovement { from = fromPos, to = nextPos };
+            
+            // Start animation and wait for animation event to trigger actual movement
+            StartCoroutine(MoveAnimation());
         }
+        else
+        {
+            // Original behavior: start animation and movement together
+            StartCoroutine(MoveAnimation());
+            
+            if (!smoothStep)
+            {
+                if (rb2d) rb2d.MovePosition(nextPos);
+                else M.position = nextPos;
+                // Ensure logical position is updated for instant movement
+                logicalPosition = nextPos;
+                return;
+            }
 
-        float dur = CalcLerpDuration();
-        if (moveCo != null) StopCoroutine(moveCo);
-        moveCo = StartCoroutine(StepLerp2D(rb2d, M.position, nextPos, dur));
+            // Stop any existing movement coroutine first
+            if (moveCo != null) 
+            {
+                StopCoroutine(moveCo);
+                moveCo = null;
+            }
+
+            float dur = CalcLerpDuration();
+            
+            if (debugLogs)
+                Debug.Log($"[EnemyScript] Starting smooth move from {fromPos} to {nextPos}, duration: {dur}");
+                
+            moveCo = StartCoroutine(StepLerp2D(rb2d, fromPos, nextPos, dur));
+        }
+    }
+    
+    // Data structure for pending movement
+    private struct PendingMovement
+    {
+        public Vector2 from;
+        public Vector2 to;
+    }
+    private PendingMovement? pendingMovement = null;
+    
+    /// <summary>Called by animation event to trigger the actual movement</summary>
+    public void OnMoveAnimationEvent()
+    {
+        if (pendingMovement.HasValue)
+        {
+            var movement = pendingMovement.Value;
+            pendingMovement = null;
+            
+            if (debugLogs)
+                Debug.Log($"[EnemyScript] Animation event triggered movement from {movement.from} to {movement.to}");
+            
+            if (!smoothStep)
+            {
+                if (rb2d) rb2d.MovePosition(movement.to);
+                else M.position = movement.to;
+                logicalPosition = movement.to;
+                return;
+            }
+
+            // Stop any existing movement coroutine first
+            if (moveCo != null) 
+            {
+                StopCoroutine(moveCo);
+                moveCo = null;
+            }
+
+            float dur = CalcLerpDuration();
+            moveCo = StartCoroutine(StepLerp2D(rb2d, movement.from, movement.to, dur));
+        }
     }
 
     /// <summary>
     /// Computes smoothing duration from BPM and fraction-of-interval settings.
+    /// Uses current BPM from BPMController if available, falls back to default.
     /// </summary>
     private float CalcLerpDuration()
     {
-        float intervalSec = (60f / Mathf.Max(1, bpmForSmoothing)) * Mathf.Max(0.0001f, intervalBeatsForSmoothing);
+        // Get current BPM dynamically if BPMController is assigned
+        int currentBPM = bpmController != null ? bpmController.GetCurrentBPM() : 120;
+        
+        float intervalSec = (60f / Mathf.Max(1, currentBPM)) * Mathf.Max(0.0001f, intervalBeatsForSmoothing);
         return Mathf.Max(0.01f, intervalSec * moveLerpFractionOfInterval);
     }
 
     /// <summary>
     /// Smoothly interpolates position from 'from' to 'to' over 'duration'.
     /// Uses FixedUpdate timing for Rigidbody2D; otherwise uses regular Update.
+    /// Can adapt to BPM changes during movement if enabled.
     /// </summary>
     private IEnumerator StepLerp2D(Rigidbody2D body, Vector2 from, Vector2 to, float duration)
     {
+        if (debugLogs)
+            Debug.Log($"[EnemyScript] StepLerp2D started: from={from}, to={to}, duration={duration}");
+
         if (duration <= 0f)
         {
+            if (debugLogs)
+                Debug.Log($"[EnemyScript] Duration <= 0, teleporting to {to}");
             if (body) body.MovePosition(to);
             else M.position = to;
             yield break;
         }
 
         float t = 0f;
+        float originalDuration = duration;
+        float startTime = Time.time;
 
         if (body)
         {
             while (t < 1f)
             {
-                t += Time.fixedDeltaTime / duration;
-                body.MovePosition(Vector2.Lerp(from, to, Mathf.Clamp01(t)));
+                // Adapt to BPM changes during movement if enabled
+                if (adaptToBPMChanges)
+                {
+                    float newDuration = CalcLerpDuration();
+                    if (Mathf.Abs(newDuration - originalDuration) > 0.01f)
+                    {
+                        // Recalculate t based on elapsed time and new duration
+                        float elapsed = Time.time - startTime;
+                        t = elapsed / newDuration;
+                        originalDuration = newDuration;
+                        
+                        if (debugLogs)
+                            Debug.Log($"[EnemyScript] BPM changed, adjusted duration to {newDuration}");
+                    }
+                    else
+                    {
+                        t += Time.fixedDeltaTime / duration;
+                    }
+                }
+                else
+                {
+                    t += Time.fixedDeltaTime / duration;
+                }
+                
+                Vector2 currentPos = Vector2.Lerp(from, to, Mathf.Clamp01(t));
+                body.MovePosition(currentPos);
                 yield return new WaitForFixedUpdate();
             }
+            // Ensure we end exactly at the target position
+            body.MovePosition(to);
         }
         else
         {
             while (t < 1f)
             {
-                t += Time.deltaTime / duration;
-                M.position = Vector2.Lerp(from, to, Mathf.Clamp01(t));
+                // Adapt to BPM changes during movement if enabled
+                if (adaptToBPMChanges)
+                {
+                    float newDuration = CalcLerpDuration();
+                    if (Mathf.Abs(newDuration - originalDuration) > 0.01f)
+                    {
+                        // Recalculate t based on elapsed time and new duration
+                        float elapsed = Time.time - startTime;
+                        t = elapsed / newDuration;
+                        originalDuration = newDuration;
+                        
+                        if (debugLogs)
+                            Debug.Log($"[EnemyScript] BPM changed, adjusted duration to {newDuration}");
+                    }
+                    else
+                    {
+                        t += Time.deltaTime / duration;
+                    }
+                }
+                else
+                {
+                    t += Time.deltaTime / duration;
+                }
+                
+                Vector2 currentPos = Vector2.Lerp(from, to, Mathf.Clamp01(t));
+                M.position = currentPos;
                 yield return null;
             }
+            // Ensure we end exactly at the target position
+            M.position = to;
         }
+
+        if (debugLogs)
+            Debug.Log($"[EnemyScript] StepLerp2D completed, final position: {(body ? body.position : (Vector2)M.position)}");
+            
+        moveCo = null;
     }
 
     private static Vector2 DirToVector(Dir d)
@@ -500,6 +648,68 @@ public class EnemyScript : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    private IEnumerator MoveAnimation()
+    {
+        // Only trigger move animation if enabled and all conditions are met
+        if (useMoveAnimations && animator != null && !string.IsNullOrEmpty(moveTriggerName))
+        {
+            // Check if the parameter exists before trying to set it
+            if (HasParameter(animator, moveTriggerName))
+            {
+                animator.SetTrigger(moveTriggerName);
+                
+                if (waitForMoveAnimation)
+                {
+                    // Wait until the animation state is no longer the move animation
+                    yield return new WaitUntil(() => !IsPlayingMoveAnimation());
+                }
+                else
+                {
+                    // Don't wait, just trigger and continue immediately
+                    yield return null;
+                }
+            }
+            else if (debugLogs)
+            {
+                Debug.LogWarning($"[EnemyScript] Animator parameter '{moveTriggerName}' not found on {gameObject.name}");
+                yield return null;
+            }
+        }
+        else
+        {
+            // If not using move animations, yield immediately
+            yield return null;
+        }
+    }
+    
+    /// <summary>Check if the move animation is currently playing</summary>
+    private bool IsPlayingMoveAnimation()
+    {
+        if (animator == null) return false;
+        
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        
+        // Check if we're in a move-related animation state
+        // You'll need to adjust these state names to match your animator
+        return stateInfo.IsName("Move") || 
+               stateInfo.IsName("Walk") || 
+               stateInfo.IsName("Step") ||
+               stateInfo.IsTag("Moving"); // Alternative: use tags instead of state names
+    }
+
+    /// <summary>Helper method to check if animator has a specific parameter</summary>
+    private bool HasParameter(Animator anim, string parameterName)
+    {
+        if (anim == null) return false;
+        
+        foreach (AnimatorControllerParameter parameter in anim.parameters)
+        {
+            if (parameter.name == parameterName)
+                return true;
+        }
+        return false;
+    }
+
     /// <summary>Flips the sprite when moving left/right (keeps flip state for up/down).</summary>
     private void HandleSpriteFlipping(Dir direction)
     {
@@ -507,8 +717,8 @@ public class EnemyScript : MonoBehaviour
 
         switch (direction)
         {
-            case Dir.Left:  spriteRenderer.flipX = true;  break;
-            case Dir.Right: spriteRenderer.flipX = false; break;
+            case Dir.Right:  spriteRenderer.flipX = true;  break;
+            case Dir.Left: spriteRenderer.flipX = false; break;
             // Up and Down keep current flip
         }
     }

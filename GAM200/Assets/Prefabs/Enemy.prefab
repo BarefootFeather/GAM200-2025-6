@@ -58,15 +58,11 @@ MonoBehaviour:
   bpmForSmoothing: 120
   intervalBeatsForSmoothing: 1
   path:
-  - direction: 1
-    count: 1
-  - direction: 0
-    count: 2
   - direction: 3
-    count: 1
-  - direction: 2
     count: 2
-  reverseMovement: 0
+  - direction: 0
+    count: 1
+  reverseMovement: 1
   logPhysicsCollisions: 1
   useColliderSize: 1
   boxCheckSize: {x: 0.8, y: 0.8}
@@ -129,7 +125,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 7070851616451769493, guid: 75592aba2c6501549938118d33f2be02, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 0.2, y: 0.2}
