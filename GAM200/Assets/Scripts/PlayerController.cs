@@ -49,7 +49,13 @@ public class PlayerController : MonoBehaviour
     private Vector3 direction = Vector3.zero;
     public bool isPowerup;
     private GameObject currentTeleporter;
-    
+
+    AudioManager audioManager;
+
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
 
     void Start()
     {
@@ -209,6 +215,7 @@ public class PlayerController : MonoBehaviour
 
                 // Trigger attack animation
                 animator.SetTrigger("Attack");
+                audioManager.PlaySFX(audioManager.attack);
 
                 // Check for enemies in attack direction
                 CheckAttackHit(targetGrid);
@@ -226,6 +233,7 @@ public class PlayerController : MonoBehaviour
 
                 // Trigger movement animation
                 animator.SetTrigger("Dash");
+                //audioManager.PlaySFX(audioManager.dash);
             }
         }
     }
@@ -299,15 +307,19 @@ public class PlayerController : MonoBehaviour
 
         // Apply damage
         playerHealth -= damage;
+        
+
         if (playerHealth >= 0)
         {
             uiController.UpdateHealthUI(playerHealth);
+            audioManager.PlaySFX(audioManager.damage);
         }
 
             if (playerHealth <= 0)
         {
             Debug.Log("Player has died.");
             StartCoroutine(PlayDeathAnimation());
+            audioManager.PlaySFX(audioManager.playerdeath);
             player_died = true;
         }
         else
@@ -345,6 +357,7 @@ public class PlayerController : MonoBehaviour
 
             // Trigger shield animation
             animator.SetTrigger("Shield_VFX");
+            audioManager.PlaySFX(audioManager.shield);
             Debug.Log("Shield power-up collected! Shield activated.");
         }
     }
@@ -393,6 +406,7 @@ public class PlayerController : MonoBehaviour
                 shieldOnCooldown = false;
                 Debug.Log("Shield cooldown complete — reactivated!");
                 ActivateShield();
+                audioManager.PlaySFX(audioManager.shield);
             }
         }
     }
@@ -412,6 +426,7 @@ public class PlayerController : MonoBehaviour
     {
         // Start death animation
         animator.SetTrigger("Death");
+        audioManager.PlaySFX(audioManager.playerdeath);
 
         // Wait until animation is complete, Animator will call OnDeathAnimationComplete
         yield return new WaitUntil(() => deathAnimationComplete);
@@ -436,6 +451,7 @@ public class PlayerController : MonoBehaviour
             if (diamond != null)
             {
                 diamond.OnCollect(this); // Pass the PlayerController to grant shield ability
+                audioManager.PlaySFX(audioManager.collectible);
             }
 
             // Destroy the collectible object
@@ -444,7 +460,9 @@ public class PlayerController : MonoBehaviour
 
         if (other.CompareTag("Teleporter"))
         {
+            audioManager.PlaySFX(audioManager.teleport);
             currentTeleporter = other.gameObject;
+            
             Teleporting();
         }
     }

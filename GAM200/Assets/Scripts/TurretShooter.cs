@@ -49,6 +49,8 @@ public class TurretShooter : MonoBehaviour
     [Header("Debug")]
     [SerializeField] bool debugLogs = false;
 
+    [SerializeField] private Animator animator;
+
     int _beatCount = -1; // Tracks current beat index.
 
     void Awake()

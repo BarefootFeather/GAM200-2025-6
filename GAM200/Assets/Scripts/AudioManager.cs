@@ -11,14 +11,20 @@ public class AudioManager : MonoBehaviour
     public AudioClip damage;
     public AudioClip playerdeath;
     public AudioClip enemydeath;
+    public AudioClip gameover;
+    public AudioClip wingame;
     public AudioClip collectible;
     public AudioClip shield;
     public AudioClip trap;
     public AudioClip wall_move;
     public AudioClip bullet;
     public AudioClip button;
+    public AudioClip teleport;
 
-    
-    
+
+    public void PlaySFX(AudioClip clip)
+    {
+        SFXSource.PlayOneShot(clip);
+    }
 
 }

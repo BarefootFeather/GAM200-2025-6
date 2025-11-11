@@ -99,6 +99,8 @@ public class EnemyScript : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private SpriteRenderer spriteRenderer;
 
+    AudioManager audioManager;
+
     private bool isDying = false;                 // Prevents re-triggering death.
     private bool deathAnimationComplete = false;  // Set by animation event.
 
@@ -483,6 +485,7 @@ public class EnemyScript : MonoBehaviour
         {
             isDying = true;
             StartCoroutine(DeathSequence());
+            audioManager.PlaySFX(audioManager.enemydeath);
         }
     }
 

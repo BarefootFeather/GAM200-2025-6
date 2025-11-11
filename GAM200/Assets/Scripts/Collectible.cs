@@ -13,7 +13,7 @@ public class Collectible : MonoBehaviour
     {
         if (collectibleText != null)
         {
-            collectibleText.text = "Collectible Count: " + collectibleCount.ToString();
+            collectibleText.text = "Completed Maps: " + collectibleCount.ToString();
         }
     }
 

@@ -64,6 +64,8 @@ public class BeatProjectile : MonoBehaviour
     int _lastProcessedBeat = int.MinValue;   // Guard to ensure exactly one StepOnce per beat index.
     Coroutine _moveCo;                       // Active lerp coroutine, if any.
 
+    AudioManager audioManager;
+
     /// <summary>
     /// Configure the projectile at runtime. Call immediately after spawning.
     /// Applies clamping and sane defaults; never changes behavior outside the provided values.
